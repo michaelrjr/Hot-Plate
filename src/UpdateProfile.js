@@ -6,7 +6,6 @@ import { Link, useHistory } from "react-router-dom";
 function UpdateProfile() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const { currentUser, updateEmail, updatePassword } = useAuth();
   const history = useHistory();
 
@@ -29,7 +28,6 @@ function UpdateProfile() {
     }),
     onSubmit: async (values) => {
       console.log("form data", values);
-      //make post request here with user info
       const promises = [];
       setError("");
       setLoading(true);
@@ -59,7 +57,6 @@ function UpdateProfile() {
             <div className="heading">
               <h3>Update Profile</h3>
             </div>
-            <div>{message && <div className="successMsg">{message}</div>}</div>
             <div>{error && <div className="errorMsg">{error}</div>}</div>
             <div className="form-group">
               <label htmlFor="email">Email</label>

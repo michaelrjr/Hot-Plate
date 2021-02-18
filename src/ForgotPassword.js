@@ -17,7 +17,6 @@ function ForgotPassword() {
     }),
     onSubmit: async (values) => {
       console.log("form data", values);
-      // make post request here
       try {
         setError("");
         setLoading(true);
