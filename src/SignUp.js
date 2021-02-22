@@ -8,6 +8,7 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const [message, setMessage] = useState("");
+  const { sendEmailVerification } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -42,12 +43,14 @@ function SignUp() {
         setLoading(true);
         await signUp(values.email, values.password);
         setMessage("Account created. Please sign in.");
+        await sendEmailVerification();
       } catch {
         setError("Failed to create an account");
       }
       setLoading(false);
     },
   });
+
   return (
     <div className="container">
       <div className="card">

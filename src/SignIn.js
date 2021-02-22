@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   const history = useHistory();
   const formik = useFormik({
     initialValues: {
@@ -32,6 +32,16 @@ function SignIn() {
       setLoading(false);
     },
   });
+
+  async function googleSignIn() {
+    try {
+      await signInWithGoogle();
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="card">
       <form onSubmit={formik.handleSubmit}>
@@ -68,19 +78,26 @@ function SignIn() {
               <div className="error">{formik.errors.password}</div>
             ) : null}
           </div>
-          <button type="submit" className="buttons" disabled={loading}>
-            Sign in
-          </button>
-          <div className="sign">
-            <Link to="/forgotPassword">Forgot Password?</Link>
-          </div>
-          <div className="sign">
-            <p>
-              Don't have an account? <Link to="/signUp">Sign up</Link>.
-            </p>
+          <div>
+            <button type="submit" className="buttons" disabled={loading}>
+              Sign in
+            </button>
           </div>
         </div>
       </form>
+      <div>
+        <button onClick={googleSignIn} className="buttons" disabled={loading}>
+          Sign in with Google
+        </button>
+      </div>
+      <div className="sign">
+        <Link to="/forgotPassword">Forgot Password?</Link>
+      </div>
+      <div className="sign">
+        <p>
+          Don't have an account? <Link to="/signUp">Sign up</Link>.
+        </p>
+      </div>
     </div>
   );
 }
