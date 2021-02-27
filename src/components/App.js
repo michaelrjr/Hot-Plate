@@ -7,16 +7,19 @@ import UpdateProfile from "./UpdateProfile";
 import { AuthProvider } from "../contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
+import chatMessages from "../chatComponents/chatMessages";
 import MoreInfo from "./MoreInfo";
+
 function App() {
   return (
     <AuthProvider>
       <div className="App">
-        <div className="container">
+        <div>
           <Router>
             <Switch>
               <PrivateRoute exact path="/" component={Dashboard} />
               <PrivateRoute path="/updateProfile" component={UpdateProfile} />
+              <Route path="/chatComponents/chatMessages" component={chatMessages}/>
               <Route path="/signUp" component={SignUp} />
               <Route path="/signIn" component={SignIn} />
               <Route path="/forgotPassword" component={ForgotPassword} />
