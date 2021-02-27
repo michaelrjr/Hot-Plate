@@ -1,9 +1,12 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "@firebase/firestore";
 
 const app = firebase.initializeApp({
   apiKey: "AIzaSyCBkDtK0Px6EHyoGX-iJy4luIG_r8iF87o",
   authDomain: "fb-test-proj-abde8.firebaseapp.com",
+  databaseURL:
+    "https://fb-test-proj-abde8-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "fb-test-proj-abde8",
   storageBucket: "fb-test-proj-abde8.appspot.com",
   messagingSenderId: "328801899539",
@@ -12,4 +15,5 @@ const app = firebase.initializeApp({
 
 export const auth = app.auth();
 export const googleAuth = new firebase.auth.GoogleAuthProvider();
+
 export default app;

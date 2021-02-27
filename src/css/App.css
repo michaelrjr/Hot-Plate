@@ -95,3 +95,20 @@ a {
 .updateBtn:hover {
   opacity: 1;
 }
+
+p {
+  margin: 0px;
+  padding: 0px;
+}
+
+
+.comment-btn {
+  background-color: blue;
+  color: white;
+  padding: 6px;
+  margin: 6px 0;
+  border: none;
+  cursor: pointer;
+  
+  opacity: 0.9;
+}
