@@ -103,6 +103,11 @@ export default function Dashboard() {
                     <button className="updateBtn">Update profile</button>
                   </Link>
                 </div>
+                <div>
+                  <Link to="/chatComponents/chatMessages">
+                    <button className="updateBtn">Chat</button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,10 @@
-.App {
-  margin-top: 20px;
+*{
+  margin:0;
 }
+
+/* .App {
+  margin-top: 20px;
+} */
 
 input[type=text], input[type=email], input[type=password] {
   width: 100%;
