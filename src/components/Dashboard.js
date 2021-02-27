@@ -26,20 +26,10 @@ export default function Dashboard() {
   }, []);
 
   const getData = () => {
-    ref
-      .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
-        let items = [];
-        querySnapshot.forEach((doc) => {
-          items.push(doc.data());
-        });
-        //const reversedItems = items.reverse();
-        setUserFeed(items);
-      })
-      .catch((error) => {
-        setError("Error");
-      });
+    ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+      let items = [];
+      setUserFeed(snapshot.docs.map((doc) => doc.data()));
+    });
     setPost("");
   };
 
@@ -68,7 +58,7 @@ export default function Dashboard() {
         console.error("Error adding document: ", error);
       });
 
-    getData();
+    //getData();
   };
 
   const handleInputBoxChange = (e) => {

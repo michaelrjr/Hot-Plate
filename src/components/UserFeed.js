@@ -9,6 +9,10 @@ export default function UserFeed(props) {
     setShowCommentBox(true);
   };
 
+  const handleCommentBoxChnage = (e) => {
+    setComment(e.target.value);
+  };
+
   return (
     <div className="container">
       {props.userFeed.map((post) => (
@@ -23,13 +27,18 @@ export default function UserFeed(props) {
           </div>
           <p>{post.post}</p>
           <div>
-            <button onClick={showCommentInputBox} style={{ border: "none" }}>
+            <button
+              onClick={showCommentInputBox}
+              style={{ border: "none", marginBottom: "10px" }}
+            >
               <FaRegCommentDots />
               Comment
             </button>
           </div>
-          <br />
-          {showCommentBox && <CommentBox />}
+
+          {showCommentBox && (
+            <CommentBox handleCommentBoxChnage={handleCommentBoxChnage} />
+          )}
         </div>
       ))}
     </div>
