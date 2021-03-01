@@ -27,7 +27,6 @@ export default function Dashboard() {
 
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-      let items = [];
       setUserFeed(snapshot.docs.map((doc) => doc.data()));
     });
     setPost("");
@@ -110,6 +109,9 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="col">
+            <h1>Lorenzo go here!</h1>
           </div>
         </div>
       </div>

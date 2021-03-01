@@ -5,6 +5,7 @@ export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [nutritionChart, setNutritionChart] = useState({});
   const recipeInfoURL =
     "https://api.spoonacular.com/recipes/181272/information?includeNutrition=false&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3";
   const nutritionVisualisationURL =
@@ -26,12 +27,10 @@ export default function MoreInfo() {
       .then((response) => {
         if (mounted) {
           let tempArr = [];
-          tempArr = response.data;
-          let tempArr2 = [];
-          tempArr2.push(tempArr);
+          tempArr.push(response.data);
           setIsFetched(true);
-          setRecipeInfoArray(tempArr2);
-          console.log(tempArr2);
+          setRecipeInfoArray(tempArr);
+          console.log(tempArr);
         }
       })
       .catch((error) => {
@@ -47,6 +46,7 @@ export default function MoreInfo() {
         if (mounted) {
           setIsFetched(true);
           console.log(response.data);
+          setNutritionChart(response.data);
         }
       })
       .catch((error) => {
@@ -96,12 +96,37 @@ export default function MoreInfo() {
                   ))}
                   <hr />
                   <h4>Instructions</h4>
-                  <p>{recipe.instructions}</p>
+
+                  <b>Equipment:</b>
+                  <br />
+                  {recipe.analyzedInstructions.map((instruction, index) => (
+                    <div key={index}>
+                      {instruction.steps.map((step) => (
+                        <div key={step.number}>
+                          {step.equipment.map((equip) => (
+                            <div
+                              key={equip.id}
+                              style={{
+                                display: "inline-block",
+                                marginRight: "10px",
+                              }}
+                            >
+                              {equip.name}
+                            </div>
+                          ))}
+                          <li>{step.step}</li>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
-          <div className="col"></div>
+          <div
+            className="col"
+            dangerouslySetInnerHTML={{ __html: nutritionChart }}
+          ></div>
         </div>
       </div>
     );
