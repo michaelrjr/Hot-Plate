@@ -5,6 +5,7 @@ import UserFeedInputBox from "./UserFeedInputBox";
 import UserFeed from "./UserFeed";
 import app from "../firebase";
 import { firebase } from "@firebase/app";
+import RecipeSearch from "./RecipeSearch";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -111,7 +112,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="col">
-            <h1>Lorenzo go here!</h1>
+            <RecipeSearch/>
           </div>
         </div>
       </div>
