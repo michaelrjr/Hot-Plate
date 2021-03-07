@@ -6,7 +6,7 @@ import axios from "axios";
 export default function RecipeSearch(){
   const [apiData, setApiData] = useState([]);
   const [recipeNum, setRecipeNum] = useState(0);
-  const [filters, setFilters] = useState({cuisine: "", diet: "", intolerance: "", meal: "", ingredients: "", equipment: ""});
+  const [filters, setFilters] = useState({cuisine: "", diet: "", intolerance: "", meal: "", ingredients: "", equipment: "", time: ""});
   
   var offset = 0;
 
@@ -30,7 +30,7 @@ export default function RecipeSearch(){
         console.log(resp.data.recipes);
         console.log(resp.data.recipes.length);
       }else{
-        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&number=100&offset=${offset}&information&apiKey=a877df555b0b40488df279ef75acd509`;
+        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=a877df555b0b40488df279ef75acd509`;
         const resp = await axios.get(API_URL);
         console.log(API_URL);
         if(resp.data.totalResults === 0){
@@ -118,11 +118,20 @@ export default function RecipeSearch(){
     console.log(event.target.value);
   }
 
+  function updateMaxTime(event){
+      setFilters(prevFilters => {
+        return { ...prevFilters, time: event.target.value}
+      });   
+      console.log(event.target.value);
+    }
+
   function applyFilters(){
     setRecipeNum(0);
     offset = 0;
     getRandomRecipes(); 
   }
+
+  
 
   return (
     <div className="boxing">
@@ -143,6 +152,7 @@ export default function RecipeSearch(){
       updateMeal={updateMeal}
       updateEquipment={updateEquipment}
       updateIngredients={updateIngredients}
+      updateMaxTIme={updateMaxTime}
       applyFilters={applyFilters}
       />
     </div>
