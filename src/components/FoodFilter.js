@@ -88,6 +88,21 @@ export default function FoodFilter(props){
             <option value="snack">Snack</option>
             <option value="drink">Drink</option>
         </select>
+        <form>
+            <b>Type Ingredients here:</b>
+        </form>
+        <input //For user typed input
+            pattern="text"
+            onChange={props.updateIngredients}
+          />
+        <form>
+            <b>Type Equipment here:</b>
+        </form>
+        <input //For user typed input
+            pattern="text"
+            onChange={props.updateEquipment}
+          />
+        <button onClick={props.applyFilters}>Apply Filters</button>
         </span>
         </div> 
     );

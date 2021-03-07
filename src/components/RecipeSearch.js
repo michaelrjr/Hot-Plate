@@ -4,24 +4,21 @@ import FoodFilter from "./FoodFilter"
 import axios from "axios";
 
 export default function RecipeSearch(){
-    const [apiData, setApiData] = useState([]);
-    const [recipeNum, setRecipeNum] = useState(0);
-    const [filters, setFilters] = useState({cuisine: "", diet: "", intolerance: "", meal: ""});
-    // const [cuisine, setCuisine] = useState("");
-    // const [diet, setDiet] = useState("");
-    // const [intolerance, setIntolerance] = useState("");
-    // const [meal, setMeal] = useState("");
-    var offset = 0;
+  const [apiData, setApiData] = useState([]);
+  const [recipeNum, setRecipeNum] = useState(0);
+  const [filters, setFilters] = useState({cuisine: "", diet: "", intolerance: "", meal: "", ingredients: "", equipment: ""});
   
-    useEffect(() => {
-      
-      getRandomRecipes();
-    },[filters]);
+  var offset = 0;
 
-    const getRandomRecipes = async () => {
+  useEffect(() => {
+    
+    getRandomRecipes();
+  },[]);
+
+  const getRandomRecipes = async () => {
     try {
-      if (filters.cuisine === "" && filters.diet === "" && filters.meal === "" && filters.intolerance === ""){
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
+      if (filters.cuisine === "" && filters.diet === "" && filters.meal === "" && filters.intolerance === "" && filters.ingredients === "" && filters.equipment === ""){
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=a877df555b0b40488df279ef75acd509`;
         const resp = await axios.get(API_URL);
         console.log(API_URL);
         if(resp.data.totalResults === 0){
@@ -33,7 +30,7 @@ export default function RecipeSearch(){
         console.log(resp.data.recipes);
         console.log(resp.data.recipes.length);
       }else{
-        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&number=100&offset=${offset}&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
+        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&number=100&offset=${offset}&information&apiKey=a877df555b0b40488df279ef75acd509`;
         const resp = await axios.get(API_URL);
         console.log(API_URL);
         if(resp.data.totalResults === 0){
@@ -49,9 +46,9 @@ export default function RecipeSearch(){
         // Handle Error Here
         console.error(error);
     }
-};
+  };
 
-   function nextRecipe(){
+  function nextRecipe(){
     if (apiData.length !== 0){
         setRecipeNum(recipeNum + 1);
         
@@ -78,14 +75,12 @@ export default function RecipeSearch(){
       }
       return array;
   }
-  
+
   function updateCuisine(event){
     setFilters(prevFilters => {
       return { ...prevFilters, cuisine: event.target.value}
     });   
     console.log(event.target.value);
-    setRecipeNum(0);
-    offset = 0;
   }
 
   function updateDiet(event){
@@ -93,8 +88,6 @@ export default function RecipeSearch(){
       return { ...prevFilters, diet: event.target.value}
     });   
     console.log(event.target.value);
-    setRecipeNum(0);
-    offset = 0;
   }
 
   function updateIntolerance(event){
@@ -102,8 +95,6 @@ export default function RecipeSearch(){
       return { ...prevFilters, intolerance: event.target.value}
     });   
     console.log(event.target.value);
-    setRecipeNum(0);
-    offset = 0;
   }
 
   function updateMeal(event){
@@ -111,10 +102,28 @@ export default function RecipeSearch(){
       return { ...prevFilters, meal: event.target.value}
     });   
     console.log(event.target.value);
+  }
+
+  function updateEquipment(event){
+    setFilters(prevFilters => {
+      return { ...prevFilters, equipment: event.target.value}
+    });   
+    console.log(event.target.value);
+  }
+
+  function updateIngredients(event){
+    setFilters(prevFilters => {
+      return { ...prevFilters, ingredients: event.target.value}
+    });   
+    console.log(event.target.value);
+  }
+
+  function applyFilters(){
     setRecipeNum(0);
     offset = 0;
+    getRandomRecipes(); 
   }
-  
+
   return (
     <div className="boxing">
     <ComponentA
@@ -131,7 +140,11 @@ export default function RecipeSearch(){
       updateCuisine={updateCuisine}
       updateDiet={updateDiet}
       updateIntolerance={updateIntolerance}
-      updateMeal={updateMeal}/>
+      updateMeal={updateMeal}
+      updateEquipment={updateEquipment}
+      updateIngredients={updateIngredients}
+      applyFilters={applyFilters}
+      />
     </div>
   );
 } 
