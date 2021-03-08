@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
-export default function Recipe(props) {
+export default function ComponentA(props) {
   const size = "636x393.jpg";
   const basePath = "https://spoonacular.com/recipeImages/";
   const { setRecipeID } = useAuth();
