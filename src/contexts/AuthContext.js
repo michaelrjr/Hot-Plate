@@ -10,6 +10,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [recipeID, setID] = useState(0);
 
   function signUp(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -43,6 +44,11 @@ export function AuthProvider({ children }) {
     return auth.signInWithPopup(googleAuth);
   }
 
+  // so I can use recipeID anywhere in the app
+  function setRecipeID(id) {
+    setID(id);
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -62,6 +68,8 @@ export function AuthProvider({ children }) {
     updatePassword,
     sendEmailVerification,
     signInWithGoogle,
+    recipeID,
+    setRecipeID,
   };
 
   return (

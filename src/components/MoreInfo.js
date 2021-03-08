@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [nutritionChart, setNutritionChart] = useState({});
-  const recipeInfoURL =
-    "https://api.spoonacular.com/recipes/181272/information?includeNutrition=false&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3";
-  const nutritionVisualisationURL =
-    "https://api.spoonacular.com/recipes/1082038/nutritionWidget?&defaultCss=true&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3";
+  const { recipeID } = useAuth();
+  const [showIngredients, setShowIngredients] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const recipeInfoURL = `https://api.spoonacular.com/recipes/${recipeID}/information?includeNutrition=false&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
+  const nutritionVisualisationURL = `https://api.spoonacular.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
 
   let mounted = true;
 
@@ -90,35 +92,52 @@ export default function MoreInfo() {
                   <p>Ready in: {" " + recipe.readyInMinutes + " "} minutes</p>
                   <p>Servings: {" " + recipe.servings}</p>
                   <hr />
-                  <h4>Ingredients</h4>
-                  {recipe.extendedIngredients.map((ingredients) => (
-                    <li>{ingredients.original}</li>
-                  ))}
-                  <hr />
-                  <h4>Instructions</h4>
+                  <button
+                    className="buttons"
+                    onClick={() => setShowIngredients(!showIngredients)}
+                  >
+                    Ingredients
+                  </button>
+                  {showIngredients && (
+                    <div>
+                      {recipe.extendedIngredients.map((ingredients) => (
+                        <li>{ingredients.original}</li>
+                      ))}
+                    </div>
+                  )}
 
-                  <b>Equipment:</b>
-                  <br />
-                  {recipe.analyzedInstructions.map((instruction, index) => (
-                    <div key={index}>
-                      {instruction.steps.map((step) => (
-                        <div key={step.number}>
-                          {step.equipment.map((equip) => (
-                            <div
-                              key={equip.id}
-                              style={{
-                                display: "inline-block",
-                                marginRight: "10px",
-                              }}
-                            >
-                              {equip.name}
+                  <hr />
+
+                  <button
+                    className="buttons"
+                    onClick={() => setShowInstructions(!showInstructions)}
+                  >
+                    Instructions
+                  </button>
+                  {showInstructions && (
+                    <div>
+                      {recipe.analyzedInstructions.map((instruction, index) => (
+                        <div key={index}>
+                          {instruction.steps.map((step) => (
+                            <div key={step.number}>
+                              {step.equipment.map((equip) => (
+                                <div
+                                  key={equip.id}
+                                  style={{
+                                    display: "inline-block",
+                                    marginRight: "10px",
+                                  }}
+                                >
+                                  {equip.name}
+                                </div>
+                              ))}
+                              <li>{step.step}</li>
                             </div>
                           ))}
-                          <li>{step.step}</li>
                         </div>
                       ))}
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             ))}

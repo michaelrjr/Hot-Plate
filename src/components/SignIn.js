@@ -3,11 +3,16 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
+import app from "../firebase";
+
 function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn, signInWithGoogle } = useAuth();
   const history = useHistory();
+  // db ref
+  const ref = app.firestore().collection("Users");
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -20,11 +25,13 @@ function SignIn() {
         .required("Required"),
     }),
     onSubmit: async (values) => {
-      console.log("form data", values);
       try {
         setError("");
         setLoading(true);
+        // sign a user in with email and password
         await signIn(values.email, values.password);
+        // update online to true if sign in is successful
+        ref.doc(values.email).update({ online: true });
         history.push("/");
       } catch {
         setError("Failed to sign in");
@@ -33,6 +40,7 @@ function SignIn() {
     },
   });
 
+  // sign in with google
   async function googleSignIn() {
     try {
       await signInWithGoogle();
@@ -44,11 +52,11 @@ function SignIn() {
 
   return (
     <div className="card">
-      <form onSubmit={formik.handleSubmit}>
-        <div className="container">
-          <div className="heading">
-            <h3>Sign in</h3>
-          </div>
+      <div className="card-body">
+        <div className="card-title" style={{ textAlign: "center" }}>
+          <h3>Sign In</h3>
+        </div>
+        <form onSubmit={formik.handleSubmit}>
           <div>{error && <div className="errorMsg">{error}</div>}</div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -83,20 +91,20 @@ function SignIn() {
               Sign in
             </button>
           </div>
+        </form>
+        <div>
+          <button onClick={googleSignIn} className="buttons" disabled={loading}>
+            Sign in with Google
+          </button>
         </div>
-      </form>
-      <div>
-        <button onClick={googleSignIn} className="buttons" disabled={loading}>
-          Sign in with Google
-        </button>
-      </div>
-      <div className="sign">
-        <Link to="/forgotPassword">Forgot Password?</Link>
-      </div>
-      <div className="sign">
-        <p>
-          Don't have an account? <Link to="/signUp">Sign up</Link>.
-        </p>
+        <div className="sign">
+          <Link to="/forgotPassword">Forgot Password?</Link>
+        </div>
+        <div className="sign">
+          <p>
+            Don't have an account? <Link to="/signUp">Sign up</Link>.
+          </p>
+        </div>
       </div>
     </div>
   );
