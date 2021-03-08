@@ -90,6 +90,7 @@ export default function RecipeSearch() {
 
   // NOTE
   function nextRecipe() {
+    // setRecipeNum(recipeNum + 1);
     if (apiData.length !== 0) {
       setRecipeNum(recipeNum + 1);
     }
@@ -118,6 +119,7 @@ export default function RecipeSearch() {
   }
 
   function updateCuisine(event) {
+    //setCusisine(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, cuisine: event.target.value };
     });
@@ -127,6 +129,7 @@ export default function RecipeSearch() {
   }
 
   function updateDiet(event) {
+    //setDiet(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, diet: event.target.value };
     });
@@ -136,6 +139,7 @@ export default function RecipeSearch() {
   }
 
   function updateIntolerance(event) {
+    // setIntolerance(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, intolerance: event.target.value };
     });
@@ -145,6 +149,7 @@ export default function RecipeSearch() {
   }
 
   function updateMeal(event) {
+    // setMeal(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, meal: event.target.value };
     });
