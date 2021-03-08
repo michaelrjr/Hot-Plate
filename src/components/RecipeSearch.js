@@ -13,7 +13,7 @@ export default function RecipeSearch() {
     meal: "",
     ingredients: "",
     equipment: "",
-    time: "",
+    time: "1000",
   });
 
   var offset = 0;
@@ -30,9 +30,10 @@ export default function RecipeSearch() {
         filters.meal === "" &&
         filters.intolerance === "" &&
         filters.ingredients === "" &&
-        filters.equipment === ""
+        filters.equipment === "" &&
+        filters.time === "1000"
       ) {
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=a877df555b0b40488df279ef75acd509`;
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
         const resp = await axios.get(API_URL);
         //console.log(API_URL);
 
@@ -45,7 +46,7 @@ export default function RecipeSearch() {
         console.log(resp.data.recipes);
         console.log(resp.data.recipes.length);
       } else {
-        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=a877df555b0b40488df279ef75acd509`;
+        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
         const resp = await axios.get(API_URL);
         console.log(API_URL);
         if (resp.data.totalResults === 0) {
@@ -137,9 +138,16 @@ export default function RecipeSearch() {
   }
 
   function updateMaxTime(event) {
-    setFilters((prevFilters) => {
-      return { ...prevFilters, time: event.target.value };
-    });
+    if (event.target.value !== ""){
+      setFilters((prevFilters) => {
+        return { ...prevFilters, time: event.target.value };
+      });
+    } 
+    else{
+      setFilters((prevFilters) => {
+        return { ...prevFilters, time: "1000" };
+      });
+    }
     console.log(event.target.value);
   }
 
@@ -169,7 +177,7 @@ export default function RecipeSearch() {
         updateMeal={updateMeal}
         updateEquipment={updateEquipment}
         updateIngredients={updateIngredients}
-        updateMaxTIme={updateMaxTime}
+        updateMaxTime={updateMaxTime}
         applyFilters={applyFilters}
       />
     </div>
