@@ -27,7 +27,6 @@ function UpdateProfile() {
       }),
     }),
     onSubmit: async (values) => {
-      console.log("form data", values);
       const promises = [];
       setError("");
       setLoading(true);
@@ -50,67 +49,73 @@ function UpdateProfile() {
     },
   });
   return (
-    <div className="container">
-      <div className="card">
+    <div className="card">
+      <div className="card-body">
         <form onSubmit={formik.handleSubmit}>
-          <div className="container">
-            <div className="heading">
-              <h3>Update Profile</h3>
+          <h3 className="card-title text-center mb-4">Update Profile</h3>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
             </div>
-            <div>{error && <div className="errorMsg">{error}</div>}</div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                placeholder="Enter email"
-                id="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <div className="error">{formik.errors.email}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                placeholder="Leave blank to keep the same password"
-                id="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-              />
-              {formik.touched.password && formik.errors.password ? (
-                <div className="error">{formik.errors.password}</div>
-              ) : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                placeholder="Leave blank to keep the same password"
-                id="confirmPassword"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.confirmPassword}
-              />
-              {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword ? (
-                <div className="error">{formik.errors.confirmPassword}</div>
-              ) : null}
-            </div>
-            <div>
-              <button type="submit" className="buttons" disabled={loading}>
-                Update
-              </button>
-            </div>
-            <div>
-              <Link to="/">
-                <button className="cancelBtn">Cancel</button>
-              </Link>
-            </div>
+          )}
+          <div className="mb-3">
+            <label htmlFor="email">Email</label>
+            <input
+              className="form-control"
+              type="email"
+              placeholder="Enter email"
+              id="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="error">{formik.errors.email}</div>
+            ) : null}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password">Password</label>
+            <input
+              className="form-control"
+              type="password"
+              placeholder="Leave blank to keep the same password"
+              id="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <div className="error">{formik.errors.password}</div>
+            ) : null}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              className="form-control"
+              type="password"
+              placeholder="Leave blank to keep the same password"
+              id="confirmPassword"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirmPassword}
+            />
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <div className="error">{formik.errors.confirmPassword}</div>
+            ) : null}
+          </div>
+          <div className="mb-3">
+            <button
+              type="submit"
+              className="btn btn-success w-100"
+              disabled={loading}
+            >
+              Update
+            </button>
+          </div>
+          <div className="mb-3">
+            <Link to="/">
+              <button className="btn btn-danger w-100">Cancel</button>
+            </Link>
           </div>
         </form>
       </div>

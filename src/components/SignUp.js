@@ -50,26 +50,18 @@ function SignUp() {
         await signUp(values.email, values.password);
         setMessage("Account created. Please sign in.");
         await sendEmailVerification();
-
-        // create user document in user collection if sign up is successful
-        ref
-          .doc(values.email)
-          .set({
-            uuid: uuidv4(),
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            online: false,
-          })
-          .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-          });
       } catch {
-        setError("Failed to create an account");
+        setError("Failed to create account");
       }
+
+      // create user document in user collection if sign up is successful
+      ref.doc(values.email).set({
+        uuid: uuidv4(),
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        online: false,
+      });
 
       setLoading(false);
     },
@@ -78,15 +70,22 @@ function SignUp() {
   return (
     <div className="card">
       <div className="card-body">
-        <div className="card-title" style={{ textAlign: "center" }}>
-          <h3>Sign Up</h3>
-        </div>
+        <h3 className="card-title text-center mb-4">Sign Up</h3>
         <form onSubmit={formik.handleSubmit}>
-          <div>{message && <div className="successMsg">{message}</div>}</div>
-          <div>{error && <div className="errorMsg">{error}</div>}</div>
-          <div className="form-group">
+          {message && (
+            <div className="alert alert-success" role="alert">
+              {message}
+            </div>
+          )}
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          <div className="mb-3">
             <label htmlFor="firstName">First Name</label>
             <input
+              className="form-control"
               type="text"
               placeholder="Enter first name"
               id="firstName"
@@ -98,9 +97,10 @@ function SignUp() {
               <div className="error">{formik.errors.firstName}</div>
             ) : null}
           </div>
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="lastName">Last Name</label>
             <input
+              className="form-control"
               type="text"
               placeholder="Enter last name"
               id="lastName"
@@ -112,9 +112,10 @@ function SignUp() {
               <div className="error">{formik.errors.lastName}</div>
             ) : null}
           </div>
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
+              className="form-control"
               type="email"
               placeholder="Enter email"
               id="email"
@@ -126,9 +127,10 @@ function SignUp() {
               <div className="error">{formik.errors.email}</div>
             ) : null}
           </div>
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="password">Password</label>
             <input
+              className="form-control"
               type="password"
               placeholder="Enter password"
               id="password"
@@ -140,9 +142,10 @@ function SignUp() {
               <div className="error">{formik.errors.password}</div>
             ) : null}
           </div>
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
+              className="form-control"
               type="password"
               placeholder="Enter password"
               id="confirmPassword"
@@ -155,16 +158,20 @@ function SignUp() {
             ) : null}
           </div>
           <div>
-            <button type="submit" className="buttons" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-success w-100"
+              disabled={loading}
+            >
               Sign up
             </button>
           </div>
-          <div className="sign">
-            <p>
-              Already have an account? <Link to="/signIn">Sign in</Link>.
-            </p>
-          </div>
         </form>
+        <div className="w-100 text-center mt-2">
+          <p>
+            Already have an account? <Link to="/signIn">Sign in</Link>.
+          </p>
+        </div>
       </div>
     </div>
   );

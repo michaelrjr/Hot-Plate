@@ -24,7 +24,7 @@ export default function SignOut(props) {
   };
   return (
     <div>
-      <button className="buttons" onClick={handleSignOut}>
+      <button className="btn btn-danger w-100" onClick={handleSignOut}>
         Sign out
       </button>
     </div>

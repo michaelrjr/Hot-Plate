@@ -30,37 +30,42 @@ function SignIn() {
         setLoading(true);
         // sign a user in with email and password
         await signIn(values.email, values.password);
-        // update online to true if sign in is successful
-        ref.doc(values.email).update({ online: true });
         history.push("/");
       } catch {
         setError("Failed to sign in");
       }
+
+      // update online to true if sign in is successful
+      ref.doc(values.email).update({ online: true });
+
       setLoading(false);
     },
   });
 
-  // sign in with google
-  async function googleSignIn() {
-    try {
-      await signInWithGoogle();
-      history.push("/");
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // // sign in with google
+  // async function googleSignIn() {
+  //   try {
+  //     await signInWithGoogle();
+  //     history.push("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <div className="card">
       <div className="card-body">
-        <div className="card-title" style={{ textAlign: "center" }}>
-          <h3>Sign In</h3>
-        </div>
+        <h3 className="card-title text-center mb-4">Sign In</h3>
         <form onSubmit={formik.handleSubmit}>
-          <div>{error && <div className="errorMsg">{error}</div>}</div>
-          <div className="form-group">
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
+              className="form-control"
               type="email"
               placeholder="Enter email"
               id="email"
@@ -72,9 +77,10 @@ function SignIn() {
               <div className="error">{formik.errors.email}</div>
             ) : null}
           </div>
-          <div className="form-group">
+          <div className="mb-3">
             <label htmlFor="loginPassword">Password</label>
             <input
+              className="form-control"
               type="password"
               placeholder="Enter password"
               id="password"
@@ -87,20 +93,19 @@ function SignIn() {
             ) : null}
           </div>
           <div>
-            <button type="submit" className="buttons" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-success w-100"
+              disabled={loading}
+            >
               Sign in
             </button>
           </div>
         </form>
-        <div>
-          <button onClick={googleSignIn} className="buttons" disabled={loading}>
-            Sign in with Google
-          </button>
-        </div>
-        <div className="sign">
+        <div className="w-100 text-center mt-2">
           <Link to="/forgotPassword">Forgot Password?</Link>
         </div>
-        <div className="sign">
+        <div className="w-100 text-center mt-2">
           <p>
             Don't have an account? <Link to="/signUp">Sign up</Link>.
           </p>
