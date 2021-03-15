@@ -78,6 +78,7 @@ export default function Chat() {
   return (
     <div className="current-users">
       <div className="row">
+      {showChat == false ?
         <div className="col">
           <div className="card">
             <div className="card-body">
@@ -107,8 +108,11 @@ export default function Chat() {
               </div>
             </div>
           </div>
-        </div>
+        </div> : null }
+
+      
         <div className="col">
+
           {showChat && (
             <div className="card">
               <div className="card-body">
