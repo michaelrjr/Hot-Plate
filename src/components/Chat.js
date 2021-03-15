@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import app from "../firebase";
 import { firebase } from "@firebase/app";
+import DisplayOnlineUsers from "./DisplayOnlineUsers";
+import DisplayChat from "./DisplayChat";
 
 export default function Chat() {
-  const { currentUser, signOut } = useAuth();
+  const { currentUser } = useAuth();
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [userEmail, setUserEmail] = useState("");
+  const [otherUserEmail, setOtherUserEmail] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
@@ -21,20 +23,21 @@ export default function Chat() {
     }
   }, []);
 
-  // query users collection for documents where online == true
-  // these are currently "online" users
+  // query users collection for documents where online == true, these are currently "online" users
   const getOnlineUsers = () => {
     ref.where("online", "==", true).onSnapshot((querySnapshot) => {
       setOnlineUsers(querySnapshot.docs.map((doc) => doc.data()));
     });
   };
 
+  // show chat and also get chat messages from firestore
   const handleStartChatClick = (email) => {
-    setUserEmail(email);
+    setOtherUserEmail(email);
     setShowChat(true);
     getChatMessages(email);
   };
 
+  // close chat
   const handleCloseChatClick = () => {
     setShowChat(false);
   };
@@ -44,22 +47,27 @@ export default function Chat() {
     console.log(event.target.value);
   };
 
-  // send the message to the other users sub-collection
-  // and send the message to the current users sub collection (person sending message)
+  // send message to the current user and the other user (user you are messaging)
   const handleSendMessage = (event) => {
-    const email = userEmail;
     event.preventDefault();
-    ref.doc(userEmail).collection(currentUser.email).add({
+
+    // reference to users collection -> then other users document -> then the sub-collection with the current user
+    // -> then add the message to the sub-colletion as a document
+    ref.doc(otherUserEmail).collection(currentUser.email).add({
       message: message,
       from: currentUser.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
-    ref.doc(currentUser.email).collection(userEmail).add({
+    // reference to users collection -> then the current users document -> then the sub-collection with the other users email
+    // -> then add the message to the sub-colletion as a document
+    ref.doc(currentUser.email).collection(otherUserEmail).add({
       message: message,
       from: currentUser.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
+
+    // reset message to empty string
     setMessage("");
   };
 
@@ -76,92 +84,28 @@ export default function Chat() {
   };
 
   return (
-    <div className="current-users">
+    <div className="container">
       <div className="row">
-      {showChat == false ?
         <div className="col">
-          <div className="card">
-            <div className="card-body">
-              <h3>Online Users</h3>
-              <div>
-                {onlineUsers.map((user) => (
-                  <div key={user.uuid}>
-                    {user.email !== currentUser.email && (
-                      <div>
-                        <div className="online-icon"></div>
-                        <div className="online-user">
-                          <b>Email:</b>
-                          {" " + user.email}
-                        </div>
-                        <div>
-                          <button
-                            onClick={() => handleStartChatClick(user.email)}
-                          >
-                            Start Chat
-                          </button>
-                        </div>
-                        <br />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div> : null }
-
-      
+        {showChat == false? 
+          <DisplayOnlineUsers
+            currentUser={currentUser}
+            onlineUsers={onlineUsers}
+            handleStartChatClick={handleStartChatClick}
+          />
+        :null}
+        </div>
         <div className="col">
-
           {showChat && (
-            <div className="card">
-              <div className="card-body">
-                <div>
-                  <button onClick={handleCloseChatClick}>Close Chat</button>
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                  <b>{currentUser.email + " "}</b> is chatting with{" "}
-                  <b>{" " + userEmail}</b>
-                </div>
-                <div className="chat-messages">
-                  {chatMessages.map((message) => (
-                    <div
-                      key={message.timestamp}
-                      style={{ marginBottom: "10px" }}
-                    >
-                      <div>
-                        {message.from !== currentUser.email && (
-                          <div className="other-user-msg">
-                            {message.message}
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        {message.from === currentUser.email && (
-                          <div className="current-user-msg">
-                            {message.message}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <br />
-                <div className="chat-input-box">
-                  <form onSubmit={handleSendMessage}>
-                    <input
-                      type="text"
-                      placeholder="Enter message"
-                      value={message}
-                      onChange={handleInputBoxChange}
-                    />
-                    <button type="submit" className="buttons">
-                      Send
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
+            <DisplayChat
+              currentUser={currentUser}
+              chatMessages={chatMessages}
+              handleCloseChatClick={handleCloseChatClick}
+              handleSendMessage={handleSendMessage}
+              otherUserEmail={otherUserEmail}
+              message={message}
+              handleInputBoxChange={handleInputBoxChange}
+            />
           )}
         </div>
       </div>
