@@ -2,21 +2,24 @@ import React from "react";
 
 export default function FeedInputBox(props) {
   return (
-    <div className="container">
-      <div className="card">
-        <div className="card-body">
-          <form onSubmit={props.handlePostClick}>
+    <div className="card">
+      <div className="card-body">
+        <form onSubmit={props.handlePostClick}>
+          <div className="mb-3">
             <input
+              className="form-control"
               type="text"
               placeholder="Start a post"
               value={props.post}
               onChange={props.handleInputBoxChange}
             />
-            <button type="submit" className="buttons">
+          </div>
+          <div>
+            <button type="submit" className="btn btn-primary w-100">
               Post
             </button>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );

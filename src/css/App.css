@@ -1,29 +1,4 @@
-.App {
-  
-}
 
-input[type=text], input[type=email], input[type=password] {
-  width: 100%;
-  padding: 6px;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
-
-.buttons {
-  background-color: #4CAF50;
-  color: white;
-  padding: 6px;
-  margin: 6px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
-
-.buttons:hover {
-  opacity: 1;
-}
 
 a {
   color: dodgerblue;
@@ -38,85 +13,6 @@ a {
 
 .error {
   color: red;
-}
-
-.errorMsg {
-  color: red;
-  background-color: #f1f1f1;
-  padding: 6px;
-  margin: 6px 0;
-  text-align: center;
-}
-
-.sign {
-  margin: 6px 0;
-  text-align: center;
-}
-
-.heading {
-  text-align: center;
-}
-
-.successMsg {
-  color: green;
-  background-color: #f1f1f1;
-  padding: 6px;
-  margin: 6px 0;
-  text-align: center;
-}
-
-.cancelBtn {
-  background-color: red;
-  color: white;
-  padding: 6px;
-  margin: 6px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
-
-.cancelBtn:hover {
-  opacity: 1;
-}
-
-.updateBtn {
-  background-color: blue;
-  color: white;
-  padding: 6px;
-  margin: 6px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
-
-.updateBtn:hover {
-  opacity: 1;
-}
-
-p {
-  margin: 0px;
-  padding: 0px;
-}
-
-
-.comment-btn {
-  background-color: blue;
-  color: white;
-  padding: 6px;
-  margin: 6px 0;
-  border: none;
-  cursor: pointer;
-  opacity: 0.9;
-}
-
-.navbar {
-  height: 70px;
-  background-color: #f1f1f1;
-  width: 100%;
-  position: sticky;
-  top: 0;
 }
 
 .navbar__item {
@@ -138,10 +34,6 @@ p {
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
-}
-
-.chat-messages {
-
 }
 
 .current-user-msg {

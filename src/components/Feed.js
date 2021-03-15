@@ -7,21 +7,40 @@ import DisplayPost from "./DisplayPost";
 
 export default function Feed() {
   const { currentUser, signOut } = useAuth();
-
   const [postArray, setPostArray] = useState([]);
   const [post, setPost] = useState("");
+  const [userDetails, setUserDetails] = useState([]);
 
   let mounted = true;
 
   //database ref
   const ref = app.firestore().collection("userFeed");
+  const userRef = app.firestore().collection("Users");
 
   useEffect(() => {
     getData();
-    return () => {
-      mounted = false;
-    };
+    getUserDetails();
+    // return () => {
+    //   mounted = false;
+    // };
   }, []);
+
+  const getUserDetails = () => {
+    userRef
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        let tempArr = [];
+        if (doc.exists) {
+          tempArr.push(doc.data());
+          setUserDetails(tempArr);
+          console.log(tempArr);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
@@ -51,14 +70,14 @@ export default function Feed() {
   };
 
   return (
-    <div className="container">
+    <div>
       <FeedInputBox
         handlePostClick={handlePostClick}
         post={post}
         handleInputBoxChange={handleInputBoxChange}
       />
       <br />
-      <DisplayPost postArray={postArray} />
+      <DisplayPost postArray={postArray} userDetails={userDetails} />
     </div>
   );
 }
