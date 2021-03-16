@@ -20,9 +20,6 @@ export default function Feed() {
   useEffect(() => {
     getData();
     getUserDetails();
-    // return () => {
-    //   mounted = false;
-    // };
   }, []);
 
   const getUserDetails = () => {
@@ -49,10 +46,7 @@ export default function Feed() {
 
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-      const { recipeID } = doc.data();
-      if (recipeID.length > 1) {
-        getRecipe(recipeId);
-      }
+
       setPostArray(snapshot.docs.map((doc) => doc.data()));
     });
     setPost("");

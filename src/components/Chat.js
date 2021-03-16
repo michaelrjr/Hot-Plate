@@ -71,36 +71,59 @@ export default function Chat() {
     setMessage("");
   };
 
+  
   // get the chat messages (docs) from current users sub-collection
   const getChatMessages = (email) => {
     ref
-      .doc(currentUser.email)
-      .collection(email)
-      .orderBy("timestamp", "asc")
-      .onSnapshot((snapshot) => {
-        setChatMessages(snapshot.docs.map((doc) => doc.data()));
-      });
+    .doc(currentUser.email)
+    .collection(email)
+    .orderBy("timestamp", "asc")
+    .onSnapshot((snapshot) => {
+      setChatMessages(snapshot.docs.map((doc) => doc.data()));
+    });
     setMessage("");
+  };
+
+  //handle delete
+  const handleDeleteMessageClick = (msg) => {
+
+    ref.doc(currentUser.email).collection(otherUserEmail)
+      .where("message", "==", msg)
+      .get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+    ref.doc(otherUserEmail)
+      .collection(currentUser.email)
+      .where("message", "==", msg)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
   };
 
   return (
     <div className="container">
       <div className="row">
-        <div className="col">
         {showChat == false? 
+        <div className="col">
           <DisplayOnlineUsers
             currentUser={currentUser}
             onlineUsers={onlineUsers}
             handleStartChatClick={handleStartChatClick}
           />
-        :null}
         </div>
+        :null}
         <div className="col">
           {showChat && (
             <DisplayChat
               currentUser={currentUser}
               chatMessages={chatMessages}
               handleCloseChatClick={handleCloseChatClick}
+              handleDeleteMessageClick={handleDeleteMessageClick}
               handleSendMessage={handleSendMessage}
               otherUserEmail={otherUserEmail}
               message={message}

@@ -1,15 +1,16 @@
 import React from "react";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { IoIosArrowBack } from "react-icons/io"
+
 export default function DisplayChat(props) {
   return (
     <div className="card">
       <div className="card-body">
         <div className="d-inline">
           <button
-            className="btn btn-warning"
+            className="back"
             onClick={props.handleCloseChatClick}
           >
-            <AiOutlineCloseCircle size={20} />
+            <IoIosArrowBack />
           </button>
         </div>
         <div className="d-inline ml-5">
@@ -23,10 +24,16 @@ export default function DisplayChat(props) {
                   <div className="other-user-msg">{message.message}</div>
                 )}
               </div>
-              <div>
+              <div >
                 {message.from === props.currentUser.email && (
-                  <div className="current-user-msg">{message.message}</div>
+                  <div 
+                  className="current-user-msg"
+                  >
+                  {message.message}</div>
                 )}
+                  <button onClick={() => props.handleDeleteMessageClick(message.message)}>
+                      delete
+                    </button>
               </div>
             </div>
           ))}

@@ -36,16 +36,24 @@ a {
   opacity: 0.9;
 }
 
-.current-user-msg {
-  background: lightskyblue;
+.current-user-msg, .other-user-msg {
+  padding: 8px;
+  width: 70%;
+}
+
+.current-user-msg{
   text-align: right !important;
-  padding: 4px;
+  border-radius: 20px 20px 2px 20px;
+  background: lightskyblue;
+  position: relative;
+  left: 30%;
 }
 
 .other-user-msg {
-  background: lightcoral;
-  text-align: left !important;
-  padding: 4px;
+  border-radius: 20px 20px 20px 2px;
+  background: #D8D8D8;
+  position: relative;
+  /* cursor: none; */
 }
 
 .online-icon {
@@ -61,4 +69,13 @@ a {
   display: inline-block;
 }
 
+.back {
+  background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
 
