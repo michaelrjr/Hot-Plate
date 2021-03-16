@@ -31,10 +31,12 @@ export default function Feed() {
       .get()
       .then((doc) => {
         let tempArr = [];
+        //if (mounted) {
         if (doc.exists) {
           tempArr.push(doc.data());
           setUserDetails(tempArr);
           console.log(tempArr);
+          //}
         }
       })
       .catch((error) => {

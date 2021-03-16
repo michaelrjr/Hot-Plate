@@ -52,25 +52,6 @@ export function AuthProvider({ children }) {
     setID(id);
   }
 
-  // so we can use handlePostClick anywhere in the app for sharing recipes
-  const handlePostClick = (post, recipeID, image, recipeTitle) => {
-    ref
-      .add({
-        email: currentUser.email,
-        post: post,
-        image: image,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        recipeID: recipeID,
-        recipeTitle,
-      })
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-  };
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -92,7 +73,6 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     recipeID,
     setRecipeID,
-    handlePostClick,
   };
 
   return (

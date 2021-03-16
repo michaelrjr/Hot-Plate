@@ -8,7 +8,7 @@ export default function MoreInfo() {
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [nutritionChart, setNutritionChart] = useState({});
-  const { recipeID, handlePostClick } = useAuth();
+  const { recipeID } = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showNutrition, setShowNutrition] = useState(false);
@@ -83,24 +83,6 @@ export default function MoreInfo() {
               <div className="card mb-3" key={recipe.id}>
                 <img className="card-img-top" src={recipe.image} alt="recipe" />
                 <div className="card-body">
-                  <div>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() =>
-                        handlePostClick(
-                          "post from more info",
-                          recipeID,
-                          recipe.image,
-                          recipe.title
-                        )
-                      }
-                    >
-                      <div className="d-inline mr-1">
-                        <AiOutlineShareAlt size={20} />
-                      </div>
-                      <div className="d-inline">Share to feed</div>
-                    </button>
-                  </div>
                   <br />
 
                   <h4>

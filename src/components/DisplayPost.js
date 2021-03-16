@@ -28,24 +28,7 @@ export default function DisplayPost(props) {
                 <b>{user.firstName + " " + user.lastName}</b>
               </div>
             ))}
-            {post.image && (
-              <div>
-                <div>
-                  <img className="card-img-top" src={post.image} />
-                  <h5>{post.recipeTitle}</h5>
-                </div>
-                <div>
-                  <Link to="/moreinfo">
-                    <button
-                      className="btn btn-warning btn-sm"
-                      onClick={() => setRecipeID(post.recipeID)}
-                    >
-                      MoreInfo
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            )}
+
             <p>{post.post}</p>
             <div className="d-inline mr-1">
               <button className="btn btn-primary btn-sm">
