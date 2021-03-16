@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 import CommentBox from "./CommentBox";
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function DisplayPost(props) {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [comment, setComment] = useState("");
+  const { setRecipeID } = useAuth();
 
   const showCommentInputBox = () => {
     setShowCommentBox(true);
@@ -25,6 +28,24 @@ export default function DisplayPost(props) {
                 <b>{user.firstName + " " + user.lastName}</b>
               </div>
             ))}
+            {post.image && (
+              <div>
+                <div>
+                  <img className="card-img-top" src={post.image} />
+                  <h5>{post.recipeTitle}</h5>
+                </div>
+                <div>
+                  <Link to="/moreinfo">
+                    <button
+                      className="btn btn-warning btn-sm"
+                      onClick={() => setRecipeID(post.recipeID)}
+                    >
+                      MoreInfo
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            )}
             <p>{post.post}</p>
             <div className="d-inline mr-1">
               <button className="btn btn-primary btn-sm">

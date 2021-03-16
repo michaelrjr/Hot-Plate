@@ -61,6 +61,7 @@ function SignUp() {
         lastName: values.lastName,
         email: values.email,
         online: false,
+        avatar: null,
       });
 
       setLoading(false);

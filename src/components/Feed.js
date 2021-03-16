@@ -14,7 +14,7 @@ export default function Feed() {
   let mounted = true;
 
   //database ref
-  const ref = app.firestore().collection("userFeed");
+  const ref = app.firestore().collection("feed");
   const userRef = app.firestore().collection("Users");
 
   useEffect(() => {
@@ -42,17 +42,8 @@ export default function Feed() {
       });
   };
 
-  const getRecipe = () => {
-    // request recipe from spoonacular
-    // setPostaRRAY
-  };
-
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-      const { recipeID } = doc.data();
-      if (recipeID.length > 1) {
-        getRecipe(recipeId);
-      }
       setPostArray(snapshot.docs.map((doc) => doc.data()));
     });
     setPost("");

@@ -25,7 +25,16 @@ export default function DisplayChat(props) {
               </div>
               <div>
                 {message.from === props.currentUser.email && (
-                  <div className="current-user-msg">{message.message}</div>
+                  <div className="current-user-msg">
+                    {message.message}
+                    <button
+                      onClick={() =>
+                        props.handleDeleteMessageClick(message.message)
+                      }
+                    >
+                      delete
+                    </button>
+                  </div>
                 )}
               </div>
             </div>

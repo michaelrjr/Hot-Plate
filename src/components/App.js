@@ -25,7 +25,7 @@ function App() {
             <PrivateRoute exact path="/" component={Dashboard} />
             <Route path="/chat" component={Chat} />
             <Route path="/moreinfo" component={MoreInfo} />
-            <Route path="/recipesearch" component={RecipeSearch} />
+
             <div
               className="container d-flex justify-content-center"
               style={{ minHeight: "100vh" }}
@@ -37,6 +37,7 @@ function App() {
                 <PrivateRoute path="/profile" component={Profile} />
                 <Route path="/forgotPassword" component={ForgotPassword} />
                 <Route path="/feed" component={Feed} />
+                <Route path="/recipesearch" component={RecipeSearch} />
               </div>
             </div>
           </Switch>

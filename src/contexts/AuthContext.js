@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [recipeID, setID] = useState(0);
   //database ref
-  const ref = app.firestore().collection("sharedPosts");
+  const ref = app.firestore().collection("feed");
 
   function signUp(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -53,13 +53,15 @@ export function AuthProvider({ children }) {
   }
 
   // so we can use handlePostClick anywhere in the app for sharing recipes
-  const handlePostClick = (post, recipeID) => {
+  const handlePostClick = (post, recipeID, image, recipeTitle) => {
     ref
       .add({
         email: currentUser.email,
         post: post,
+        image: image,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         recipeID: recipeID,
+        recipeTitle,
       })
       .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);

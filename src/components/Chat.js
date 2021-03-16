@@ -83,6 +83,30 @@ export default function Chat() {
     setMessage("");
   };
 
+  const handleDeleteMessageClick = (msg) => {
+    ref
+      .doc(currentUser.email)
+      .collection(otherUserEmail)
+      .where("message", "==", msg)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+
+    ref
+      .doc(otherUserEmail)
+      .collection(currentUser.email)
+      .where("message", "==", msg)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -103,6 +127,7 @@ export default function Chat() {
               otherUserEmail={otherUserEmail}
               message={message}
               handleInputBoxChange={handleInputBoxChange}
+              handleDeleteMessageClick={handleDeleteMessageClick}
             />
           )}
         </div>

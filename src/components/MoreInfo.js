@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import { AiOutlineShareAlt } from "react-icons/ai";
 
 export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
@@ -10,6 +11,7 @@ export default function MoreInfo() {
   const { recipeID, handlePostClick } = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [showNutrition, setShowNutrition] = useState(false);
   const recipeInfoURL = `https://api.spoonacular.com/recipes/${recipeID}/information?includeNutrition=false&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
   const nutritionVisualisationURL = `https://api.spoonacular.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
 
@@ -76,25 +78,31 @@ export default function MoreInfo() {
     return (
       <div className="container">
         <div className="row">
-          <div className="col">
+          <div className="col-lg-6 col-sm-12">
             {recipeInfoArray.map((recipe) => (
-              <div className="card" key={recipe.id}>
-                <img
-                  src={recipe.image}
-                  alt="recipe"
-                  style={{ width: "100%" }}
-                />
-                <div>
-                  <button
-                    onClick={() =>
-                      handlePostClick("post from more info", recipeID)
-                    }
-                  >
-                    Share
-                  </button>
-                </div>
-                <br />
-                <div className="container">
+              <div className="card mb-3" key={recipe.id}>
+                <img className="card-img-top" src={recipe.image} alt="recipe" />
+                <div className="card-body">
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() =>
+                        handlePostClick(
+                          "post from more info",
+                          recipeID,
+                          recipe.image,
+                          recipe.title
+                        )
+                      }
+                    >
+                      <div className="d-inline mr-1">
+                        <AiOutlineShareAlt size={20} />
+                      </div>
+                      <div className="d-inline">Share to feed</div>
+                    </button>
+                  </div>
+                  <br />
+
                   <h4>
                     <b>{recipe.title}</b>
                   </h4>
@@ -102,44 +110,31 @@ export default function MoreInfo() {
                   <p>Servings: {" " + recipe.servings}</p>
                   <hr />
                   <button
-                    className="buttons"
+                    className="btn btn-warning w-100"
                     onClick={() => setShowIngredients(!showIngredients)}
                   >
                     Ingredients
                   </button>
                   {showIngredients && (
-                    <div>
+                    <div className="mt-3">
                       {recipe.extendedIngredients.map((ingredients) => (
                         <li>{ingredients.original}</li>
                       ))}
                     </div>
                   )}
-
                   <hr />
-
                   <button
-                    className="buttons"
+                    className="btn btn-success w-100"
                     onClick={() => setShowInstructions(!showInstructions)}
                   >
                     Instructions
                   </button>
                   {showInstructions && (
-                    <div>
+                    <div className="mt-3">
                       {recipe.analyzedInstructions.map((instruction, index) => (
                         <div key={index}>
                           {instruction.steps.map((step) => (
                             <div key={step.number}>
-                              {step.equipment.map((equip) => (
-                                <div
-                                  key={equip.id}
-                                  style={{
-                                    display: "inline-block",
-                                    marginRight: "10px",
-                                  }}
-                                >
-                                  {equip.name}
-                                </div>
-                              ))}
                               <li>{step.step}</li>
                             </div>
                           ))}
@@ -151,10 +146,22 @@ export default function MoreInfo() {
               </div>
             ))}
           </div>
-          <div
-            className="col"
-            dangerouslySetInnerHTML={{ __html: nutritionChart }}
-          ></div>
+          <div className="col-lg-6 col-sm-12">
+            <button
+              className="btn btn-primary w-100 mb-2"
+              onClick={() => setShowNutrition(!showNutrition)}
+            >
+              Nutritional Information
+            </button>
+            {showNutrition && (
+              <div className="card mb-3">
+                <div
+                  className="card-body"
+                  dangerouslySetInnerHTML={{ __html: nutritionChart }}
+                ></div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
