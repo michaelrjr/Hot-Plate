@@ -69,14 +69,16 @@ export default function Profile() {
                 />
               )}
             </div>
-            <div className="d-flex justify-content-center mb-3">
+            <div>
               <form onSubmit={handleUploadSubmit}>
                 <input type="file" onChange={handleFileChange} />
+
                 <button type="submit" className="btn btn-warning">
                   Upload
                 </button>
               </form>
             </div>
+
             {error && (
               <div className="alert alert-danger" role="alert">
                 {error}
