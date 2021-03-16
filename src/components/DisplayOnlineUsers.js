@@ -12,6 +12,12 @@ export default function DisplayOnlineUsers(props) {
               {user.email !== props.currentUser.email && (
                 <div>
                   <div className="online-icon"></div>
+                  <img
+                    className="rounded-circle"
+                    src={user.avatar}
+                    height="80"
+                    width="80"
+                  />
                   <div className="online-user">
                     <b>Email:</b>
                     {" " + user.email}

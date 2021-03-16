@@ -9,7 +9,7 @@ export default function Feed() {
   const { currentUser, signOut } = useAuth();
   const [postArray, setPostArray] = useState([]);
   const [post, setPost] = useState("");
-  const [userDetails, setUserDetails] = useState([]);
+  //const [userDetails, setUserDetails] = useState([]);
 
   let mounted = true;
 
@@ -19,27 +19,27 @@ export default function Feed() {
 
   useEffect(() => {
     getData();
-    getUserDetails();
+    //getUserDetails();
   }, []);
 
-  const getUserDetails = () => {
-    userRef
-      .doc(currentUser.email)
-      .get()
-      .then((doc) => {
-        let tempArr = [];
-        //if (mounted) {
-        if (doc.exists) {
-          tempArr.push(doc.data());
-          setUserDetails(tempArr);
-          console.log(tempArr);
-          //}
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const getUserDetails = () => {
+  //   userRef
+  //     .doc(currentUser.email)
+  //     .get()
+  //     .then((doc) => {
+  //       let tempArr = [];
+  //       //if (mounted) {
+  //       if (doc.exists) {
+  //         tempArr.push(doc.data());
+  //         setUserDetails(tempArr);
+  //         console.log(tempArr);
+  //         //}
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
@@ -76,7 +76,7 @@ export default function Feed() {
         handleInputBoxChange={handleInputBoxChange}
       />
       <br />
-      <DisplayPost postArray={postArray} userDetails={userDetails} />
+      <DisplayPost postArray={postArray} />
     </div>
   );
 }
