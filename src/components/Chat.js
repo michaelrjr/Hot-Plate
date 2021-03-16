@@ -83,6 +83,7 @@ export default function Chat() {
     setMessage("");
   };
 
+  //handle delete
   const handleDeleteMessageClick = (msg) => {
     ref
       .doc(currentUser.email)
@@ -94,7 +95,6 @@ export default function Chat() {
           doc.ref.delete();
         });
       });
-
     ref
       .doc(otherUserEmail)
       .collection(currentUser.email)
@@ -110,21 +110,22 @@ export default function Chat() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col">
-          {showChat == false ? (
+        {showChat == false ? (
+          <div className="col">
             <DisplayOnlineUsers
               currentUser={currentUser}
               onlineUsers={onlineUsers}
               handleStartChatClick={handleStartChatClick}
             />
-          ) : null}
-        </div>
+          </div>
+        ) : null}
         <div className="col">
           {showChat && (
             <DisplayChat
               currentUser={currentUser}
               chatMessages={chatMessages}
               handleCloseChatClick={handleCloseChatClick}
+              handleDeleteMessageClick={handleDeleteMessageClick}
               handleSendMessage={handleSendMessage}
               otherUserEmail={otherUserEmail}
               message={message}

@@ -20,9 +20,6 @@ export default function Feed() {
   useEffect(() => {
     getData();
     getUserDetails();
-    // return () => {
-    //   mounted = false;
-    // };
   }, []);
 
   const getUserDetails = () => {

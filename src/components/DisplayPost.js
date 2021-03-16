@@ -17,7 +17,6 @@ export default function DisplayPost(props) {
   const handleCommentBoxChnage = (e) => {
     setComment(e.target.value);
   };
-
   return (
     <div>
       {props.postArray.map((post) => (
