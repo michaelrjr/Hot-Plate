@@ -4,6 +4,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import CommentBox from "./CommentBox";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import ComponentC from "./ComponentC";
 
 export default function DisplayPost(props) {
   const [showCommentBox, setShowCommentBox] = useState(false);
@@ -25,6 +26,14 @@ export default function DisplayPost(props) {
           <div className="card-body">
             <b>{post.email}</b>
             <p>{post.post}</p>
+            {
+              post.image &&
+              <ComponentC
+                recipeImage={post.image}
+                recipeTitle={post.recipeTitle}
+                recipeID={post.recipeID}
+              />
+            }
             <div className="d-inline mr-1">
               <button className="btn btn-primary btn-sm">
                 <div className="d-inline mr-1">
