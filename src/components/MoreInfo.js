@@ -7,7 +7,7 @@ export default function MoreInfo() {
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [nutritionChart, setNutritionChart] = useState({});
-  const { recipeID } = useAuth();
+  const { recipeID, handlePostClick } = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const recipeInfoURL = `https://api.spoonacular.com/recipes/${recipeID}/information?includeNutrition=false&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
@@ -84,6 +84,15 @@ export default function MoreInfo() {
                   alt="recipe"
                   style={{ width: "100%" }}
                 />
+                <div>
+                  <button
+                    onClick={() =>
+                      handlePostClick("post from more info", recipeID)
+                    }
+                  >
+                    Share
+                  </button>
+                </div>
                 <br />
                 <div className="container">
                   <h4>
