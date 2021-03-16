@@ -2,10 +2,11 @@ import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
-export default function ComponentA(props) {
+export default function RecipeCard(props) {
   const size = "636x393.jpg";
   const basePath = "https://spoonacular.com/recipeImages/";
   const { setRecipeID } = useAuth();
+ 
 
   // NOTE!
   // if (apiData.length < 1 ) {
@@ -30,17 +31,34 @@ export default function ComponentA(props) {
             <div className="card-title">
               <h3>{props.apiData[props.recipeNum].title}</h3>
             </div>
-            <button className="buttons" onClick={props.nextRecipe}>
+            <div>
+            <button type="button" className="btn btn-danger w-100 mb-3" onClick={props.nextRecipe}>
               Next
             </button>
+            </div>
+            <div>
             <Link to="/moreinfo">
+            
               <button
-                className="buttons"
+                type="button"
+                className="btn btn-success w-100 mb-3"
                 onClick={() => setRecipeID(props.apiData[props.recipeNum].id)}
               >
                 MoreInfo
               </button>
+              
             </Link>
+            </div>
+            <div>
+              <button
+                  type="button"
+                  className="btn btn-light w-100"
+                  onClick = {props.allFiltersSet}
+                >
+                  . . .
+              </button>
+              </div>
+              
           </div>
         </div>
       </div>

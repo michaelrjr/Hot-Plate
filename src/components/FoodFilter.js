@@ -2,10 +2,10 @@ import React from "react";
 
 export default function FoodFilter(props){
     return(
-        <div>  
-        <span className="center">
-            <label>Select a Cuisine: </label>
-            <select value={props.filters} onChange={props.updateCuisine}>
+        <div className="card">  
+        <span>
+            <label><b>Cuisine:</b></label>
+            <select className="btn btn-light dropdown-toggle w-100" value={props.filters} onChange={props.updateCuisine}>
                 <option value="">None</option>
                 <option value="african">African</option>
                 <option value="american">American</option>
@@ -35,9 +35,9 @@ export default function FoodFilter(props){
                 <option value="vietnamese">Vietnamese</option>
             </select>
         </span>        
-        <span className="center">
-            <label>Select a Diet: </label>
-            <select onChange={props.updateDiet}>
+        <span>
+            <label><b>Diet:</b></label>
+            <select className="btn btn-light dropdown-toggle w-100" onChange={props.updateDiet}>
                 <option value="">None</option>
                 <option value="gluten-free">Gluten Free</option>
                 <option value="ketogenic">Ketogenic</option>
@@ -51,9 +51,9 @@ export default function FoodFilter(props){
                 <option value="whole30">Whole30</option>
             </select>
         </span>
-        <span className="center">
-        <label>Select a Intolerances: </label>
-        <select onChange={props.updateIntolerance}>
+        <span>
+        <label><b>Intolerances:</b></label>
+        <select className="btn btn-light dropdown-toggle w-100" onChange={props.updateIntolerance}>
             <option value="">None</option>
             <option value="dairy">Dairy</option>
             <option value="egg">Egg</option>
@@ -69,9 +69,9 @@ export default function FoodFilter(props){
             <option value="wheat">Wheat</option>
         </select>
         </span>
-        <span className="center">
-        <label>Select a Meal Type: </label>
-        <select onChange={props.updateMeal}>
+        <span>
+        <label><b>Meal Type:</b></label>
+        <select className="btn btn-light dropdown-toggle w-100" onChange={props.updateMeal}>
             <option value="">None</option>
             <option value="main-course">Main Course</option>
             <option value="side-dish">Side Dish</option>
@@ -91,25 +91,25 @@ export default function FoodFilter(props){
         <form>
             <b>Type Ingredients here (Split ingredients by comma and space):</b>
         </form>
-        <input //For user typed input
+        <input class="form-control"//For user typed input
             pattern="text"
             onChange={props.updateIngredients}
         />
         <form>
             <b>Type Equipment here:</b>
         </form>
-        <input //For user typed input
+        <input class="form-control"//For user typed input
             pattern="text"
             onChange={props.updateEquipment}
         />
         <form>
             <b>Type Time here (mins):</b>
         </form>
-        <input //For user typed input
+        <input class="form-control"//For user typed input
             pattern="text"
             onChange={props.updateMaxTime}
         />
-        <button onClick={props.applyFilters}>Apply Filters</button>
+        <button className="btn btn-success w-100" onClick={props.applyFilters}>Apply Filters</button>
         </span>
         </div> 
     );
