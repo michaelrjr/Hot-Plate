@@ -13,6 +13,7 @@ export default function DisplayOnlineUsers(props) {
                 <div>
                   <div className="online-icon"></div>
                   <div className="online-user">
+                  <img className="rounded-circle" src={user.avatar} height="60" width="60"/>
                     <b>Email:</b>
                     {" " + user.email}
                   </div>

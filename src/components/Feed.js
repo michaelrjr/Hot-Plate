@@ -11,7 +11,7 @@ export default function Feed() {
   const [post, setPost] = useState("");
   const [userDetails, setUserDetails] = useState([]);
 
-  let mounted = true;
+  let mounted;
 
   //database ref
   const ref = app.firestore().collection("feed");
@@ -20,6 +20,7 @@ export default function Feed() {
   useEffect(() => {
     getData();
     getUserDetails();
+    mounted = true;
   }, []);
 
   const getUserDetails = () => {

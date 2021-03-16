@@ -40,10 +40,11 @@ a {
 }
 
 .current-user-msg{
-  text-align: right !important;
+  text-align: left !important;
   border-radius: 20px 20px 2px 20px;
   background: lightskyblue;
   position: relative;
+  padding: 10px 20px 20px;
   left: 30%;
 }
 
