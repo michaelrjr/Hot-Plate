@@ -111,11 +111,13 @@ export default function Chat() {
     <div className="container">
       <div className="row">
         <div className="col">
+        {showChat == false? 
           <DisplayOnlineUsers
             currentUser={currentUser}
             onlineUsers={onlineUsers}
             handleStartChatClick={handleStartChatClick}
           />
+        :null}
         </div>
         <div className="col">
           {showChat && (

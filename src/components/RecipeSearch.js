@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ComponentA from "./CompnentA";
+import RecipeCard from "./RecipeCard";
 import FoodFilter from "./FoodFilter";
 import axios from "axios";
 
 export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);
   const [recipeNum, setRecipeNum] = useState(0);
+  const [allFilters, setAllFilters] = useState(false);
   const [filters, setFilters] = useState({
     cuisine: "",
     diet: "",
@@ -15,6 +16,7 @@ export default function RecipeSearch() {
     equipment: "",
     time: "1000",
   });
+  
 
   var offset = 0;
 
@@ -33,7 +35,7 @@ export default function RecipeSearch() {
         filters.equipment === "" &&
         filters.time === "1000"
       ) {
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
         const resp = await axios.get(API_URL);
         //console.log(API_URL);
 
@@ -46,7 +48,7 @@ export default function RecipeSearch() {
         console.log(resp.data.recipes);
         console.log(resp.data.recipes.length);
       } else {
-        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
+        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
         const resp = await axios.get(API_URL);
         console.log(API_URL);
         if (resp.data.totalResults === 0) {
@@ -96,7 +98,6 @@ export default function RecipeSearch() {
     setFilters((prevFilters) => {
       return { ...prevFilters, cuisine: event.target.value };
     });
-    console.log(event.target.value);
   }
 
   function updateDiet(event) {
@@ -104,7 +105,6 @@ export default function RecipeSearch() {
     setFilters((prevFilters) => {
       return { ...prevFilters, diet: event.target.value };
     });
-    console.log(event.target.value);
   }
 
   function updateIntolerance(event) {
@@ -112,7 +112,6 @@ export default function RecipeSearch() {
     setFilters((prevFilters) => {
       return { ...prevFilters, intolerance: event.target.value };
     });
-    console.log(event.target.value);
   }
 
   function updateMeal(event) {
@@ -120,21 +119,18 @@ export default function RecipeSearch() {
     setFilters((prevFilters) => {
       return { ...prevFilters, meal: event.target.value };
     });
-    console.log(event.target.value);
   }
 
   function updateEquipment(event) {
     setFilters((prevFilters) => {
       return { ...prevFilters, equipment: event.target.value };
     });
-    console.log(event.target.value);
   }
 
   function updateIngredients(event) {
     setFilters((prevFilters) => {
       return { ...prevFilters, ingredients: event.target.value };
     });
-    console.log(event.target.value);
   }
 
   function updateMaxTime(event) {
@@ -157,18 +153,16 @@ export default function RecipeSearch() {
   }
 
   return (
-    <div className="boxing">
-      <ComponentA
+    <div>
+      <RecipeCard
         apiData={apiData}
         recipeNum={recipeNum}
-        component={ComponentA}
+        component={RecipeCard}
+        nextRecipe={nextRecipe}
+        allFiltersSet={() => setAllFilters(!allFilters)}
       />
-      <span className="center">
-        <button onClick={nextRecipe}>Nope</button>
-        <button>Yep!</button>
-      </span>
-
-      <FoodFilter
+      {allFilters &&
+        <FoodFilter
         filters={filters.cuisine}
         updateCuisine={updateCuisine}
         updateDiet={updateDiet}
@@ -178,7 +172,8 @@ export default function RecipeSearch() {
         updateIngredients={updateIngredients}
         updateMaxTime={updateMaxTime}
         applyFilters={applyFilters}
-      />
+        allFiltersSet2={() => setAllFilters(true)}
+      />}
     </div>
   );
 }
