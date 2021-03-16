@@ -35,7 +35,7 @@ a {
 }
 
 .current-user-msg, .other-user-msg {
-  padding: 8px;
+  padding: 15px;
   width: 70%;
 }
 
@@ -44,7 +44,6 @@ a {
   border-radius: 20px 20px 2px 20px;
   background: lightskyblue;
   position: relative;
-  padding: 10px 20px 20px;
   left: 30%;
 }
 
@@ -52,7 +51,6 @@ a {
   border-radius: 20px 20px 20px 2px;
   background: #D8D8D8;
   position: relative;
-  /* cursor: none; */
 }
 
 .online-icon {
@@ -76,5 +74,11 @@ a {
 	font: inherit;
 	cursor: pointer;
 	outline: inherit;
+}
+
+.delete {
+position: relative;
+cursor: pointer;
+left: 98%;
 }
 

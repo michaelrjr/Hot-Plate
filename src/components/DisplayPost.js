@@ -17,17 +17,13 @@ export default function DisplayPost(props) {
   const handleCommentBoxChnage = (e) => {
     setComment(e.target.value);
   };
+
   return (
     <div>
       {props.postArray.map((post) => (
         <div className="card mb-3" key={post.timestamp}>
           <div className="card-body">
-            {props.userDetails.map((user) => (
-              <div className="mb-2" key={user.email}>
-                <b>{user.firstName + " " + user.lastName}</b>
-              </div>
-            ))}
-
+            <b>{post.email}</b>
             <p>{post.post}</p>
             <div className="d-inline mr-1">
               <button className="btn btn-primary btn-sm">
