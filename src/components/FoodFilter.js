@@ -89,21 +89,21 @@ export default function FoodFilter(props){
             <option value="drink">Drink</option>
         </select>
         <form>
-            <b>Type Ingredients here (Split ingredients by comma and space):</b>
+          <b>Type Ingredients here (Split ingredients by comma and space):</b>
         </form>
         <input class="form-control"//For user typed input
             pattern="text"
             onChange={props.updateIngredients}
         />
         <form>
-            <b>Type Equipment here:</b>
+          <b>Type Equipment here:</b>
         </form>
         <input class="form-control"//For user typed input
             pattern="text"
             onChange={props.updateEquipment}
         />
         <form>
-            <b>Type Time here (mins):</b>
+          <b>Type Time here (mins):</b>
         </form>
         <input class="form-control"//For user typed input
             pattern="text"

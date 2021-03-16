@@ -134,12 +134,11 @@ export default function RecipeSearch() {
   }
 
   function updateMaxTime(event) {
-    if (event.target.value !== ""){
+    if (event.target.value !== "") {
       setFilters((prevFilters) => {
         return { ...prevFilters, time: event.target.value };
       });
-    } 
-    else{
+    } else {
       setFilters((prevFilters) => {
         return { ...prevFilters, time: "1000" };
       });
