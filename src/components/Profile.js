@@ -25,11 +25,14 @@ export default function Profile() {
         if (doc.exists) {
           tempArr.push(doc.data());
           setUserDetails(tempArr);
+          console.log("Does get in here?");
         }
+        console.log("Gets in here");
       })
       .catch((error) => {
         setError("Error retrieving user details");
       });
+      console.log("userDetails: "+userDetails);
   };
 
   const handleUploadSubmit = async (e) => {

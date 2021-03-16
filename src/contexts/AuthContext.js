@@ -70,7 +70,7 @@ export function AuthProvider({ children }) {
         console.error("Error adding document: ", error);
       });
   };
-  
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -92,6 +92,7 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     recipeID,
     setRecipeID,
+    handlePostClick
   };
 
   return (
