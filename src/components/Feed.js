@@ -6,7 +6,7 @@ import { firebase } from "@firebase/app";
 import DisplayPost from "./DisplayPost";
 
 export default function Feed() {
-  const { currentUser, signOut } = useAuth();
+  const { currentUser, signOut, handlePostClick } = useAuth();
   const [postArray, setPostArray] = useState([]);
   const [post, setPost] = useState("");
   //const [userDetails, setUserDetails] = useState([]);
@@ -48,21 +48,21 @@ export default function Feed() {
     setPost("");
   };
 
-  const handlePostClick = (e) => {
-    e.preventDefault();
-    ref
-      .add({
-        email: currentUser.email,
-        post: post,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-  };
+  // const handlePostClick = (e) => {
+  //   e.preventDefault();
+  //   ref
+  //     .add({
+  //       email: currentUser.email,
+  //       post: post,
+  //       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  //     })
+  //     .then((docRef) => {
+  //       console.log("Document written with ID: ", docRef.id);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error adding document: ", error);
+  //     });
+  // };
 
   const handleInputBoxChange = (e) => {
     setPost(e.target.value);
