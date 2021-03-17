@@ -19,6 +19,7 @@ export default function Feed() {
 
   useEffect(() => {
     getData();
+    mounted = true;
     //getUserDetails();
   }, []);
 

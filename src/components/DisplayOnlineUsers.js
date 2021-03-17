@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 export default function DisplayOnlineUsers(props) {
   return (
     <div className="card">
-      <div className="card-body">
+      <div className="card-body online-users">
         <h3>Online Users</h3>
         <div>
           {props.onlineUsers.map((user) => (
             <div key={user.uuid}>
               {user.email !== props.currentUser.email && (
-                <div>
+                <div className="online-users-details">
                   <div className="online-icon"></div>
                   <img
                     className="rounded-circle"

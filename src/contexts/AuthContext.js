@@ -91,7 +91,7 @@ export function AuthProvider({ children }) {
     sendEmailVerification,
     signInWithGoogle,
     recipeID,
-    setRecipeID,
+    setRecipeID
   };
 
   return (

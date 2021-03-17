@@ -12,6 +12,7 @@ export default function Chat() {
   const [showChat, setShowChat] = useState(false);
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+  const [otherUserDetails, setOtherUserDetails] = useState([]);
 
   //database ref
   const ref = app.firestore().collection("Users");
@@ -30,11 +31,28 @@ export default function Chat() {
     });
   };
 
+  // gets the other users document from the users collection 
+
+  // and stores that object in an array called otherUsersDetails
+  const getOtherUserDetails = (email) => {
+    ref.doc(email)
+      .get()
+      .then((doc) => {
+        let tempArr = [];
+        tempArr.push(doc.data());
+        setOtherUserDetails(tempArr);
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  };
+
   // show chat and also get chat messages from firestore
   const handleStartChatClick = (email) => {
     setOtherUserEmail(email);
     setShowChat(true);
     getChatMessages(email);
+    getOtherUserDetails(email);
   };
 
   // close chat
@@ -122,7 +140,7 @@ export default function Chat() {
         <div className="col">
           {showChat && (
             <DisplayChat
-              onlineUsers={onlineUsers}
+              otherUserDetails={otherUserDetails}
               currentUser={currentUser}
               chatMessages={chatMessages}
               handleCloseChatClick={handleCloseChatClick}

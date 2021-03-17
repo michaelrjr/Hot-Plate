@@ -62,9 +62,9 @@ a {
   margin-right: 10px;
 }
 
-.online-user {
+/* .online-user {
   display: inline-block;
-}
+} */
 
 .back {
   background: none;
@@ -79,6 +79,16 @@ a {
 .delete {
 position: relative;
 cursor: pointer;
-left: 98%;
+left: 95%;
+}
+
+.online-users {
+  text-align: center;
+}
+
+.online-users-details {
+  padding: 5px;
+ text-align: left;
+ /* display: inline-block; */
 }
 

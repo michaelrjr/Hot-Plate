@@ -3,22 +3,28 @@ import { IoIosArrowBack } from "react-icons/io";
 import { RiDeleteBin7Line } from "react-icons/ri";
 
 export default function DisplayChat(props) {
+  // const a = props.otherUserDetails;
   return (
     <div className="card">
+    
       <div className="card-body">
         <div className="d-inline">
+          {props.otherUserDetails.map((we) => (
+            <div>
           <button className="back" onClick={props.handleCloseChatClick}>
             <IoIosArrowBack />
           </button>
-          {/* <img
-              className="rounded-circle"
-              src={props.onlineUsers.avatar}
-              height="80"
-              width="80"
-          /> */}
-        </div>
-        <div className="d-inline ml-5">
-          <b>{props.otherUserEmail}</b>
+            <img 
+              className="rounded-circle ml-2"
+              src={we.avatar}
+              height="60"
+              width="60"
+            />
+            <div className="d-inline ml-4">
+              <b>{we.firstName+" "+we.lastName}</b>
+            </div>
+            </div>
+          ))}
         </div>
         <div className="mt-3">
           {props.chatMessages.map((message) => (
