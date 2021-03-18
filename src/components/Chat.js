@@ -141,6 +141,7 @@ export default function Chat() {
         <div className="col">
           {showChat && (
             <DisplayChat
+              onlineUsers={onlineUsers}
               currentUser={currentUser}
               chatMessages={chatMessages}
               handleCloseChatClick={handleCloseChatClick}
