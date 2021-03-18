@@ -1,41 +1,41 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function DisplayOnlineUsers(props) {
   return (
-    <div className="card">
-      <div className="card-body online-users">
+    <div className='card online-user-body'>
+      <div className='card-header online-user-nav'>
         <h3>Online Users</h3>
-        <div>
-          {props.onlineUsers.map((user) => (
-            <div key={user.uuid}>
-              {user.email !== props.currentUser.email && (
-                <div className="online-users-details">
-                  <div className="online-icon"></div>
-                  <img
-                    className="rounded-circle"
-                    src={user.avatar}
-                    height="80"
-                    width="80"
-                  />
-                  <div className="online-user">
-                    <b>Email:</b>
-                    {" " + user.email}
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => props.handleStartChatClick(user.email)}
-                    >
-                      Start Chat
-                    </button>
-                  </div>
-                  <br />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
       </div>
+      {props.onlineUsers.map((user) => (
+        <div key={user.uuid} className="card">
+          {user.email !== props.currentUser.email && (
+            <div key={user.uuid} className='row align-items-center p-2'>
+              <div className='col'>
+                <div className='m-2 online-icon'></div>
+                <img
+                  className='p-1 rounded-circle'
+                  src={user.avatar}
+                  height='80'
+                  width='80'
+                />
+              </div>
+              <div className='col-6'>
+                {user.firstName + " " + user.lastName}
+                <br/>
+                {"email: " + user.email}
+              </div>
+              <div className='col'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={() => props.handleStartChatClick(user.email)}>
+                  Start Chat
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

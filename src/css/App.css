@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 a {
   color: dodgerblue;
@@ -34,23 +34,29 @@ a {
   opacity: 0.9;
 }
 
-.current-user-msg, .other-user-msg {
-  padding: 15px;
-  width: 70%;
+/*********chat styling starts***********/
+
+.chat-container{
+  display: flex;
+  justify-content: center;
+  font-family: 'Varela Round', sans-serif;
 }
 
-.current-user-msg{
-  text-align: left !important;
-  border-radius: 20px 20px 2px 20px;
-  background: lightskyblue;
-  position: relative;
-  left: 30%;
+.chat-body{
+  height: 60vh;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.other-user-msg {
-  border-radius: 20px 20px 20px 2px;
-  background: #D8D8D8;
-  position: relative;
+/*hide scroll*/
+.chat-body::-webkit-scrollbar{
+  display:none;
+}
+
+/* online users */
+.online-user-nav{
+  text-align: center;
 }
 
 .online-icon {
@@ -59,12 +65,34 @@ a {
   width: 10px;
   background-color: #4CAF50;
   display: inline-block;
-  margin-right: 10px;
 }
 
-/* .online-user {
-  display: inline-block;
-} */
+/* chat messaging */
+.chat-nav, .online-user-nav {
+  font-size: large;
+  background-color: #ffffff;
+}
+
+.current-user-msg, .other-user-msg {
+  overflow-wrap: break-word;
+  min-width: 15%;
+  max-width: 70%;
+  padding: 10px 15px 5px 15px;
+}
+
+.current-user-msg{
+  align-self: flex-end;
+  border-radius: 20px 20px 4px 20px;
+  background: #00b9fb;
+  color: #f5f5f5;
+}
+
+.other-user-msg {
+  align-self: flex-start;
+  border-radius: 20px 20px 20px 4px;
+  color:#010b13;
+  background: #d3d3d3;
+}
 
 .back {
   background: none;
@@ -77,18 +105,14 @@ a {
 }
 
 .delete {
-position: relative;
-cursor: pointer;
-left: 95%;
+  margin-left: 96%;
+  cursor: pointer;
 }
 
-.online-users {
-  text-align: center;
+.message-timestamp {
+  color: #a9a9a9;
+  font-size: xx-small;
 }
 
-.online-users-details {
-  padding: 5px;
- text-align: left;
- /* display: inline-block; */
-}
+/*********chat styling ends********/
 

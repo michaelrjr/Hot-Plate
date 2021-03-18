@@ -126,19 +126,15 @@ export default function Chat() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
+    <div className="container chat-container p-3">
         {showChat == false ? (
-          <div className="col">
             <DisplayOnlineUsers
               currentUser={currentUser}
               onlineUsers={onlineUsers}
               handleStartChatClick={handleStartChatClick}
             />
-          </div>
-        ) : null}
-        <div className="col">
-          {showChat && (
+        ) : null }
+          {showChat == true ? (
             <DisplayChat
               otherUserDetails={otherUserDetails}
               currentUser={currentUser}
@@ -151,9 +147,7 @@ export default function Chat() {
               handleInputBoxChange={handleInputBoxChange}
               handleDeleteMessageClick={handleDeleteMessageClick}
             />
-          )}
-        </div>
-      </div>
+          ) : null }
     </div>
   );
 }
