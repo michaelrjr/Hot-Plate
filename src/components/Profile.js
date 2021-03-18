@@ -9,6 +9,7 @@ export default function Profile() {
   const { currentUser } = useAuth();
   const [userDetails, setUserDetails] = useState([]);
   const [fileURL, setFileURL] = useState(null);
+  const [fileName, setFileName] = useState("");
   // db ref
   const ref = app.firestore().collection("Users");
 
@@ -22,10 +23,8 @@ export default function Profile() {
       .get()
       .then((doc) => {
         let tempArr = [];
-        if (doc.exists) {
-          tempArr.push(doc.data());
-          setUserDetails(tempArr);
-        }
+        tempArr.push(doc.data());
+        setUserDetails(tempArr);
       })
       .catch((error) => {
         setError("Error retrieving user details");
@@ -40,6 +39,7 @@ export default function Profile() {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    setFileName(e.target.files[0].name);
     const storageRef = app.storage().ref();
     const fileRef = storageRef.child(file.name);
     await fileRef.put(file);
@@ -52,51 +52,68 @@ export default function Profile() {
         <div className="card" key={user.email}>
           <div className="card-body">
             <h3 className="card-title text-center mb-3">Profile</h3>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center mb-3">
               {user.avatar === null ? (
                 <img
-                  className="rounded-circle mb-3"
+                  className="rounded-circle "
                   src="defaultuser.png"
                   width="150"
                   height="150"
                 />
               ) : (
                 <img
-                  className="rounded-circle mb-3"
+                  className="rounded-circle "
                   src={user.avatar}
                   width="150"
                   height="150"
                 />
               )}
             </div>
-            <div>
+            <div className="mb-3">
               <form onSubmit={handleUploadSubmit}>
-                <input type="file" onChange={handleFileChange} />
-
-                <button type="submit" className="btn btn-warning">
-                  Upload
-                </button>
+                <div className="custom-file mb-3">
+                  <input
+                    type="file"
+                    className="custom-file-input"
+                    id="file-upload"
+                    onChange={handleFileChange}
+                  />
+                  {fileName ? (
+                    <label className="custom-file-label" htmlFor="file-upload">
+                      {fileName}
+                    </label>
+                  ) : (
+                    <label className="custom-file-label" htmlFor="file-upload">
+                      Choose profile image...
+                    </label>
+                  )}
+                </div>
+                <div>
+                  <button type="submit" className="btn btn-warning w-100">
+                    Upload
+                  </button>
+                </div>
               </form>
             </div>
-
             {error && (
               <div className="alert alert-danger" role="alert">
                 {error}
               </div>
             )}
-
             <div key={user.email}>
               <div className="mb-3">
-                <strong>First Name:</strong> {user.firstName}
+                <strong>First name:</strong> {user.firstName}
               </div>
               <div className="mb-3">
-                <strong>Last Name:</strong> {user.lastName}
+                <strong>Last name:</strong> {user.lastName}
               </div>
               <div className="mb-3">
                 <strong>Email:</strong> {user.email}
               </div>
+              <div className="mb-3">
+                <strong>Joined:</strong> {user.joined}
+              </div>
             </div>
-
             <div className="mb-3">
               <SignOut setError={setError} />
             </div>
