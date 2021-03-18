@@ -6,11 +6,7 @@ import { firebase } from "@firebase/app";
 import DisplayPost from "./DisplayPost";
 
 export default function Feed() {
-<<<<<<< Updated upstream
   const { currentUser, signOut, handlePostClick } = useAuth();
-=======
-  const { currentUser, handlePostClick, signOut } = useAuth();
->>>>>>> Stashed changes
   const [postArray, setPostArray] = useState([]);
   const [post, setPost] = useState("");
   //const [userDetails, setUserDetails] = useState([]);
@@ -18,11 +14,7 @@ export default function Feed() {
   let mounted;
 
   //database ref
-<<<<<<< Updated upstream
   const ref = app.firestore().collection("feed");
-=======
-  const ref = app.firestore().collection("sharedPosts");
->>>>>>> Stashed changes
   const userRef = app.firestore().collection("Users");
 
   useEffect(() => {
@@ -30,7 +22,6 @@ export default function Feed() {
     //getUserDetails();
   }, []);
 
-<<<<<<< Updated upstream
   // const getUserDetails = () => {
   //   userRef
   //     .doc(currentUser.email)
@@ -49,24 +40,6 @@ export default function Feed() {
   //       console.log(error);
   //     });
   // };
-=======
-  const getUserDetails = () => {
-    userRef
-      .doc(currentUser.email)
-      .get()
-      .then((doc) => {
-        let tempArr = [];
-        if (doc.exists) {
-          tempArr.push(doc.data());
-          setUserDetails(tempArr);
-          console.log(tempArr);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
->>>>>>> Stashed changes
 
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { auth, googleAuth } from "../firebase";
 import { firebase } from "@firebase/app";
 import app from "../firebase";
+import { v4 as uuidv4 } from "uuid";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -61,7 +62,8 @@ export function AuthProvider({ children }) {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         recipeID: recipeID,
         image: image,
-        recipeTitle: title
+        recipeTitle: title,
+        postID: uuidv4()
       })
       .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);

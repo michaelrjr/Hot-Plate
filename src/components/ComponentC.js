@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export default function ComponentB(props) {
+export default function ComponentC(props) {
   const size = "636x393.jpg";
   const { setRecipeID } = useAuth();
 
