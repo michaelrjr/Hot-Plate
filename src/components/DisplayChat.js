@@ -1,5 +1,6 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
+import { RiDeleteBin7Line } from "react-icons/ri";
 
 export default function DisplayChat(props) {
   return (
@@ -9,6 +10,12 @@ export default function DisplayChat(props) {
           <button className="back" onClick={props.handleCloseChatClick}>
             <IoIosArrowBack />
           </button>
+          {/* <img
+              className="rounded-circle"
+              src={props.onlineUsers.avatar}
+              height="80"
+              width="80"
+          /> */}
         </div>
         <div className="d-inline ml-5">
           <b>{props.otherUserEmail}</b>
@@ -23,15 +30,14 @@ export default function DisplayChat(props) {
               </div>
               <div>
                 {message.from === props.currentUser.email && (
-                  <div className="current-user-msg">{message.message}</div>
-                )}
-                <button
-                  onClick={() =>
+                  <div className="current-user-msg">
+                  {message.message}
+                  <br/>
+                  <RiDeleteBin7Line className="delete" onClick={() =>
                     props.handleDeleteMessageClick(message.message)
-                  }
-                >
-                  delete
-                </button>
+                  }/>
+                  </div>
+                )}
               </div>
             </div>
           ))}
