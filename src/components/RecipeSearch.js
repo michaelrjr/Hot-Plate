@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
-import FoodFilter from "./FoodFilter";
+
 import axios from "axios";
 
 export default function RecipeSearch() {
@@ -15,7 +15,8 @@ export default function RecipeSearch() {
     ingredients: "",
     equipment: "",
     time: "1000",
-  });  
+  });
+  const [loading, setLoading] = useState(true);
 
   var offset = 0;
 
@@ -25,6 +26,8 @@ export default function RecipeSearch() {
 
   const getRandomRecipes = async () => {
     try {
+      setLoading(true);
+      setAllFilters(false);
       if (
         filters.cuisine === "" &&
         filters.diet === "" &&
@@ -34,12 +37,14 @@ export default function RecipeSearch() {
         filters.equipment === "" &&
         filters.time === "1000"
       ) {
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=a877df555b0b40488df279ef75acd509`;
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
         const resp = await axios.get(API_URL);
         //console.log(API_URL);
 
         if (resp.data.totalResults === 0) {
           offset = 0;
+          setLoading(false);
+          setAllFilters(true);
           console.log("No more recipes. Change your search or try again");
         }
         apiShuffle(resp.data.recipes);
@@ -52,6 +57,8 @@ export default function RecipeSearch() {
         console.log(API_URL);
         if (resp.data.totalResults === 0) {
           offset = 0;
+          setLoading(false);
+          setAllFilters(true);
           console.log("No more recipes. Change your search or try again");
         }
         apiShuffle(resp.data.results);
@@ -159,9 +166,8 @@ export default function RecipeSearch() {
         component={RecipeCard}
         nextRecipe={nextRecipe}
         allFiltersSet={() => setAllFilters(!allFilters)}
-      />
-      {allFilters &&
-        <FoodFilter
+        loading={loading}
+        allFilters={allFilters}
         filters={filters.cuisine}
         updateCuisine={updateCuisine}
         updateDiet={updateDiet}
@@ -171,8 +177,7 @@ export default function RecipeSearch() {
         updateIngredients={updateIngredients}
         updateMaxTime={updateMaxTime}
         applyFilters={applyFilters}
-        allFiltersSet2={() => setAllFilters(true)}
-      />}
+      />
     </div>
   );
 }
