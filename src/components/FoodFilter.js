@@ -2,7 +2,7 @@ import React from "react";
 
 export default function FoodFilter(props) {
   return (
-    <div className="card">
+    <div>
       <span>
         <label>
           <b>Cuisine:</b>
