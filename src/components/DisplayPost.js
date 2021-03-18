@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 import CommentBox from "./CommentBox";
+<<<<<<< Updated upstream
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+=======
+import ComponentB from "./ComponentB";
+>>>>>>> Stashed changes
 import ComponentC from "./ComponentC";
 
 export default function DisplayPost(props) {
@@ -26,6 +30,11 @@ export default function DisplayPost(props) {
           <div className="card-body">
             <b>{post.email}</b>
             <p>{post.post}</p>
+<<<<<<< Updated upstream
+=======
+            
+            {console.log("user details: "+props.userDetails)} 
+>>>>>>> Stashed changes
             {
               post.image &&
               <ComponentC

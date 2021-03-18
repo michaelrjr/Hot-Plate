@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+<<<<<<< Updated upstream
 import { AiOutlineShareAlt } from "react-icons/ai";
+=======
+>>>>>>> Stashed changes
 import { Modal } from 'react-bootstrap';
 
 export default function MoreInfo() {
+  const [show, setShow] = useState(false);
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -12,12 +16,17 @@ export default function MoreInfo() {
   const { recipeID, handlePostClick } = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+<<<<<<< Updated upstream
   const [showNutrition, setShowNutrition] = useState(false);
   const recipeInfoURL = `https://api.spoonacular.com/recipes/${recipeID}/information?includeNutrition=false&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`;
   const nutritionVisualisationURL = `https://api.spoonacular.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`;
   const [post, setPost] = useState([]);
 
   const [ show, setShow ] = useState(false);
+=======
+  const recipeInfoURL = `https://api.spoonacular.com/recipes/${recipeID}/information?includeNutrition=false&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
+  const nutritionVisualisationURL = `https://api.spoonacular.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
+>>>>>>> Stashed changes
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -87,9 +96,13 @@ export default function MoreInfo() {
     // we have no errors and we have data
     return (
       <div className="container">
+        <Modal show={show} onHide={handleClose}>
+
+        </Modal>
         <div className="row">
           <div className="col-lg-6 col-sm-12">
             {recipeInfoArray.map((recipe) => (
+<<<<<<< Updated upstream
               <div className="card mb-3 clearfix" key={recipe.id}>
                 <img className="card-img-top" src={recipe.image} alt="recipe" />
                 <div className="card-body">
@@ -145,6 +158,31 @@ export default function MoreInfo() {
 
 
                   <hr/>
+=======
+              <div className="card" key={recipe.id}>
+                <img
+                  src={recipe.image}
+                  alt="recipe"
+                  style={{ width: "100%" }}
+                />
+                <div>
+                  <button
+                    onClick={() =>
+                      handlePostClick("post from more info", recipeID, recipe.image, recipe.title)
+                    }
+                  >
+                    Share
+                  </button>
+                </div>
+                <br />
+                <div className="container">
+                  <h4>
+                    <b>{recipe.title}</b>
+                  </h4>
+                  <p>Ready in: {" " + recipe.readyInMinutes + " "} minutes</p>
+                  <p>Servings: {" " + recipe.servings}</p>
+                  <hr />
+>>>>>>> Stashed changes
                   <button
                     className="btn btn-warning w-100"
                     onClick={() => setShowIngredients(!showIngredients)}
