@@ -48,10 +48,10 @@ function SignUp() {
         setLoading(true);
         // signup user with email and password
         await signUp(values.email, values.password);
-        setMessage("Account created. Please sign in.");
+        setMessage("Success, account created. Please sign in.");
         await sendEmailVerification();
       } catch {
-        setError("Failed to create account");
+        setError("Error, failed to create account. Please try again.");
       }
 
       // create user document in user collection if sign up is successful
@@ -84,40 +84,76 @@ function SignUp() {
               {error}
             </div>
           )}
-          <div className="mb-3">
-            <label htmlFor="firstName">First Name</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Enter first name"
-              id="firstName"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.firstName}
-            />
-            {formik.touched.firstName && formik.errors.firstName ? (
-              <div className="error">{formik.errors.firstName}</div>
-            ) : null}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Enter last name"
-              id="lastName"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.lastName}
-            />
-            {formik.touched.lastName && formik.errors.lastName ? (
-              <div className="error">{formik.errors.lastName}</div>
-            ) : null}
+          <div>
+            <div className="row">
+              <div className="col">
+                <div className="mb-3">
+                  <label htmlFor="firstName">First Name</label>
+                  <input
+                    className={`${
+                      formik.touched.firstName &&
+                      formik.errors.firstName &&
+                      "form-control is-invalid"
+                    } ${
+                      formik.touched.firstName && !formik.errors.firstName
+                        ? "form-control is-valid"
+                        : "form-control"
+                    }`}
+                    type="text"
+                    placeholder="Enter first name"
+                    id="firstName"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstName}
+                  />
+                  {formik.touched.firstName && formik.errors.firstName ? (
+                    <div className="invalid-feedback">
+                      {formik.errors.firstName}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3">
+                  <label htmlFor="lastName">Last Name</label>
+                  <input
+                    className={`${
+                      formik.touched.lastName &&
+                      formik.errors.lastName &&
+                      "form-control is-invalid"
+                    } ${
+                      formik.touched.lastName && !formik.errors.lastName
+                        ? "form-control is-valid"
+                        : "form-control"
+                    }`}
+                    type="text"
+                    placeholder="Enter last name"
+                    id="lastName"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastName}
+                  />
+                  {formik.touched.lastName && formik.errors.lastName ? (
+                    <div className="invalid-feedback">
+                      {formik.errors.lastName}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.email &&
+                formik.errors.email &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.email && !formik.errors.email
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="email"
               placeholder="Enter email"
               id="email"
@@ -126,13 +162,21 @@ function SignUp() {
               value={formik.values.email}
             />
             {formik.touched.email && formik.errors.email ? (
-              <div className="error">{formik.errors.email}</div>
+              <div className="invalid-feedback">{formik.errors.email}</div>
             ) : null}
           </div>
           <div className="mb-3">
             <label htmlFor="password">Password</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.password &&
+                formik.errors.password &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.password && !formik.errors.password
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="password"
               placeholder="Enter password"
               id="password"
@@ -141,13 +185,21 @@ function SignUp() {
               value={formik.values.password}
             />
             {formik.touched.password && formik.errors.password ? (
-              <div className="error">{formik.errors.password}</div>
+              <div className="invalid-feedback">{formik.errors.password}</div>
             ) : null}
           </div>
           <div className="mb-3">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.confirmPassword &&
+                formik.errors.confirmPassword &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.confirmPassword && !formik.errors.confirmPassword
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="password"
               placeholder="Enter password"
               id="confirmPassword"
@@ -156,10 +208,12 @@ function SignUp() {
               value={formik.values.confirmPassword}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="error">{formik.errors.confirmPassword}</div>
+              <div className="invalid-feedback">
+                {formik.errors.confirmPassword}
+              </div>
             ) : null}
           </div>
-          <div>
+          <div className="mb-3">
             <button
               type="submit"
               className="btn btn-success w-100"
@@ -169,7 +223,7 @@ function SignUp() {
             </button>
           </div>
         </form>
-        <div className="w-100 text-center mt-2">
+        <div className="w-100 text-center">
           <p>
             Already have an account? <Link to="/signIn">Sign in</Link>.
           </p>

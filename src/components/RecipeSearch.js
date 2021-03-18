@@ -15,8 +15,7 @@ export default function RecipeSearch() {
     ingredients: "",
     equipment: "",
     time: "1000",
-  });
-  
+  });  
 
   var offset = 0;
 
@@ -35,7 +34,7 @@ export default function RecipeSearch() {
         filters.equipment === "" &&
         filters.time === "1000"
       ) {
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=a877df555b0b40488df279ef75acd509`;
         const resp = await axios.get(API_URL);
         //console.log(API_URL);
 

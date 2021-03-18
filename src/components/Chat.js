@@ -31,16 +31,17 @@ export default function Chat() {
     });
   };
 
-  // gets the other users document from the users collection 
-
+  // gets the other users document from the users collection
   // and stores that object in an array called otherUsersDetails
   const getOtherUserDetails = (email) => {
-    ref.doc(email)
+    ref
+      .doc(email)
       .get()
       .then((doc) => {
         let tempArr = [];
         tempArr.push(doc.data());
         setOtherUserDetails(tempArr);
+        console.log(tempArr);
       })
       .catch((error) => {
         console.log("Error getting document:", error);
@@ -98,7 +99,6 @@ export default function Chat() {
       .onSnapshot((snapshot) => {
         setChatMessages(snapshot.docs.map((doc) => doc.data()));
       });
-    setMessage("");
   };
 
   //handle delete

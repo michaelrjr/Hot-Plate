@@ -1,7 +1,6 @@
 import React from "react";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import Dashboard from "./Dashboard";
 import ForgotPassword from "./ForgotPassword";
 import UpdateProfile from "./UpdateProfile";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -13,6 +12,7 @@ import NavBar from "./NavBar";
 import Profile from "./Profile";
 import RecipeSearch from "./RecipeSearch";
 import Chat from "./Chat";
+import CreateRecipe from "./CreateRecipe";
 
 function App() {
   return (
@@ -22,10 +22,9 @@ function App() {
           <NavBar />
           <br />
           <Switch>
-            <PrivateRoute exact path="/" component={Dashboard} />
             <Route path="/chat" component={Chat} />
             <Route path="/moreinfo" component={MoreInfo} />
-
+            <PrivateRoute path="/createrecipe" component={CreateRecipe} />
             <div
               className="container d-flex justify-content-center"
               style={{ minHeight: "100vh" }}

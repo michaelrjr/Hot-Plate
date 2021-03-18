@@ -9,10 +9,6 @@ a {
   transition: 0.3s;
 }
 
-.error {
-  color: red;
-}
-
 .navbar__item {
   color: inherit;
   text-decoration: none;
@@ -23,16 +19,7 @@ a {
   margin-left: 2px;
 }
 
-.recipe-btn-more-info {
-  background-color: #4CAF50;
-  color: white;
-  padding: 6px;
-  margin: 6px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
+
 
 /*********chat styling starts***********/
 
