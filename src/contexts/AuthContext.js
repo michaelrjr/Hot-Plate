@@ -3,6 +3,7 @@ import { auth, googleAuth } from "../firebase";
 import { firebase } from "@firebase/app";
 import app from "../firebase";
 import { v4 as uuidv4 } from "uuid";
+import { StayCurrentLandscapeOutlined } from "@material-ui/icons";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -15,6 +16,7 @@ export function AuthProvider({ children }) {
   const [recipeID, setID] = useState(0);
   //database ref
   const ref = app.firestore().collection("feed");
+  const [comment, setComment] = useState("");
 
   function signUp(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -55,15 +57,17 @@ export function AuthProvider({ children }) {
 
   // so we can use handlePostClick anywhere in the app for sharing recipes
   const handlePostClick = (post, recipeID, image, title) => {
-    ref
-      .add({
+    const thisPostID = uuidv4();
+    ref.doc(thisPostID)
+      .set({
         email: currentUser.email,
         post: post,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         recipeID: recipeID,
         image: image,
         recipeTitle: title,
-        postID: uuidv4()
+        postID: thisPostID,
+        childCommentSectionID: uuidv4()
       })
       .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
@@ -72,6 +76,57 @@ export function AuthProvider({ children }) {
         console.error("Error adding document: ", error);
       });
   };
+
+  const handlePostComment = (comment, postID, childCommentSectionID) => {
+    if(comment.length>0 && postID){
+      ref.where("postID", "==" , postID).get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            if(doc.exists){
+              doc.ref.collection(childCommentSectionID).add({
+                comment: comment,
+                commentSectionID: childCommentSectionID,
+                from: currentUser.email,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              }).then((docRef) => {
+                  console.log("Document written with ID: ", docRef.id);
+              })
+              .catch((error) => {
+                  console.error("Error adding document: ", error);
+              });
+            }
+          });
+        }
+      );
+    }
+  };
+  
+  const CheckCommentsExist = (postID, childCommentSectionID) => {
+    const [returnBool, setReturnBool] = useState(0);
+      useEffect(() => {
+          const getData = async () => {
+            if(postID){
+              ref.where("postID", "==" , postID).get().then(snapshot => {
+                snapshot.forEach(doc => {
+                  if(doc.exists){
+                    doc.ref.collection(childCommentSectionID).get().then(sub => {
+                      if(sub.docs.length > 0){
+                        setReturnBool(true);
+                        // console.log("Comments section exists. returning: "+returnBool+" for "+postID);
+                        return true;
+                      } else setReturnBool(false);
+                    });
+                  }
+                });
+              }).then(() => {
+                return returnBool;
+              });
+            } else setReturnBool(false);
+          }
+          getData();
+      }, []);
+    return returnBool;
+  }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -94,7 +149,11 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     recipeID,
     setRecipeID,
-    handlePostClick
+    handlePostClick,
+    handlePostComment,
+    comment,
+    setComment,
+    CheckCommentsExist
   };
 
   return (

@@ -9,7 +9,6 @@ export default function Feed() {
   const { currentUser, signOut, handlePostClick } = useAuth();
   const [postArray, setPostArray] = useState([]);
   const [post, setPost] = useState("");
-  //const [userDetails, setUserDetails] = useState([]);
 
   let mounted;
 
@@ -19,27 +18,7 @@ export default function Feed() {
 
   useEffect(() => {
     getData();
-    //getUserDetails();
   }, []);
-
-  // const getUserDetails = () => {
-  //   userRef
-  //     .doc(currentUser.email)
-  //     .get()
-  //     .then((doc) => {
-  //       let tempArr = [];
-  //       //if (mounted) {
-  //       if (doc.exists) {
-  //         tempArr.push(doc.data());
-  //         setUserDetails(tempArr);
-  //         console.log(tempArr);
-  //         //}
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   const getData = () => {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
@@ -47,22 +26,6 @@ export default function Feed() {
     });
     setPost("");
   };
-
-  // const handlePostClick = (e) => {
-  //   e.preventDefault();
-  //   ref
-  //     .add({
-  //       email: currentUser.email,
-  //       post: post,
-  //       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  //     })
-  //     .then((docRef) => {
-  //       console.log("Document written with ID: ", docRef.id);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error adding document: ", error);
-  //     });
-  // };
 
   const handleInputBoxChange = (e) => {
     setPost(e.target.value);
