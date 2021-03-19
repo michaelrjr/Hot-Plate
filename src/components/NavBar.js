@@ -4,6 +4,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { BiFoodMenu } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
+import { GrRestaurant } from "react-icons/gr";
 
 export default function NavBar() {
   return (
@@ -28,6 +29,16 @@ export default function NavBar() {
             <BiFoodMenu size={30} />
           </div>
           <div>Food</div>
+        </Link>
+        <Link
+          className="navbar__item"
+          to="/createrecipe"
+          style={{ textDecoration: "none" }}
+        >
+          <div className="navbar__icon" style={{ marginLeft: "30px" }}>
+            <GrRestaurant size={30} />
+          </div>
+          <div>Create Recipe</div>
         </Link>
         <Link
           className="navbar__item"

@@ -22,26 +22,41 @@ function ForgotPassword() {
         setLoading(true);
         await resetPassword(values.email);
         setMessage(
-          `An email has been sent to ${values.email}. Check your inbox.`
+          `An email has been sent to ${values.email} to reset your password. Please check your inbox.`
         );
       } catch {
-        setError("Failed to reset password");
+        setError("Error, incorrect email. Please try again.");
       }
       setLoading(false);
     },
   });
   return (
     <div className="card">
-      <form onSubmit={formik.handleSubmit}>
-        <div className="container">
-          <div className="heading">
-            <h3>Password Reset</h3>
-          </div>
-          <div>{message && <div className="successMsg">{message}</div>}</div>
-          <div>{error && <div className="errorMsg">{error}</div>}</div>
-          <div className="form-group">
+      <div className="card-body">
+        <form onSubmit={formik.handleSubmit}>
+          <h3 className="card-title text-center mb-4">Password Reset</h3>
+          {message && (
+            <div className="alert alert-success" role="alert">
+              {message}
+            </div>
+          )}
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
+              className={`${
+                formik.touched.email &&
+                formik.errors.email &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.email && !formik.errors.email
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="email"
               placeholder="Enter email"
               id="email"
@@ -50,23 +65,28 @@ function ForgotPassword() {
               value={formik.values.email}
             />
             {formik.touched.email && formik.errors.email ? (
-              <div className="error">{formik.errors.email}</div>
+              <div className="invalid-feedback">{formik.errors.email}</div>
             ) : null}
           </div>
-
-          <button type="submit" className="buttons" disabled={loading}>
-            Reset Password
-          </button>
-          <div className="sign">
+          <div className="mb-3">
+            <button
+              type="submit"
+              className="btn btn-primary w-100"
+              disabled={loading}
+            >
+              Reset Password
+            </button>
+          </div>
+          <div className="w-100 text-center">
             <Link to="/signIn">Sign in</Link>
           </div>
-          <div className="sign">
+          <div className="w-100 text-center">
             <p>
               Don't have an account? <Link to="/signUp">Sign up</Link>.
             </p>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

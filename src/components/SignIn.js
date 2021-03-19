@@ -8,7 +8,7 @@ import app from "../firebase";
 function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn } = useAuth();
   const history = useHistory();
   // db ref
   const ref = app.firestore().collection("Users");
@@ -30,9 +30,9 @@ function SignIn() {
         setLoading(true);
         // sign a user in with email and password
         await signIn(values.email, values.password);
-        history.push("/");
+        history.push("/profile");
       } catch {
-        setError("Failed to sign in");
+        setError("Error, incorrect email or password. Please try again.");
       }
 
       // update online to true if sign in is successful
@@ -41,16 +41,6 @@ function SignIn() {
       setLoading(false);
     },
   });
-
-  // // sign in with google
-  // async function googleSignIn() {
-  //   try {
-  //     await signInWithGoogle();
-  //     history.push("/");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   return (
     <div className="card">
@@ -65,7 +55,15 @@ function SignIn() {
           <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.email &&
+                formik.errors.email &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.email && !formik.errors.email
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="email"
               placeholder="Enter email"
               id="email"
@@ -74,25 +72,33 @@ function SignIn() {
               value={formik.values.email}
             />
             {formik.touched.email && formik.errors.email ? (
-              <div className="error">{formik.errors.email}</div>
+              <div className="invalid-feedback">{formik.errors.email}</div>
             ) : null}
           </div>
           <div className="mb-3">
             <label htmlFor="loginPassword">Password</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.password &&
+                formik.errors.password &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.password && !formik.errors.password
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="password"
               placeholder="Enter password"
               id="password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.password}
             />
+            {console.log(formik.values.password)}
             {formik.touched.password && formik.errors.password ? (
-              <div className="error">{formik.errors.password}</div>
+              <div className="invalid-feedback">{formik.errors.password}</div>
             ) : null}
           </div>
-          <div>
+          <div className="mb-3">
             <button
               type="submit"
               className="btn btn-success w-100"
@@ -102,10 +108,10 @@ function SignIn() {
             </button>
           </div>
         </form>
-        <div className="w-100 text-center mt-2">
+        <div className="w-100 text-center">
           <Link to="/forgotPassword">Forgot Password?</Link>
         </div>
-        <div className="w-100 text-center mt-2">
+        <div className="w-100 text-center">
           <p>
             Don't have an account? <Link to="/signUp">Sign up</Link>.
           </p>

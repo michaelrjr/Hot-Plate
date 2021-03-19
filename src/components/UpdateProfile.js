@@ -38,10 +38,10 @@ function UpdateProfile() {
       }
       Promise.all(promises)
         .then(() => {
-          history.push("/");
+          history.push("/profile");
         })
         .catch(() => {
-          setError("Failed to update account");
+          setError("Erro, failed to update account. Please try again.");
         })
         .finally(() => {
           setLoading(false);
@@ -51,8 +51,8 @@ function UpdateProfile() {
   return (
     <div className="card">
       <div className="card-body">
+        <h3 className="card-title text-center mb-4">Update Profile</h3>
         <form onSubmit={formik.handleSubmit}>
-          <h3 className="card-title text-center mb-4">Update Profile</h3>
           {error && (
             <div className="alert alert-danger" role="alert">
               {error}
@@ -61,7 +61,15 @@ function UpdateProfile() {
           <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.email &&
+                formik.errors.email &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.email && !formik.errors.email
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="email"
               placeholder="Enter email"
               id="email"
@@ -70,13 +78,21 @@ function UpdateProfile() {
               value={formik.values.email}
             />
             {formik.touched.email && formik.errors.email ? (
-              <div className="error">{formik.errors.email}</div>
+              <div className="invalid-feedback">{formik.errors.email}</div>
             ) : null}
           </div>
           <div className="mb-3">
             <label htmlFor="password">Password</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.password &&
+                formik.errors.password &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.password && !formik.errors.password
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="password"
               placeholder="Leave blank to keep the same password"
               id="password"
@@ -85,13 +101,21 @@ function UpdateProfile() {
               value={formik.values.password}
             />
             {formik.touched.password && formik.errors.password ? (
-              <div className="error">{formik.errors.password}</div>
+              <div className="invalid-feedback">{formik.errors.password}</div>
             ) : null}
           </div>
           <div className="mb-3">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
-              className="form-control"
+              className={`${
+                formik.touched.confirmPassword &&
+                formik.errors.confirmPassword &&
+                "form-control is-invalid"
+              } ${
+                formik.touched.confirmPassword && !formik.errors.confirmPassword
+                  ? "form-control is-valid"
+                  : "form-control"
+              }`}
               type="password"
               placeholder="Leave blank to keep the same password"
               id="confirmPassword"
@@ -100,7 +124,9 @@ function UpdateProfile() {
               value={formik.values.confirmPassword}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="error">{formik.errors.confirmPassword}</div>
+              <div className="invalid-feedback">
+                {formik.errors.confirmPassword}
+              </div>
             ) : null}
           </div>
           <div className="mb-3">
@@ -112,8 +138,8 @@ function UpdateProfile() {
               Update
             </button>
           </div>
-          <div className="mb-3">
-            <Link to="/">
+          <div>
+            <Link to="/profile">
               <button className="btn btn-danger w-100">Cancel</button>
             </Link>
           </div>

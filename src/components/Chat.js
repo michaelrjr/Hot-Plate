@@ -12,6 +12,7 @@ export default function Chat() {
   const [showChat, setShowChat] = useState(false);
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+  const [otherUserDetails, setOtherUserDetails] = useState([]);
 
   //database ref
   const ref = app.firestore().collection("Users");
@@ -30,11 +31,29 @@ export default function Chat() {
     });
   };
 
+  // gets the other users document from the users collection
+  // and stores that object in an array called otherUsersDetails
+  const getOtherUserDetails = (email) => {
+    ref
+      .doc(email)
+      .get()
+      .then((doc) => {
+        let tempArr = [];
+        tempArr.push(doc.data());
+        setOtherUserDetails(tempArr);
+        console.log(tempArr);
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  };
+
   // show chat and also get chat messages from firestore
   const handleStartChatClick = (email) => {
     setOtherUserEmail(email);
     setShowChat(true);
     getChatMessages(email);
+    getOtherUserDetails(email);
   };
 
   // close chat
@@ -80,7 +99,6 @@ export default function Chat() {
       .onSnapshot((snapshot) => {
         setChatMessages(snapshot.docs.map((doc) => doc.data()));
       });
-    setMessage("");
   };
 
   //handle delete
@@ -108,21 +126,17 @@ export default function Chat() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
+    <div className="container chat-container p-3">
         {showChat == false ? (
-          <div className="col">
             <DisplayOnlineUsers
               currentUser={currentUser}
               onlineUsers={onlineUsers}
               handleStartChatClick={handleStartChatClick}
             />
-          </div>
-        ) : null}
-        <div className="col">
-          {showChat && (
+        ) : null }
+          {showChat == true ? (
             <DisplayChat
-              onlineUsers={onlineUsers}
+              otherUserDetails={otherUserDetails}
               currentUser={currentUser}
               chatMessages={chatMessages}
               handleCloseChatClick={handleCloseChatClick}
@@ -133,9 +147,7 @@ export default function Chat() {
               handleInputBoxChange={handleInputBoxChange}
               handleDeleteMessageClick={handleDeleteMessageClick}
             />
-          )}
-        </div>
-      </div>
+          ) : null }
     </div>
   );
 }
