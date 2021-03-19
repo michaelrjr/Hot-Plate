@@ -17,6 +17,7 @@ export default function Profile() {
     getUserDetails();
   }, []);
 
+  /*object with keys seconds/nanoseconds -v- collection of children*/
   const getUserDetails = () => {
     ref
       .doc(currentUser.email)

@@ -62,7 +62,7 @@ function SignUp() {
         email: values.email,
         online: false,
         avatar: null,
-        joined: new Date(),
+        joined: new Date().toLocaleDateString(),
       });
 
       setLoading(false);

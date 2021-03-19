@@ -30,7 +30,8 @@ a {
 }
 
 .chat-body{
-  height: 60vh;
+  height: 55vh;
+  width: 50vw;
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -42,16 +43,34 @@ a {
 }
 
 /* online users */
+.online-user-body{
+width: 90vw;
+}
+
 .online-user-nav{
   text-align: center;
 }
 
+.online-user-email{
+  font-size: xx-small;
+  color: #010b13;
+}
+
 .online-icon {
+  border: solid 1px #d3d3d3;
   border-radius: 50%;
-  height: 10px;
-  width: 10px;
-  background-color: #4CAF50;
+  height: 6px;
+  width: 6px;
+  background: linear-gradient(to top, #00ff00 0%, #006600 100%);
   display: inline-block;
+}
+
+.online-icon-offline {
+  background: linear-gradient(to top, #990033 0%, #ff0000 100%)
+}
+
+.user-status {
+  font-size: x-small;
 }
 
 /* chat messaging */
