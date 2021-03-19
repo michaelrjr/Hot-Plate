@@ -7,6 +7,10 @@ export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);
   const [recipeNum, setRecipeNum] = useState(0);
   const [allFilters, setAllFilters] = useState(false);
+
+  const [isFetched, setIsFetched] = useState(false);
+  const [error, setError] = useState(null);
+
   const [filters, setFilters] = useState({
     cuisine: "",
     diet: "",
@@ -15,7 +19,7 @@ export default function RecipeSearch() {
     ingredients: "",
     equipment: "",
     time: "1000",
-  });  
+  });
 
   var offset = 0;
 
@@ -34,27 +38,28 @@ export default function RecipeSearch() {
         filters.equipment === "" &&
         filters.time === "1000"
       ) {
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=a877df555b0b40488df279ef75acd509`;
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
         const resp = await axios.get(API_URL);
+        setIsFetched(true);
         //console.log(API_URL);
 
         if (resp.data.totalResults === 0) {
           offset = 0;
           console.log("No more recipes. Change your search or try again");
         }
-        apiShuffle(resp.data.recipes);
+        //apiShuffle(resp.data.recipes);
         setApiData(resp.data.recipes);
         console.log(resp.data.recipes);
         console.log(resp.data.recipes.length);
       } else {
-        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
+        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
         const resp = await axios.get(API_URL);
         console.log(API_URL);
         if (resp.data.totalResults === 0) {
           offset = 0;
           console.log("No more recipes. Change your search or try again");
         }
-        apiShuffle(resp.data.results);
+        //apiShuffle(resp.data.results);
         setApiData(resp.data.results);
         console.log(resp.data.results);
         console.log(resp.data.results.length);
@@ -62,6 +67,8 @@ export default function RecipeSearch() {
     } catch (error) {
       // Handle Error Here
       console.error(error);
+      setIsFetched(false);
+      setError(error);
     }
   };
 
@@ -100,21 +107,18 @@ export default function RecipeSearch() {
   }
 
   function updateDiet(event) {
-    //setDiet(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, diet: event.target.value };
     });
   }
 
   function updateIntolerance(event) {
-    // setIntolerance(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, intolerance: event.target.value };
     });
   }
 
   function updateMeal(event) {
-    // setMeal(event.target.value);
     setFilters((prevFilters) => {
       return { ...prevFilters, meal: event.target.value };
     });
@@ -151,28 +155,35 @@ export default function RecipeSearch() {
     getRandomRecipes();
   }
 
-  return (
-    <div>
-      <RecipeCard
-        apiData={apiData}
-        recipeNum={recipeNum}
-        component={RecipeCard}
-        nextRecipe={nextRecipe}
-        allFiltersSet={() => setAllFilters(!allFilters)}
-      />
-      {allFilters &&
-        <FoodFilter
-        filters={filters.cuisine}
-        updateCuisine={updateCuisine}
-        updateDiet={updateDiet}
-        updateIntolerance={updateIntolerance}
-        updateMeal={updateMeal}
-        updateEquipment={updateEquipment}
-        updateIngredients={updateIngredients}
-        updateMaxTime={updateMaxTime}
-        applyFilters={applyFilters}
-        allFiltersSet2={() => setAllFilters(true)}
-      />}
-    </div>
-  );
+  if (isFetched === false) {
+    return <div>Loading...</div>;
+  } else if (error) {
+    return <div>Error with api request</div>;
+  } else {
+    return (
+      <div>
+        <RecipeCard
+          apiData={apiData}
+          recipeNum={recipeNum}
+          component={RecipeCard}
+          nextRecipe={nextRecipe}
+          allFiltersSet={() => setAllFilters(!allFilters)}
+        />
+        {allFilters && (
+          <FoodFilter
+            filters={filters.cuisine}
+            updateCuisine={updateCuisine}
+            updateDiet={updateDiet}
+            updateIntolerance={updateIntolerance}
+            updateMeal={updateMeal}
+            updateEquipment={updateEquipment}
+            updateIngredients={updateIngredients}
+            updateMaxTime={updateMaxTime}
+            applyFilters={applyFilters}
+            allFiltersSet2={() => setAllFilters(true)}
+          />
+        )}
+      </div>
+    );
+  }
 }
