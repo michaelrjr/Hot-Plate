@@ -13,7 +13,7 @@ export default function DisplayEachPost(props) {
   const { CheckCommentsExist } = useAuth();
 
   const showCommentInputBox = () => {
-    setShowCommentBox(true);
+    setShowCommentBox(!showCommentBox);
   };
 
   // NB: Need to put a useEffect here to CheckCommentsExist(props.postID) on re-load (so if a comment is entered, it shows up without refresh)
