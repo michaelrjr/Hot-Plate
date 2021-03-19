@@ -99,7 +99,6 @@ export default function Chat() {
       .onSnapshot((snapshot) => {
         setChatMessages(snapshot.docs.map((doc) => doc.data()));
       });
-    setMessage("");
   };
 
   //handle delete
@@ -127,21 +126,17 @@ export default function Chat() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
+    <div className="container chat-container p-3">
         {showChat == false ? (
-          <div className="col">
             <DisplayOnlineUsers
               currentUser={currentUser}
               onlineUsers={onlineUsers}
               handleStartChatClick={handleStartChatClick}
             />
-          </div>
-        ) : null}
-        <div className="col">
-          {showChat && (
+        ) : null }
+          {showChat == true ? (
             <DisplayChat
-              onlineUsers={onlineUsers}
+              otherUserDetails={otherUserDetails}
               currentUser={currentUser}
               chatMessages={chatMessages}
               handleCloseChatClick={handleCloseChatClick}
@@ -152,9 +147,7 @@ export default function Chat() {
               handleInputBoxChange={handleInputBoxChange}
               handleDeleteMessageClick={handleDeleteMessageClick}
             />
-          )}
-        </div>
-      </div>
+          ) : null }
     </div>
   );
 }
