@@ -48,7 +48,6 @@ export default function MoreInfo() {
           tempArr.push(response.data);
           setIsFetched(true);
           setRecipeInfoArray(tempArr);
-          // console.log(tempArr);
         }
       })
       .catch((error) => {
@@ -63,7 +62,6 @@ export default function MoreInfo() {
       .then((response) => {
         if (mounted) {
           setIsFetched(true);
-          // console.log(response.data);
           setNutritionChart(response.data);
         }
       })

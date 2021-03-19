@@ -67,10 +67,6 @@ export default function DisplayEachPost(props) {
                   commentSectionID = {props.childCommentSectionID}
                 />
             }
-            {/*
-              CheckCommentsExist(props.postID, props.childCommentSectionID) &&
-                console.log("Full props: "+JSON.stringify(props))
-            */}
           </div>
         </div>
     </div>

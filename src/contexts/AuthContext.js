@@ -112,7 +112,6 @@ export function AuthProvider({ children }) {
                     doc.ref.collection(childCommentSectionID).get().then(sub => {
                       if(sub.docs.length > 0){
                         setReturnBool(true);
-                        // console.log("Comments section exists. returning: "+returnBool+" for "+postID);
                         return true;
                       } else setReturnBool(false);
                     });
