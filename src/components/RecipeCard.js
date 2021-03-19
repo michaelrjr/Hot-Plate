@@ -1,7 +1,6 @@
 import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import FoodFilter from "./FoodFilter";
 
 export default function RecipeCard(props) {
   const size = "636x393.jpg";
@@ -58,20 +57,6 @@ export default function RecipeCard(props) {
               >
                 . . .
               </button>
-            </div>
-            <div className="mt-3">
-            {props.allFilters &&
-              <FoodFilter
-              filters={props.filters.cuisine}
-              updateCuisine={props.updateCuisine}
-              updateDiet={props.updateDiet}
-              updateIntolerance={props.updateIntolerance}
-              updateMeal={props.updateMeal}
-              updateEquipment={props.updateEquipment}
-              updateIngredients={props.updateIngredients}
-              updateMaxTime={props.updateMaxTime}
-              applyFilters={props.applyFilters}
-            />}
             </div>
           </div>
         </div>
