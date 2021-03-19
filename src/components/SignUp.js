@@ -54,7 +54,7 @@ function SignUp() {
         setError("Error, failed to create account. Please try again.");
       }
 
-      // create user document in user collection if sign up is successful
+      // create user document in user collection when sign up is clicked
       ref.doc(values.email).set({
         uuid: uuidv4(),
         firstName: values.firstName,

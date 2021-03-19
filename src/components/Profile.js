@@ -3,6 +3,8 @@ import SignOut from "./SignOut";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import app from "../firebase";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 export default function Profile() {
   const [error, setError] = useState("");
@@ -17,7 +19,24 @@ export default function Profile() {
     getUserDetails();
   }, []);
 
-  /*object with keys seconds/nanoseconds -v- collection of children*/
+  const formik = useFormik({
+    initialValues: {
+      image: "",
+    },
+    validationSchema: Yup.object({
+      image: Yup.mixed()
+        .required("Required")
+        .test("type", "Only jpeg files are supported", (value) => {
+          console.log(value);
+          return value && value[0].type === "image/jpeg";
+        }),
+    }),
+    onSubmit: async (e, values) => {
+      //e.preventDefault();
+      //   ref.doc(currentUser.email).update({ avatar: fileURL });
+    },
+  });
+
   const getUserDetails = () => {
     ref
       .doc(currentUser.email)
@@ -33,18 +52,18 @@ export default function Profile() {
     console.log("userDetails: " + userDetails);
   };
 
-  const handleUploadSubmit = async (e) => {
-    console.log(fileURL);
-    e.preventDefault();
-    ref.doc(currentUser.email).update({ avatar: fileURL });
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   ref.doc(currentUser.email).update({ avatar: fileURL });
+  // }
 
+  // handles the users uploaded image
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     setFileName(e.target.files[0].name);
-    const storageRef = app.storage().ref();
+    const storageRef = app.storage().ref(); //firebase storage ref
     const fileRef = storageRef.child(file.name);
-    await fileRef.put(file);
+    await fileRef.put(file); // put file in storage
     setFileURL(await fileRef.getDownloadURL());
   };
 
@@ -72,13 +91,23 @@ export default function Profile() {
               )}
             </div>
             <div className="mb-3">
-              <form onSubmit={handleUploadSubmit}>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="custom-file mb-3">
                   <input
                     type="file"
-                    className="custom-file-input"
-                    id="file-upload"
+                    className={`${
+                      formik.touched.image &&
+                      formik.errors.image &&
+                      "custom-file-input is-invalid"
+                    } ${
+                      formik.touched.image && !formik.errors.image
+                        ? "custom-file-input is-valid"
+                        : "custom-file-input"
+                    }`}
+                    id="image"
+                    name="image"
                     onChange={handleFileChange}
+                    onBlur={formik.handleBlur}
                   />
                   {fileName ? (
                     <label className="custom-file-label" htmlFor="file-upload">
@@ -89,9 +118,14 @@ export default function Profile() {
                       Choose profile image...
                     </label>
                   )}
+                  {formik.touched.image && formik.errors.image ? (
+                    <div className="invalid-feedback">
+                      {formik.errors.image}
+                    </div>
+                  ) : null}
                 </div>
                 <div>
-                  <button type="submit" className="btn btn-warning w-100">
+                  <button type="submit" className="btn btn-warning w-100 mt-3">
                     Upload
                   </button>
                 </div>
