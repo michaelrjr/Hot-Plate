@@ -1,255 +1,190 @@
 import React, { useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
 import FoodFilter from "./FoodFilter";
-import { Modal } from 'react-bootstrap';
-
+import { Modal } from "react-bootstrap";
 import axios from "axios";
 
 export default function RecipeSearch() {
+  // const [allFilters, setAllFilters] = useState(false);
+  // const [filters, setFilters] = useState({
+  //   cuisine: "",
+  //   diet: "",
+  //   intolerance: "",
+  //   mealType: "",
+  //   time: 0,
+  // });
   const [apiData, setApiData] = useState([]);
   const [recipeNum, setRecipeNum] = useState(0);
-<<<<<<< HEAD
-  const [allFilters, setAllFilters] = useState(false);
-
   const [isFetched, setIsFetched] = useState(false);
   const [error, setError] = useState(null);
-
-=======
-  // const [allFilters, setAllFilters] = useState(false);
->>>>>>> dcf1bcc3a86c48cc17c080dd254a9902af76ed88
-  const [filters, setFilters] = useState({
-    cuisine: "",
-    diet: "",
-    intolerance: "",
-    meal: "",
-    time: "1000",
-  });
-<<<<<<< HEAD
-=======
-  const [loading, setLoading] = useState(true);
-
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
->>>>>>> dcf1bcc3a86c48cc17c080dd254a9902af76ed88
+  const [cuisine, setCuisine] = useState("");
+  const [mealType, setMealType] = useState("");
+  const [intolerance, setIntolerance] = useState("");
+  const [diet, setDiet] = useState("");
+  const [maxTime, setMaxTime] = useState(1000);
 
-  var offset = 0;
-
+  // call getRandomRecipes() when the page loads
   useEffect(() => {
     getRandomRecipes();
   }, []);
 
+  // this functions requests random recipes from spoonacular
   const getRandomRecipes = async () => {
+    let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`;
     try {
-      setLoading(true);
-      if (
-        filters.cuisine === "" &&
-        filters.diet === "" &&
-        filters.meal === "" &&
-        filters.intolerance === "" &&
-        filters.time === "1000"
-      ) {
-<<<<<<< HEAD
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
-=======
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
->>>>>>> dcf1bcc3a86c48cc17c080dd254a9902af76ed88
-        const resp = await axios.get(API_URL);
-        setIsFetched(true);
-        //console.log(API_URL);
-
-        if (resp.data.totalResults === 0) {
-          offset = 0;
-          setLoading(false);
-          setShow(true);
-          console.log("No more recipes. Change your search or try again");
-        }
-<<<<<<< HEAD
-        //apiShuffle(resp.data.recipes);
-=======
->>>>>>> dcf1bcc3a86c48cc17c080dd254a9902af76ed88
-        setApiData(resp.data.recipes);
-        console.log(resp.data.recipes);
-        console.log(resp.data.recipes.length);
-      } else {
-<<<<<<< HEAD
-        let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&includeIngredients=${filters.ingredients}&equipment=${filters.equipment}&maxReadyTime=${filters.time}&number=100&offset=${offset}&information&apiKey=28f4c1acf9cc4a96863ed9298ac43eb3`;
-        const resp = await axios.get(API_URL);
-        console.log(API_URL);
-        if (resp.data.totalResults === 0) {
-          offset = 0;
-          console.log("No more recipes. Change your search or try again");
-        }
-        //apiShuffle(resp.data.results);
-        setApiData(resp.data.results);
-        console.log(resp.data.results);
-        console.log(resp.data.results.length);
-=======
-        getFilteredRecipes();
->>>>>>> dcf1bcc3a86c48cc17c080dd254a9902af76ed88
-      }
+      const resp = await axios.get(API_URL);
+      setApiData(resp.data.recipes);
+      console.log("random recipes ", resp.data.recipes);
+      setIsFetched(true);
     } catch (error) {
-      // Handle Error Here
-      console.error(error);
       setIsFetched(false);
       setError(error);
     }
-  }
+  };
+
+  // this function requests filtered recipes from spoonacular
   const getFilteredRecipes = async () => {
+    let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=${maxTime}&number=100&sort=random&information&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`;
     try {
-      setLoading(true);
-      let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&maxReadyTime=${filters.time}&number=100&offset=${offset}&sort=random&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
       const resp = await axios.get(API_URL);
-      console.log(API_URL);
-      if (resp.data.totalResults === 0) {
-        offset = 0;
-        setLoading(false);
-        setShow(true);;
-        console.log("No more recipes. Change your search or try again");
-      }
       setApiData(resp.data.results);
-      console.log(resp.data.results);
-      console.log(resp.data.results.length);
+      console.log("filtered recipes ", resp.data.results);
+      setIsFetched(true);
     } catch (error) {
-      // Handle Error Here
-      console.error(error);
+      setIsFetched(false);
+      setError(error);
     }
   };
 
+  // if we are at the end of the array set recipeNum to 0
+  // otherwise increment recipeNum by 1
   function nextRecipe() {
-    if (apiData.length !== 0) {
-      setRecipeNum(recipeNum + 1);
-    }
-    console.log(recipeNum);
-
     if (recipeNum === apiData.length - 1) {
       setRecipeNum(0);
-      if (apiData.length !== 0) {
-        offset = offset + 100;
-      }
-
-      console.log(offset);
-      getRandomRecipes();
+      // will need to handle what happens when we reach the end of the array with both random recipes and filtered recipes...
+    } else {
+      setRecipeNum(recipeNum + 1);
     }
   }
 
   function updateCuisine(event) {
-    setFilters((prevFilters) => {
-      return { ...prevFilters, cuisine: event.target.value };
-    });
+    setCuisine(event.target.value);
   }
 
   function updateDiet(event) {
-    setFilters((prevFilters) => {
-      return { ...prevFilters, diet: event.target.value };
-    });
+    setDiet(event.target.value);
   }
 
   function updateIntolerance(event) {
-    setFilters((prevFilters) => {
-      return { ...prevFilters, intolerance: event.target.value };
-    });
+    setIntolerance(event.target.value);
   }
 
-  function updateMeal(event) {
-    setFilters((prevFilters) => {
-      return { ...prevFilters, meal: event.target.value };
-    });
+  function updateMealType(event) {
+    setMealType(event.target.value);
   }
-
-  // function updateEquipment(event) {
-  //   setFilters((prevFilters) => {
-  //     return { ...prevFilters, equipment: event.target.value };
-  //   });
-  // }
-
-  // function updateIngredients(event) {
-  //   setFilters((prevFilters) => {
-  //     return { ...prevFilters, ingredients: event.target.value };
-  //   });
-  // }
 
   function updateMaxTime(event) {
-    if (event.target.value !== "") {
-      setFilters((prevFilters) => {
-        return { ...prevFilters, time: event.target.value };
-      });
-    } else {
-      setFilters((prevFilters) => {
-        return { ...prevFilters, time: "1000" };
-      });
-    }
-    console.log(event.target.value);
+    setMaxTime(event.target.value);
   }
 
   function applyFilters() {
     setRecipeNum(0);
-    offset = 0;
-    getRandomRecipes();
-    handleClose();
+    getFilteredRecipes();
+    handleCloseFilters();
   }
 
-<<<<<<< HEAD
+  // handle closing and opening modal
+  const handleCloseFilters = () => setShow(false);
+  const handleShowFilters = () => setShow(true);
+
+  // function updateCuisine(event) {
+  //   setFilters((prevFilters) => {
+  //     return { ...prevFilters, cuisine: event.target.value };
+  //   });
+  // }
+
+  // function updateDiet(event) {
+  //   setFilters((prevFilters) => {
+  //     return { ...prevFilters, diet: event.target.value };
+  //   });
+  // }
+
+  // function updateIntolerance(event) {
+  //   setFilters((prevFilters) => {
+  //     return { ...prevFilters, intolerance: event.target.value };
+  //   });
+  // }
+
+  // function uupdateMealTyp(event) {
+  //   setFilters((prevFilters) => {
+  //     return { ...prevFilters, mealType: event.target.value };
+  //   });
+  // }
+
+  // function updateMaxTime(event) {
+  //   if (event.target.value !== "") {
+  //     setFilters((prevFilters) => {
+  //       return { ...prevFilters, time: event.target.value };
+  //     });
+  //   } else {
+  //     setFilters((prevFilters) => {
+  //       return { ...prevFilters, time: "1000" };
+  //     });
+  //   }
+  //   console.log(event.target.value);
+  // }
+
+  // if the data is not yet fetched
   if (isFetched === false) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <div className='card'>
+          <div className='card-body'>
+            <div className='d-flex justify-content-center'>
+              <div
+                className='spinner-border'
+                style={{ width: "11rem", height: "11rem" }}
+                role='status'>
+                <span className='sr-only'>Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+    // or if there is an error with the API request
   } else if (error) {
-    return <div>Error with api request</div>;
+    <div>
+      <h3>API Request Error...</h3>
+    </div>;
   } else {
+    // otherwise, we have data
     return (
       <div>
         <RecipeCard
           apiData={apiData}
           recipeNum={recipeNum}
-          component={RecipeCard}
           nextRecipe={nextRecipe}
-          allFiltersSet={() => setAllFilters(!allFilters)}
+          handleShowFilters={handleShowFilters}
         />
-        {allFilters && (
-          <FoodFilter
-            filters={filters.cuisine}
-            updateCuisine={updateCuisine}
-            updateDiet={updateDiet}
-            updateIntolerance={updateIntolerance}
-            updateMeal={updateMeal}
-            updateEquipment={updateEquipment}
-            updateIngredients={updateIngredients}
-            updateMaxTime={updateMaxTime}
-            applyFilters={applyFilters}
-            allFiltersSet2={() => setAllFilters(true)}
-          />
-        )}
+        <Modal show={show} onHide={handleCloseFilters}>
+          <Modal.Header closeButton>
+            <Modal.Title>Recipe Filters</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <FoodFilter
+              updateCuisine={updateCuisine}
+              updateDiet={updateDiet}
+              updateIntolerance={updateIntolerance}
+              updateMealType={updateMealType}
+              updateMaxTime={updateMaxTime}
+              applyFilters={applyFilters}
+            />
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
       </div>
     );
   }
-=======
-  return (
-    <div>
-      <RecipeCard
-        apiData={apiData}
-        recipeNum={recipeNum}
-        component={RecipeCard}
-        nextRecipe={nextRecipe}
-        allFiltersSet={handleShow}
-        loading={loading}
-      />
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Recipe Filters</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <FoodFilter
-          filters={filters.cuisine}
-          updateCuisine={updateCuisine}
-          updateDiet={updateDiet}
-          updateIntolerance={updateIntolerance}
-          updateMeal={updateMeal}
-          updateMaxTime={updateMaxTime}
-          applyFilters={applyFilters}
-        />
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer>
-        </Modal>
-    </div>
-  );
->>>>>>> dcf1bcc3a86c48cc17c080dd254a9902af76ed88
 }
