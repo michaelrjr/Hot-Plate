@@ -118,10 +118,21 @@ export default function FoodFilter(props) {
           onChange={props.updateMaxTime}
         />
         <br/>
-        <button className="btn btn-success w-100" onClick={props.applyFilters}>
-          Apply Filters
+        </span>
+      <div className="col text-center">
+        <span>
+
+          <button className="btn btn-secondary w-25" onClick={props.applyFilters}>
+            Apply Filters
+          </button>
+        </span>
+      &nbsp;  &nbsp;
+      <span>
+          <button className="btn btn-success w-25" onClick={props.applyFilters}>
+            Apply Filters
         </button>
-      </span>
+        </span>
+      </div>
     </div>
   );
 }

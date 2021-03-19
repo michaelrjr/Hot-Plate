@@ -8,7 +8,7 @@ import axios from "axios";
 export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);
   const [recipeNum, setRecipeNum] = useState(0);
-  // const [allFilters, setAllFilters] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [filters, setFilters] = useState({
     cuisine: "",
     diet: "",
@@ -38,7 +38,7 @@ export default function RecipeSearch() {
         filters.intolerance === "" &&
         filters.time === "1000"
       ) {
-        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
+        let API_URL = `https://api.spoonacular.com/recipes/random?number=100&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
         const resp = await axios.get(API_URL);
         //console.log(API_URL);
 
@@ -55,14 +55,13 @@ export default function RecipeSearch() {
         getFilteredRecipes();
       }
     } catch (error) {
-      // Handle Error Here
-      console.error(error);
+      setErrorMsg(error);
     }
   }
   const getFilteredRecipes = async () => {
     try {
       setLoading(true);
-      let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&maxReadyTime=${filters.time}&number=100&offset=${offset}&sort=random&information&apiKey=2604e0a31deb4e02aa952bb582e5002e`;
+      let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${filters.diet}&intolerances=${filters.intolerance}&type=${filters.meal}&cuisine=${filters.cuisine}&maxReadyTime=${filters.time}&number=100&offset=${offset}&sort=random&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
       const resp = await axios.get(API_URL);
       console.log(API_URL);
       if (resp.data.totalResults === 0) {
@@ -74,9 +73,8 @@ export default function RecipeSearch() {
       setApiData(resp.data.results);
       console.log(resp.data.results);
       console.log(resp.data.results.length);
-    } catch (error) {
-      // Handle Error Here
-      console.error(error);
+  } catch (error) {
+      setErrorMsg(error);
     }
   };
 
@@ -124,18 +122,6 @@ export default function RecipeSearch() {
     });
   }
 
-  // function updateEquipment(event) {
-  //   setFilters((prevFilters) => {
-  //     return { ...prevFilters, equipment: event.target.value };
-  //   });
-  // }
-
-  // function updateIngredients(event) {
-  //   setFilters((prevFilters) => {
-  //     return { ...prevFilters, ingredients: event.target.value };
-  //   });
-  // }
-
   function updateMaxTime(event) {
     if (event.target.value !== "") {
       setFilters((prevFilters) => {
@@ -156,33 +142,51 @@ export default function RecipeSearch() {
     handleClose();
   }
 
-  return (
-    <div>
-      <RecipeCard
-        apiData={apiData}
-        recipeNum={recipeNum}
-        component={RecipeCard}
-        nextRecipe={nextRecipe}
-        allFiltersSet={handleShow}
-        loading={loading}
-      />
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Recipe Filters</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <FoodFilter
-          filters={filters.cuisine}
-          updateCuisine={updateCuisine}
-          updateDiet={updateDiet}
-          updateIntolerance={updateIntolerance}
-          updateMeal={updateMeal}
-          updateMaxTime={updateMaxTime}
-          applyFilters={applyFilters}
+  if (errorMsg) {
+    return (
+      <div>
+        <div className="card">
+          <div className="card-body col text-center">
+            <span><b>API Call Error</b></span>
+            <img
+            src="https://pixy.org/src/69/thumbs350/692078.jpg"
+            className="img-fluid img-thumbnail"
+            alt="error"
+          ></img>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  else{
+    return (
+      <div>
+        <RecipeCard
+          apiData={apiData}
+          recipeNum={recipeNum}
+          component={RecipeCard}
+          nextRecipe={nextRecipe}
+          allFiltersSet={handleShow}
+          loading={loading}
         />
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Recipe Filters</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <FoodFilter
+              filters={filters.cuisine}
+              updateCuisine={updateCuisine}
+              updateDiet={updateDiet}
+              updateIntolerance={updateIntolerance}
+              updateMeal={updateMeal}
+              updateMaxTime={updateMaxTime}
+              applyFilters={applyFilters}
+            />
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
         </Modal>
-    </div>
-  );
+      </div>
+    );
+  }
 }
