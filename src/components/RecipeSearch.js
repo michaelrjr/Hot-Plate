@@ -6,14 +6,6 @@ import axios from "axios";
 import { isInteger } from "formik";
 
 export default function RecipeSearch() {
-  // const [allFilters, setAllFilters] = useState(false);
-  // const [filters, setFilters] = useState({
-  //   cuisine: "",
-  //   diet: "",
-  //   intolerance: "",
-  //   mealType: "",
-  //   time: 0,
-  // });
   const [apiData, setApiData] = useState([]);
   const [recipeNum, setRecipeNum] = useState(0);
   const [isFetched, setIsFetched] = useState(false);
@@ -23,7 +15,8 @@ export default function RecipeSearch() {
   const [mealType, setMealType] = useState("");
   const [intolerance, setIntolerance] = useState("");
   const [diet, setDiet] = useState("");
-  const [maxTime, setMaxTime] = useState("1000");
+  const [maxTime, setMaxTime] = useState("");
+  const [enabled, setEnabled] = useState(false);
 
   // call getRandomRecipes() when the page loads
   useEffect(() => {
@@ -46,10 +39,16 @@ export default function RecipeSearch() {
 
   // this function requests filtered recipes from spoonacular
   const getFilteredRecipes = async () => {
-    let API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=${maxTime}&number=100&sort=random&information&apiKey=6e056eaaa0b64faab0ef479298c17f9b`;
+    let API_URL;
+    if (maxTime === "") {
+      API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`
+    } else {
+      API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=${maxTime}&number=100&sort=random&information&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`;
+    }
     try {
       const resp = await axios.get(API_URL);
       setApiData(resp.data.results);
+      console.log(API_URL);
       console.log("filtered recipes ", resp.data.results);
       setIsFetched(true);
     } catch (error) {
@@ -71,44 +70,51 @@ export default function RecipeSearch() {
 
   function updateCuisine(event) {
     setCuisine(event.target.value);
+    setEnabled(true);
   }
 
   function updateDiet(event) {
     setDiet(event.target.value);
+    setEnabled(true);
   }
 
   function updateIntolerance(event) {
     setIntolerance(event.target.value);
+    setEnabled(true);
   }
 
   function updateMealType(event) {
     setMealType(event.target.value);
+    setEnabled(true);
   }
 
   function updateMaxTime(event) {
-    if (event.target.value === "")
-      setMaxTime("1000");
-    else {
       setMaxTime(event.target.value);
-    }
+      setEnabled(true);
   }
 
-  // function checkTime(){
-  //   if (maxTime !== "" && !/^\d+$/.test(maxTime) && maxTime.parseInt() <= 0) {
-  //     alert("Please insert a valid number.")
-  //     setMaxTime("");
-  //   }
-  // }
-
   function applyFilters() {
-    console.log(maxTime);
     if (maxTime !== "" && !/^\d+$/.test(maxTime) || parseInt(maxTime) <= 0) {
-      setMaxTime("1000");
+      setMaxTime("");
+      setEnabled(false);
       alert("Please insert a valid time.")
     }else{
     setRecipeNum(0);
     getFilteredRecipes();
+    setEnabled(false);
     handleCloseFilters();
+    }
+  }
+
+  //resets inputs to default values
+  function removeFilters(){
+    if(cuisine, diet, intolerance, maxTime, mealType !== ""){
+    setCuisine("");
+    setDiet("");
+    setIntolerance("");
+    setMealType("");
+    setMaxTime("");
+    setEnabled(true);
     }
   }
 
@@ -136,17 +142,42 @@ export default function RecipeSearch() {
     );
     // or if there is an error with the API request
   } else if (error) {
-    <div className="card">
-      <div className="card-body col text-center">
-        <span><b>API Call Error</b></span>
-        <img
-          src="https://pixy.org/src/69/thumbs350/692078.jpg"
-          className="img-fluid img-thumbnail"
-          alt="error"
-        ></img>
+    return (
+      <div className="card">
+        <div className="card-body col text-center">
+          <span><b>API Call Error</b></span>
+          <img
+            src="https://pixy.org/src/69/thumbs350/692078.jpg"
+            className="img-fluid img-thumbnail"
+            alt="error"
+          ></img>
+        </div>
       </div>
-    </div>
-  } else {
+    );
+  } else if (apiData.length === 0) {
+    return (
+      <div>
+        <h1>No Recipes Found.</h1>
+        <h3>Please change filters.</h3>
+        <FoodFilter
+          cuisine={cuisine}
+          mealType={mealType}
+          intolerance={intolerance}
+          diet={diet}
+          maxTime={maxTime}
+          updateCuisine={updateCuisine}
+          updateDiet={updateDiet}
+          updateIntolerance={updateIntolerance}
+          updateMealType={updateMealType}
+          updateMaxTime={updateMaxTime}
+          applyFilters={applyFilters}
+          removeFilters={removeFilters}
+          enabled={enabled}
+        />
+      </div>
+    );
+  } 
+  else {
     // otherwise, we have data
     return (
       <div>
@@ -162,12 +193,19 @@ export default function RecipeSearch() {
           </Modal.Header>
           <Modal.Body>
             <FoodFilter
+              cuisine={cuisine}
+              mealType={mealType}
+              intolerance={intolerance}
+              diet={diet}
+              maxTime={maxTime}
               updateCuisine={updateCuisine}
               updateDiet={updateDiet}
               updateIntolerance={updateIntolerance}
               updateMealType={updateMealType}
               updateMaxTime={updateMaxTime}
               applyFilters={applyFilters}
+              removeFilters={removeFilters}
+              enabled={enabled}
             />
           </Modal.Body>
           <Modal.Footer></Modal.Footer>

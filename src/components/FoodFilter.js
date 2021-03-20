@@ -11,6 +11,7 @@ export default function FoodFilter(props) {
           className='btn btn-light dropdown-toggle w-100'
           name='cuisine'
           id='cuisine'
+          value={props.cuisine}
           onChange={props.updateCuisine}>
           <option value=''>None</option>
           <option value='african'>African</option>
@@ -49,6 +50,7 @@ export default function FoodFilter(props) {
           className='btn btn-light dropdown-toggle w-100'
           name='diet'
           id='diet'
+          value={props.diet}
           onChange={props.updateDiet}>
           <option value=''>None</option>
           <option value='gluten-free'>Gluten Free</option>
@@ -71,6 +73,7 @@ export default function FoodFilter(props) {
           className='btn btn-light dropdown-toggle w-100'
           id='intolerance'
           name='intolerance'
+          value={props.intolerance}
           onChange={props.updateIntolerance}>
           <option value=''>None</option>
           <option value='dairy'>Dairy</option>
@@ -95,6 +98,7 @@ export default function FoodFilter(props) {
           className='btn btn-light dropdown-toggle w-100'
           name='mealType'
           id='mealType'
+          value={props.mealType}
           onChange={props.updateMealType}>
           <option value=''>None</option>
           <option value='main-course'>Main Course</option>
@@ -113,27 +117,34 @@ export default function FoodFilter(props) {
           <option value='drink'>Drink</option>
         </select>
         <form>
-          <b>Type Maximum Preparation Time here (mins):</b>
+          <b>Maximum Preparation Time:</b>
         </form>
         <input
           className='form-control' //For user typed input
           type='text'
+          value={props.maxTime}
           onChange={props.updateMaxTime}
+          placeholder="Time (mins)"
         />
         <br/>
         </span>
       <div className="col text-center">
         <span>
 
-          <button className="btn btn-secondary w-25" onClick={props.applyFilters}>
-            Apply Filters
+          <button className="btn btn-secondary w-25" onClick={props.removeFilters}>
+            Remove Filters
           </button>
-        </span>
-      &nbsp;  &nbsp;
+        </span> 
+      &nbsp;  &nbsp; &nbsp; &nbsp;
       <span>
+      {props.enabled ==false &&
+        <button className="btn btn-danger w-25 disabled">
+          Apply Filters
+      </button>}
+      {props.enabled ==true &&
           <button className="btn btn-success w-25" onClick={props.applyFilters}>
             Apply Filters
-        </button>
+        </button>}
         </span>
       </div>
     </div>
