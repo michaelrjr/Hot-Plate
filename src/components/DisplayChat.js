@@ -12,7 +12,7 @@ export default function DisplayChat(props) {
           </button>
             <img 
               className="rounded-circle ml-3"
-              src={user.avatar}
+              src={user.avatar != null ? user.avatar : 'defaultuser.png'}
               height="60"
               width="60"
             />
@@ -67,20 +67,3 @@ export default function DisplayChat(props) {
     </div>
   );
 }
-
-
-{/* <form className="input-group d-flex input-message" onSubmit={props.handleSendMessage}>
-            <input
-              className="form-control shadow-none"
-              type="text"
-              placeholder="Enter message"
-              value={props.message}
-              onChange={props.handleInputBoxChange}
-              aria-describedby="basic-addon2"
-            />
-            <div class="input-group-append">
-            <button type="submit" className="btn btn-outline-secondary">
-              Send
-            </button>
-            </div>
-          </form> */}

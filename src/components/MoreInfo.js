@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { AiOutlineShareAlt } from "react-icons/ai";
-import { Modal } from 'react-bootstrap';
+import { Collapse, Modal } from "react-bootstrap";
 
 export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
@@ -37,14 +37,14 @@ export default function MoreInfo() {
 
   const handlePostInputChange = (event) => {
     setPost(event.target.value);
-  }
+  };
 
   const getRecipeInfo = () => {
     axios
       .get(recipeInfoURL)
       .then((response) => {
+        let tempArr = [];
         if (mounted) {
-          let tempArr = [];
           tempArr.push(response.data);
           setIsFetched(true);
           setRecipeInfoArray(tempArr);
@@ -68,7 +68,6 @@ export default function MoreInfo() {
       .catch((error) => {
         setIsFetched(false);
         setErrorMsg(error);
-        console.log(error);
       });
   };
 
@@ -78,80 +77,84 @@ export default function MoreInfo() {
       <div>
         <h3>An error has occured</h3>
       </div>
-    ); // end of return.
+    );
   } else if (!isFetched) {
     return (
       <div>
         <h3>Loading please wait...</h3>
       </div>
-    ); // end of return
+    );
   } else {
     // we have no errors and we have data
     return (
-      <div className="container">
-        <Modal show={show} onHide={handleClose}>
-
-        </Modal>
-        <div className="row">
-          <div className="col-lg-6 col-sm-12">
+      <div className='container'>
+        <div className='row'>
+          <div className='col-lg-6 col-sm-12'>
             {recipeInfoArray.map((recipe) => (
-              <div className="card mb-3 clearfix" key={recipe.id}>
-                <img className="card-img-top" src={recipe.image} alt="recipe" />
-                <div className="card-body">
-
+              <div className='card mb-3 clearfix' key={recipe.id}>
+                <img className='card-img-top' src={recipe.image} alt='recipe' />
+                <div className='card-body'>
                   <h4>
                     <b>{recipe.title}</b>
                   </h4>
-                  <p> Ready in: {" " + recipe.readyInMinutes + " "} minutes<br />Servings: {" " + recipe.servings}</p>
-                  <button className="btn btn-primary"
-                    onClick={() =>
-                      handleShow()
-                    }
-                  >
+                  <p>
+                    {" "}
+                    Ready in: {" " + recipe.readyInMinutes + " "} minutes
+                    <br />
+                    Servings: {" " + recipe.servings}
+                  </p>
+                  <button
+                    className='btn btn-primary'
+                    onClick={() => handleShow()}>
                     Share
-                    </button>
-                  <button className="btn btn-secondary float-right"
-                    onClick={() =>
-                      handleShowSave()
-                    }>
+                  </button>
+                  <button
+                    className='btn btn-secondary float-right'
+                    onClick={() => handleShowSave()}>
                     Save
-                    </button>
+                  </button>
                   <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                       <Modal.Title>Share Recipe</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <strong>Post Preview:</strong>
-                      <div className="card">
+                      <div className='card'>
                         {recipe.image === null ? (
-                          <img src="noimage.jpg" />
+                          <img src='noimage.jpg' />
                         ) : (
-                          <img
-                            src={recipe.image}
-                            alt="recipe"
-                          />
+                          <img src={recipe.image} alt='recipe' />
                         )}
-                        <div className="card-body">
-                          <div className="card-title">
+                        <div className='card-body'>
+                          <div className='card-title'>
                             <h3>{recipe.title}</h3>
                           </div>
                           <div>
                             <label>
-                              Post Description:<br />
-                              <input type="text" onChange={handlePostInputChange} />
+                              Post Description:
+                              <br />
+                              <input
+                                type='text'
+                                onChange={handlePostInputChange}
+                              />
                             </label>
                           </div>
                         </div>
                       </div>
-                      <button onClick={() => {
-                        handlePostClick(post, recipeID, recipe.image, recipe.title)
-                        handleClose()
-                      }}>
+                      <button
+                        onClick={() => {
+                          handlePostClick(
+                            post,
+                            recipeID,
+                            recipe.image,
+                            recipe.title
+                          );
+                          handleClose();
+                        }}>
                         Publish
-                        </button>
+                      </button>
                     </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
+                    <Modal.Footer></Modal.Footer>
                   </Modal>
                   <Modal show={showSave} onHide={handleCloseSave}>
                     <Modal.Header closeButton>
@@ -163,27 +166,25 @@ export default function MoreInfo() {
 
                   <hr />
                   <button
-                    className="btn btn-warning w-100"
-                    onClick={() => setShowIngredients(!showIngredients)}
-                  >
+                    className='btn btn-warning w-100'
+                    onClick={() => setShowIngredients(!showIngredients)}>
                     Ingredients
                   </button>
-                  {showIngredients && (
-                    <div className="mt-3">
+                  <Collapse in={showIngredients}>
+                    <div className='mt-3'>
                       {recipe.extendedIngredients.map((ingredients) => (
                         <li>{ingredients.original}</li>
                       ))}
                     </div>
-                  )}
+                  </Collapse>
                   <hr />
                   <button
-                    className="btn btn-success w-100"
-                    onClick={() => setShowInstructions(!showInstructions)}
-                  >
+                    className='btn btn-success w-100'
+                    onClick={() => setShowInstructions(!showInstructions)}>
                     Instructions
                   </button>
-                  {showInstructions && (
-                    <div className="mt-3">
+                  <Collapse in={showInstructions}>
+                    <div className='mt-3'>
                       {recipe.analyzedInstructions.map((instruction, index) => (
                         <div key={index}>
                           {instruction.steps.map((step) => (
@@ -194,26 +195,29 @@ export default function MoreInfo() {
                         </div>
                       ))}
                     </div>
-                  )}
+                  </Collapse>
                 </div>
               </div>
             ))}
           </div>
-          <div className="col-lg-6 col-sm-12">
+          <div className='col-lg-6 col-sm-12'>
             <button
-              className="btn btn-primary w-100 mb-2"
-              onClick={() => setShowNutrition(!showNutrition)}
-            >
+              className='btn btn-primary w-100 mb-2'
+              data-toggle='collapse'
+              data-target='#nutritionalInfo'
+              aria-expanded='false'
+              aria-controls='nutritionalInfo'
+              onClick={() => setShowNutrition(!showNutrition)}>
               Nutritional Information
             </button>
-            {showNutrition && (
-              <div className="card mb-3">
+            <Collapse in={showNutrition}>
+              <div className='card mb-3'>
                 <div
-                  className="card-body"
-                  dangerouslySetInnerHTML={{ __html: nutritionChart }}
-                ></div>
+                  className='card-body'
+                  id='nutritionalInfo'
+                  dangerouslySetInnerHTML={{ __html: nutritionChart }}></div>
               </div>
-            )}
+            </Collapse>
           </div>
         </div>
       </div>

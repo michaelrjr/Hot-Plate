@@ -13,12 +13,15 @@ export default function Chat() {
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [otherUserDetails, setOtherUserDetails] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [searchMember, setSearchMember] = useState("");
 
   //database ref
   const ref = app.firestore().collection("Users");
 
   useEffect(() => {
     getOnlineUsers();
+    getMembers();
     if (showChat === true) {
       getChatMessages();
     }
@@ -29,6 +32,18 @@ export default function Chat() {
     ref.where("online", "==", true).onSnapshot((querySnapshot) => {
       setOnlineUsers(querySnapshot.docs.map((doc) => doc.data()));
     });
+  };
+
+  //get all signed up user
+  const getMembers = () => {
+    ref.where("email", "!=", null).onSnapshot((querySnapshot) => {
+      setMembers(querySnapshot.docs.map((doc) => doc.data()));
+    });
+  };
+
+  //search members
+  const handleSearch = (event) => {
+    setSearchMember(event.target.value);
   };
 
   // gets the other users document from the users collection
@@ -63,7 +78,6 @@ export default function Chat() {
 
   const handleInputBoxChange = (event) => {
     setMessage(event.target.value);
-    console.log(event.target.value);
   };
 
   // send message to the current user and the other user (user you are messaging)
@@ -85,7 +99,6 @@ export default function Chat() {
       from: currentUser.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
-
     // reset message to empty string
     setMessage("");
   };
@@ -126,28 +139,31 @@ export default function Chat() {
   };
 
   return (
-    <div className="container chat-container p-3">
-        {showChat == false ? (
-            <DisplayOnlineUsers
-              currentUser={currentUser}
-              onlineUsers={onlineUsers}
-              handleStartChatClick={handleStartChatClick}
-            />
-        ) : null }
-          {showChat == true ? (
-            <DisplayChat
-              otherUserDetails={otherUserDetails}
-              currentUser={currentUser}
-              chatMessages={chatMessages}
-              handleCloseChatClick={handleCloseChatClick}
-              handleDeleteMessageClick={handleDeleteMessageClick}
-              handleSendMessage={handleSendMessage}
-              otherUserEmail={otherUserEmail}
-              message={message}
-              handleInputBoxChange={handleInputBoxChange}
-              handleDeleteMessageClick={handleDeleteMessageClick}
-            />
-          ) : null }
+    <div className='container chat-container p-2'>
+      {showChat == false ? (
+        <DisplayOnlineUsers
+          members={members}
+          searchMember={searchMember}
+          currentUser={currentUser}
+          onlineUsers={onlineUsers}
+          handleStartChatClick={handleStartChatClick}
+          handleSearch={handleSearch}
+        />
+      ) : null}
+      {showChat == true ? (
+        <DisplayChat
+          otherUserDetails={otherUserDetails}
+          currentUser={currentUser}
+          chatMessages={chatMessages}
+          handleCloseChatClick={handleCloseChatClick}
+          handleDeleteMessageClick={handleDeleteMessageClick}
+          handleSendMessage={handleSendMessage}
+          otherUserEmail={otherUserEmail}
+          message={message}
+          handleInputBoxChange={handleInputBoxChange}
+          handleDeleteMessageClick={handleDeleteMessageClick}
+        />
+      ) : null}
     </div>
   );
 }
