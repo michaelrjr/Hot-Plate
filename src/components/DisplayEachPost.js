@@ -7,14 +7,33 @@ import { useAuth } from "../contexts/AuthContext";
 import ComponentC from "./ComponentC";
 import DisplayComments from "./DisplayComments";
 import { PinDropSharp } from "@material-ui/icons";
+import app from "../firebase";
 
 export default function DisplayEachPost(props) {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const { CheckCommentsExist } = useAuth();
+  const userDBRef = app.firestore().collection("Users");
+  const [ currentUserData, setCurrentUserData ] = useState();
 
   const showCommentInputBox = () => {
     setShowCommentBox(!showCommentBox);
   };
+
+  
+  const getUserData = () => {
+    userDBRef.doc(props.email).get().then( (doc) => {
+      setCurrentUserData( doc.data() );
+      console.log("tempArr: "+JSON.stringify(currentUserData));
+  })
+    .catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  };
+
+  useEffect(() => {
+    getUserData();
+    // console.log(avatar);
+  }, []);
 
   // NB: Need to put a useEffect here to CheckCommentsExist(props.postID) on re-load (so if a comment is entered, it shows up without refresh)
 
@@ -22,7 +41,15 @@ export default function DisplayEachPost(props) {
     <div>
         <div className="card mb-3" key={props.postID}>
           <div className="card-body">
-            <b>{props.email}</b>
+            <div className="row">
+              <div className="w-25">
+                <img src ={currentUserData?.avatar} className="rounded-circle ml-3 mr-3 mb-1" height="60" width="60"/>
+              </div>
+              <div className="w-75">
+                  <b >{currentUserData?.firstName+" "+currentUserData?.lastName}</b><br />
+                  <small >{new Date(props.timestamp?.toDate()).toLocaleString()}</small>
+              </div>
+            </div>
             <p>{props.post}</p>
             {
               props.image &&
@@ -32,8 +59,8 @@ export default function DisplayEachPost(props) {
                 recipeID={props.recipeID}
               />
             }
-            <div className="d-inline mr-1">
-              <button className="btn btn-primary btn-sm">
+            <div className="d-inline">
+              <button className="btn btn-like btn-sm w-50 d-inline">
                 <div className="d-inline mr-1">
                   <AiOutlineLike />
                 </div>
@@ -42,9 +69,8 @@ export default function DisplayEachPost(props) {
             </div>
             <div className="d-inline">
               <button
-                className="btn btn-success btn-sm"
+                className="btn btn-comment btn-sm w-50 d-inline"
                 onClick={showCommentInputBox}
-                style={{ border: "none" }}
               >
                 <div className="d-inline mr-1">
                   <FaRegCommentDots />
@@ -58,8 +84,6 @@ export default function DisplayEachPost(props) {
                 commentSectionID = {props.childCommentSectionID}
               />
             )}
-          </div>
-          <div>
             {
               CheckCommentsExist(props.postID, props.childCommentSectionID) &&
                 <DisplayComments

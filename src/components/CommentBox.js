@@ -14,7 +14,7 @@ export default function CommentBox(props) {
   };
 
   return (
-    <div>
+    <div className="commentBox">
       <input
         type="text"
         placeholder="Enter comment"
@@ -22,7 +22,7 @@ export default function CommentBox(props) {
           handleCommentBoxChange
         }
       />
-      <button className="comment-btn" onClick={() => {
+      <button className="comment-btn btn-primary btn-sm" onClick={() => {
         handlePostComment(comment, postID, props.commentSectionID)
       }}>
         Post

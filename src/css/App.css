@@ -60,7 +60,7 @@ a {
   background-color: #ffffff;
 }
 
-.current-user-msg, .other-user-msg {
+. , .other-user-msg {
   overflow-wrap: break-word;
   min-width: 15%;
   max-width: 70%;
@@ -102,4 +102,52 @@ a {
 }
 
 /*********chat styling ends********/
+
+
+/*Button style expansion*/
+.btn-more-info{
+  color:#FFF;
+  background:rgb(56, 160, 42);
+}
+.btn-like{
+  color:#FFF;
+  background:rgb(0, 182, 189);
+
+}
+.btn-comment{
+  color:#FFF;
+  background:rgb(252, 153, 39);
+
+}
+/*BTN style expansion ends*/
+
+
+/*Other Post/Comment Styles*/
+.aComment *{
+    vertical-align:top;
+}
+.recipeImagePost{
+  border-radius:0.5em;
+}
+.recipeTitlePost{
+  top:0;
+  transform: translateY(-100%);
+  background:rgba(255,255,255,0.8);
+  padding:0.2em 0.5em 0.2em 0.25em;
+  border-radius: 0 0.15em 0 0;
+}
+.recipeShare .btn{
+  top:0;
+  transform: translateY(-150%);  
+}
+.recipeShare{
+  margin-bottom:-2.85em;
+}
+.commentBox input{
+  width:100%;
+}
+.commentBox button{
+  float:right;
+}
+/*Post/Comment Styles ends*/
 
