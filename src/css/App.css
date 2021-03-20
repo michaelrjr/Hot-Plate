@@ -30,7 +30,8 @@ a {
 }
 
 .chat-body{
-  height: 60vh;
+  height: 55vh;
+  width: 50vw;
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -42,16 +43,34 @@ a {
 }
 
 /* online users */
+.online-user-body{
+width: 90vw;
+}
+
 .online-user-nav{
   text-align: center;
 }
 
+.online-user-email{
+  font-size: xx-small;
+  color: #010b13;
+}
+
 .online-icon {
+  border: solid 1px #d3d3d3;
   border-radius: 50%;
-  height: 10px;
-  width: 10px;
-  background-color: #4CAF50;
+  height: 6px;
+  width: 6px;
+  background: linear-gradient(to top, #00ff00 0%, #006600 100%);
   display: inline-block;
+}
+
+.online-icon-offline {
+  background: linear-gradient(to top, #990033 0%, #ff0000 100%)
+}
+
+.user-status {
+  font-size: x-small;
 }
 
 /* chat messaging */
@@ -60,7 +79,7 @@ a {
   background-color: #ffffff;
 }
 
-.current-user-msg, .other-user-msg {
+. , .other-user-msg {
   overflow-wrap: break-word;
   min-width: 15%;
   max-width: 70%;
@@ -102,4 +121,52 @@ a {
 }
 
 /*********chat styling ends********/
+
+
+/*Button style expansion*/
+.btn-more-info{
+  color:#FFF;
+  background:rgb(56, 160, 42);
+}
+.btn-like{
+  color:#FFF;
+  background:rgb(0, 182, 189);
+
+}
+.btn-comment{
+  color:#FFF;
+  background:rgb(252, 153, 39);
+
+}
+/*BTN style expansion ends*/
+
+
+/*Other Post/Comment Styles*/
+.aComment *{
+    vertical-align:top;
+}
+.recipeImagePost{
+  border-radius:0.5em;
+}
+.recipeTitlePost{
+  top:0;
+  transform: translateY(-100%);
+  background:rgba(255,255,255,0.8);
+  padding:0.2em 0.5em 0.2em 0.25em;
+  border-radius: 0 0.15em 0 0;
+}
+.recipeShare .btn{
+  top:0;
+  transform: translateY(-150%);  
+}
+.recipeShare{
+  margin-bottom:-2.85em;
+}
+.commentBox input{
+  width:100%;
+}
+.commentBox button{
+  float:right;
+}
+/*Post/Comment Styles ends*/
 

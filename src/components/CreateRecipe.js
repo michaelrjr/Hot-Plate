@@ -38,7 +38,8 @@ export default function CreateRecipe() {
     }),
 
     onSubmit: async (values) => {
-      ref.doc(currentUser.email).set(values);
+      console.log(values);
+      ref.doc(currentUser.email).collection(values.title).add(values);
       getUserCreatedRecipe();
     },
   });
@@ -164,7 +165,7 @@ export default function CreateRecipe() {
                         ? "form-control is-valid"
                         : "form-control"
                     }`}
-                    placeholder="Enter recipe title"
+                    placeholder="Enter title"
                     id="title"
                     name="title"
                     type="text"
@@ -191,7 +192,7 @@ export default function CreateRecipe() {
                         ? "form-control is-valid"
                         : "form-control"
                     }`}
-                    placeholder="Enter recipe description"
+                    placeholder="Enter description"
                     id="description"
                     name="description"
                     type="text"

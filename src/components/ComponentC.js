@@ -8,22 +8,21 @@ export default function ComponentC(props) {
   const { setRecipeID } = useAuth();
 
 return (
-    <div>
+    <div class="recipeShare">
         {props.image === null ? (
             <img src="noimage.jpg" />
         ) : (
             <img
-            className="card-img-top"
+            className="recipeImagePost card-img-top"
             src={props.recipeImage}
             alt="recipe"
             />
         )}
-        <div>
-            <h3>{props.recipeTitle}</h3>
-        </div>
+        <h3 className="recipeTitlePost d-inline-block text-center">{props.recipeTitle}</h3>
+
         <Link to="/moreinfo">
         <button
-            className="buttons"
+            className="btn btn-more-info btn-sm w-100"
             onClick={() => setRecipeID(props.recipeID)}
         >
             More Info
