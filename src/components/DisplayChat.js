@@ -21,7 +21,7 @@ export default function DisplayChat(props) {
             </div>   
         </div>
           ))}
-      <div className="card-body chat-body">
+      <div className="card-body chat-body p-1">
         <div className="mt-3">
           {props.chatMessages.map((message) => (
             <div key={message.timestamp}>
