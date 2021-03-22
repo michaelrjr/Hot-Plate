@@ -76,14 +76,14 @@ export default function Profile() {
             <div className="d-flex justify-content-center mb-3">
               {user.avatar === null ? (
                 <img
-                  className="rounded-circle "
+                  className="rounded-circle"
                   src="defaultuser.png"
                   width="150"
                   height="150"
                 />
               ) : (
                 <img
-                  className="rounded-circle "
+                  className="rounded-circle"
                   src={user.avatar}
                   width="150"
                   height="150"
