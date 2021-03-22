@@ -42,10 +42,10 @@ export default function DisplayEachPost(props) {
         <div className="card mb-3" key={props.postID}>
           <div className="card-body">
             <div className="row">
-              <div className="w-25">
+              <div className="d-inline-block">
                 <img src ={currentUserData?.avatar} className="rounded-circle ml-3 mr-3 mb-1" height="60" width="60"/>
               </div>
-              <div className="w-75">
+              <div className="d-inline-block">
                   <b >{currentUserData?.firstName+" "+currentUserData?.lastName}</b><br />
                   <small >{new Date(props.timestamp?.toDate()).toLocaleString()}</small>
               </div>

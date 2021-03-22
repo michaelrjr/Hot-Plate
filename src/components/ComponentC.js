@@ -18,7 +18,7 @@ return (
             alt="recipe"
             />
         )}
-        <h3 className="recipeTitlePost d-inline-block text-center">{props.recipeTitle}</h3>
+        <h3 className="recipeTitlePost d-inline-block">{props.recipeTitle}</h3>
 
         <Link to="/moreinfo">
         <button
