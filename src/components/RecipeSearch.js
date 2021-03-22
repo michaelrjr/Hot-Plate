@@ -41,9 +41,9 @@ export default function RecipeSearch() {
   const getFilteredRecipes = async () => {
     let API_URL;
     if (maxTime === "") {
-      API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`
+      API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
     } else {
-      API_URL = `https://api.spoonacular.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=${maxTime}&number=100&sort=random&information&apiKey=1b6d876044c14f4aa40ac59f38fb45fc`;
+      API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=${maxTime}&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
     }
     try {
       const resp = await axios.get(API_URL);
@@ -89,32 +89,32 @@ export default function RecipeSearch() {
   }
 
   function updateMaxTime(event) {
-      setMaxTime(event.target.value);
-      setEnabled(true);
+    setMaxTime(event.target.value);
+    setEnabled(true);
   }
 
   function applyFilters() {
-    if (maxTime !== "" && !/^\d+$/.test(maxTime) || parseInt(maxTime) <= 0) {
+    if ((maxTime !== "" && !/^\d+$/.test(maxTime)) || parseInt(maxTime) <= 0) {
       setMaxTime("");
       setEnabled(false);
-      alert("Please insert a valid time.")
-    }else{
-    setRecipeNum(0);
-    getFilteredRecipes();
-    setEnabled(false);
-    handleCloseFilters();
+      alert("Please insert a valid time.");
+    } else {
+      setRecipeNum(0);
+      getFilteredRecipes();
+      setEnabled(false);
+      handleCloseFilters();
     }
   }
 
   //resets inputs to default values
-  function removeFilters(){
-    if(cuisine, diet, intolerance, maxTime, mealType !== ""){
-    setCuisine("");
-    setDiet("");
-    setIntolerance("");
-    setMealType("");
-    setMaxTime("");
-    setEnabled(true);
+  function removeFilters() {
+    if ((cuisine, diet, intolerance, maxTime, mealType !== "")) {
+      setCuisine("");
+      setDiet("");
+      setIntolerance("");
+      setMealType("");
+      setMaxTime("");
+      setEnabled(true);
     }
   }
 
@@ -126,14 +126,14 @@ export default function RecipeSearch() {
   if (isFetched === false) {
     return (
       <div>
-        <div className='card'>
-          <div className='card-body'>
-            <div className='d-flex justify-content-center'>
+        <div className="card">
+          <div className="card-body">
+            <div className="d-flex justify-content-center">
               <div
-                className='spinner-border'
+                className="spinner-border"
                 style={{ width: "11rem", height: "11rem" }}
-                role='status'>
-                <span className='sr-only'>Loading...</span>
+                role="status">
+                <span className="sr-only">Loading...</span>
               </div>
             </div>
           </div>
@@ -145,12 +145,13 @@ export default function RecipeSearch() {
     return (
       <div className="card">
         <div className="card-body col text-center">
-          <span><b>API Call Error</b></span>
+          <span>
+            <b>API Call Error</b>
+          </span>
           <img
             src="https://pixy.org/src/69/thumbs350/692078.jpg"
             className="img-fluid img-thumbnail"
-            alt="error"
-          ></img>
+            alt="error"></img>
         </div>
       </div>
     );
@@ -176,8 +177,7 @@ export default function RecipeSearch() {
         />
       </div>
     );
-  } 
-  else {
+  } else {
     // otherwise, we have data
     return (
       <div>

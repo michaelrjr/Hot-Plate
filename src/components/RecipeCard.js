@@ -11,9 +11,10 @@ export default function RecipeCard(props) {
     <div>
       <div className='card'>
         {props.apiData[props.recipeNum].image === null ? (
-          <img src='noimage.jpg' />
+          <img className='card-img-top' src='noimage.jpg' />
         ) : (
           <img
+            className='card-img-top'
             src={`${basePath}${props.apiData[props.recipeNum].id}-${size}`}
             alt='recipe'
           />

@@ -9,13 +9,12 @@ import { RiRestaurantLine } from "react-icons/ri";
 
 export default function NavBar() {
   return (
-    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
+    <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
         <Link
           className="navbar__item"
           to="/feed"
-          style={{ textDecoration: "none" }}
-        >
+          style={{ textDecoration: "none" }}>
           <div className="navbar__icon">
             <AiOutlineHome size={30} />
           </div>
@@ -24,8 +23,7 @@ export default function NavBar() {
         <Link
           className="navbar__item"
           to="/recipesearch"
-          style={{ textDecoration: "none" }}
-        >
+          style={{ textDecoration: "none" }}>
           <div className="navbar__icon">
             <BiFoodMenu size={30} />
           </div>
@@ -34,8 +32,7 @@ export default function NavBar() {
         <Link
           className="navbar__item"
           to="/createrecipe"
-          style={{ textDecoration: "none" }}
-        >
+          style={{ textDecoration: "none" }}>
           <div className="navbar__icon" style={{ marginLeft: "30px" }}>
             <GrRestaurant size={30} />
           </div>
@@ -43,9 +40,8 @@ export default function NavBar() {
         </Link>
         <Link
           className="navbar__item"
-          to="/createrecipe"
-          style={{ textDecoration: "none" }}
-        >
+          to="/myrecipes"
+          style={{ textDecoration: "none" }}>
           <div className="navbar__icon" style={{ marginLeft: "25px" }}>
             <RiRestaurantLine size={30} />
           </div>
@@ -54,8 +50,7 @@ export default function NavBar() {
         <Link
           className="navbar__item"
           to="/profile"
-          style={{ textDecoration: "none" }}
-        >
+          style={{ textDecoration: "none" }}>
           <div className="navbar__icon" style={{ marginLeft: "7px" }}>
             <CgProfile size={30} />
           </div>
@@ -65,8 +60,7 @@ export default function NavBar() {
         <Link
           className="navbar__item"
           to="/chat"
-          style={{ textDecoration: "none" }}
-        >
+          style={{ textDecoration: "none" }}>
           <div className="navbar__icon">
             <BsChatDots size={30} />
           </div>
