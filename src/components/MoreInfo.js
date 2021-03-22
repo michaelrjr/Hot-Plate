@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Collapse } from "react-bootstrap";
+import ShareRecipeModal from "./ShareRecipeModal";
 
 export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
@@ -84,6 +85,13 @@ export default function MoreInfo() {
           <div className="col-lg-6 col-sm-12">
             {recipeInfoArray.map((recipe) => (
               <div className="card mb-3" key={recipe.id}>
+                <div>
+                  <ShareRecipeModal
+                    show={show}
+                    userCreatedRecipe={recipeInfoArray}
+                    handleClose={handleClose}
+                  />
+                </div>
                 <img className="card-img-top" src={recipe.image} alt="recipe" />
                 <div className="card-body">
                   <h4>
@@ -95,7 +103,7 @@ export default function MoreInfo() {
                     <br />
                     Servings: {" " + recipe.servings}
                   </p>
-                  <button className="btn btn-primary">Share</button>
+                  <button className="btn btn-primary" onClick={handleShow}>Share</button>
                   <button className="btn btn-secondary float-right">
                     Save
                   </button>
