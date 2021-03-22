@@ -34,7 +34,7 @@ export default function Chat() {
     });
   };
 
-  //get all signed up user
+  //get all signed up users
   const getMembers = () => {
     ref.where("email", "!=", null).onSnapshot((querySnapshot) => {
       setMembers(querySnapshot.docs.map((doc) => doc.data()));

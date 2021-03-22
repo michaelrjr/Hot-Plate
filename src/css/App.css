@@ -31,7 +31,6 @@ a {
 
 .chat-body{
   height: 55vh;
-  width: 50vw;
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -79,7 +78,7 @@ width: 90vw;
   background-color: #ffffff;
 }
 
-. , .other-user-msg {
+.current-user-msg, .other-user-msg {
   overflow-wrap: break-word;
   min-width: 15%;
   max-width: 70%;
