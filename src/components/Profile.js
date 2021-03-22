@@ -33,7 +33,7 @@ export default function Profile() {
     }),
     onSubmit: async (e, values) => {
       //e.preventDefault();
-      //   ref.doc(currentUser.email).update({ avatar: fileURL });
+      ref.doc(currentUser.email).update({ avatar: fileURL });
     },
   });
 
