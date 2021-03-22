@@ -6,6 +6,7 @@ import { BiFoodMenu } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
 import { GrRestaurant } from "react-icons/gr";
 import { RiRestaurantLine } from "react-icons/ri";
+import SignOut from "./SignOut";
 
 export default function NavBar() {
   return (
@@ -66,6 +67,9 @@ export default function NavBar() {
           </div>
           <div>Chat</div>
         </Link>
+        <div>
+          <SignOut />
+        </div>
       </div>
     </nav>
   );
