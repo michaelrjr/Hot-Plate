@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import app from "../firebase";
 import { useFormik } from "formik";
@@ -16,10 +16,13 @@ export default function CreateRecipe() {
   const [instructionsArray, setInstructionsArray] = useState("");
   const [ingredientsArray, setIngredientsArray] = useState("");
   const [userCreatedRecipe, setUserCreatedRecipe] = useState(null);
-  const [error, setError] = useState(null);
-  // db ref
-  const ref = app.firestore().collection("userCreatedRecipes");
+  const [userDetails, setUserDetails] = useState({});
+  const [error, setError] = useState(0);
 
+  const ref = app.firestore().collection("userCreatedRecipes");
+  const userRef = app.firestore().collection("Users");
+
+  // formik handles the form inputs and Yup validates the inputs
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -36,13 +39,40 @@ export default function CreateRecipe() {
       ingredients: Yup.array().min(1).required("Required"),
       instructions: Yup.array().min(1).required("Required"),
     }),
-
     onSubmit: async (values) => {
       console.log(values);
-      ref.doc(currentUser.email).collection(values.title).add(values);
-      getUserCreatedRecipe();
+      getUserCreatedRecipe(values);
     },
   });
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+
+  const handleSaveClick = () => {
+    ref
+      .doc(currentUser.uid)
+      .set({
+        uid: currentUser.uid,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+      })
+      .then(() => {
+        ref.doc(currentUser.uid).collection("recipes").add(formik.values);
+      });
+  };
+
+  const getUserDetails = () => {
+    userRef
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        setUserDetails(doc.data());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // uploads a file and adds it to firebase storage
   const handleFileChange = async (e) => {
@@ -55,11 +85,13 @@ export default function CreateRecipe() {
     formik.setFieldValue("image", await fileRef.getDownloadURL());
   };
 
+  // sets ingredient to the user input
   const handleIngredientsChange = (e) => {
     setIngredient(e.target.value);
     console.log(e.target.value);
   };
 
+  // appeneds new ingredient to the ingredientsArray when user clicks add button
   const handleAddIngredientClick = () => {
     const newItems = [...ingredientsArray, ingredient];
     setIngredientsArray(newItems);
@@ -67,11 +99,13 @@ export default function CreateRecipe() {
     setIngredient("");
   };
 
+  // sets instruction to the user input
   const handleInstructionsChange = (e) => {
     setInstruction(e.target.value);
     console.log(e.target.value);
   };
 
+  // appeneds new instruction to the instructionsArray when user clicks add button
   const handleAddInstructionClick = () => {
     const newItems = [...instructionsArray, instruction];
     setInstructionsArray(newItems);
@@ -79,6 +113,7 @@ export default function CreateRecipe() {
     setInstruction("");
   };
 
+  // deletes an ingredient from the ingredientsArray at a specified index
   const handleDeleteIngredientClick = (index) => {
     const newItems = ingredientsArray.filter(
       (item, itemIndex) => itemIndex !== index
@@ -86,6 +121,7 @@ export default function CreateRecipe() {
     setIngredientsArray(newItems);
   };
 
+  // deletes an instruction from the ingredientsArray at a specified index
   const handleDeleteInstructionClick = (index) => {
     const newItems = instructionsArray.filter(
       (item, itemIndex) => itemIndex !== index
@@ -93,31 +129,25 @@ export default function CreateRecipe() {
     setInstructionsArray(newItems);
   };
 
-  const getUserCreatedRecipe = () => {
-    ref
-      .doc(currentUser.email)
-      .get()
-      .then((doc) => {
-        let tempArr = [];
-        tempArr.push(doc.data());
-        setUserCreatedRecipe(tempArr);
-        console.log(tempArr);
-      })
-      .catch((error) => {
-        setError("Error retrieving user created recipe.");
-      });
+  // gets the current users created recipe from firestore
+  const getUserCreatedRecipe = (values) => {
+    let tempArr = [];
+    tempArr.push(values);
+    setUserCreatedRecipe(tempArr);
   };
 
   return (
     <div className="container">
       <div className="row">
-        <div className="col">
+        <div className="col-lg-6 col-sm-12 mb-3">
           <div className="card">
             <div className="card-body">
               <h3 className="card-title text-center mb-4">
                 Create Your Own Recipe
               </h3>
               <form onSubmit={formik.handleSubmit}>
+                {/* ================ RECIPE IMAGE ================== */}
+
                 <div className="mb-3">
                   <div className="custom-file">
                     <input
@@ -153,6 +183,8 @@ export default function CreateRecipe() {
                   </div>
                 </div>
 
+                {/* ================ TITLE ================== */}
+
                 <div className="mb-3">
                   <label htmlFor="title">Recipe Title</label>
                   <input
@@ -171,14 +203,15 @@ export default function CreateRecipe() {
                     type="text"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.title}
-                  ></input>
+                    value={formik.values.title}></input>
                   {formik.touched.title && formik.errors.title ? (
                     <div className="invalid-feedback">
                       {formik.errors.title}
                     </div>
                   ) : null}
                 </div>
+
+                {/* ================ DESCRIPTION ================== */}
 
                 <div className="mb-3">
                   <label htmlFor="description">Description</label>
@@ -198,8 +231,7 @@ export default function CreateRecipe() {
                     type="text"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.description}
-                  ></input>
+                    value={formik.values.description}></input>
                   {formik.touched.description && formik.errors.description ? (
                     <div className="invalid-feedback">
                       {formik.errors.description}
@@ -207,58 +239,59 @@ export default function CreateRecipe() {
                   ) : null}
                 </div>
 
-                <div className="row">
-                  <div className="col">
-                    <div className="mb-3">
-                      <label htmlFor="ingredients">Add Ingredients</label>
-                      <input
-                        className={`${
-                          formik.touched.ingredients &&
-                          formik.errors.ingredients &&
-                          "form-control is-invalid"
-                        } ${
-                          formik.touched.ingredients &&
-                          !formik.errors.ingredients
-                            ? "form-control is-valid"
-                            : "form-control"
-                        }`}
-                        placeholder="Enter ingredients"
-                        id="ingredients"
-                        name="ingredients"
-                        type="text"
-                        onChange={handleIngredientsChange}
-                        onBlur={formik.handleBlur}
-                        value={ingredient}
-                      ></input>
-                      {formik.touched.ingredients &&
-                      formik.errors.ingredients ? (
-                        <div className="invalid-feedback">
-                          {formik.errors.ingredients}
-                        </div>
-                      ) : null}
-                    </div>
+                {/* ================ INGREDIENTS ================== */}
+
+                <div className="d-flex justify-content-between mb-3">
+                  <div>
+                    <label htmlFor="ingredients">Add Ingredients</label>
+                    <input
+                      className={`${
+                        formik.touched.ingredients &&
+                        formik.errors.ingredients &&
+                        "form-control is-invalid"
+                      } ${
+                        formik.touched.ingredients && !formik.errors.ingredients
+                          ? "form-control is-valid"
+                          : "form-control"
+                      }`}
+                      placeholder="Enter ingredients"
+                      id="ingredients"
+                      name="ingredients"
+                      type="text"
+                      onChange={handleIngredientsChange}
+                      onBlur={formik.handleBlur}
+                      value={ingredient}></input>
+                    {formik.touched.ingredients && formik.errors.ingredients ? (
+                      <div className="invalid-feedback">
+                        {formik.errors.ingredients}
+                      </div>
+                    ) : null}
                   </div>
-                  <div className="col">
+                  <div className="mt-auto">
                     <button
                       type="button"
                       className="btn btn-success"
-                      onClick={handleAddIngredientClick}
-                    >
+                      onClick={handleAddIngredientClick}>
                       Add
                     </button>
                   </div>
                 </div>
+
+                {/* ================ DISPLAY INGREDIENTS ================== */}
+
                 <div className="mb-3">
                   {ingredientsArray.length > 0 && (
                     <div>
                       {ingredientsArray.map((ingredient, index) => (
-                        <div className="d-flex" key={index}>
+                        <div
+                          className="d-flex justify-content-between"
+                          key={index}>
                           <li>{ingredient}</li>
                           <div
-                            className="ml-5"
-                            onClick={() => handleDeleteIngredientClick(index)}
-                          >
-                            <BsTrash />
+                            className="mt-auto"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleDeleteIngredientClick(index)}>
+                            <BsTrash size={20} />
                           </div>
                         </div>
                       ))}
@@ -266,58 +299,60 @@ export default function CreateRecipe() {
                   )}
                 </div>
 
-                <div className="row">
-                  <div className="col">
-                    <div className="mb-3">
-                      <label htmlFor="instructions">Add Instructions</label>
-                      <input
-                        className={`${
-                          formik.touched.instructions &&
-                          formik.errors.instructions &&
-                          "form-control is-invalid"
-                        } ${
-                          formik.touched.instructions &&
-                          !formik.errors.instructions
-                            ? "form-control is-valid"
-                            : "form-control"
-                        }`}
-                        placeholder="Enter instructions"
-                        id="instructions"
-                        name="instructions"
-                        type="text"
-                        onChange={handleInstructionsChange}
-                        onBlur={formik.handleBlur}
-                        value={instruction}
-                      ></input>
-                      {formik.touched.instructions &&
-                      formik.errors.instructions ? (
-                        <div className="invalid-feedback">
-                          {formik.errors.instructions}
-                        </div>
-                      ) : null}
-                    </div>
+                {/* ================ INSTRUCTIONS ================== */}
+
+                <div className="d-flex justify-content-between mb-3">
+                  <div>
+                    <label htmlFor="instructions">Add Instructions</label>
+                    <input
+                      className={`${
+                        formik.touched.instructions &&
+                        formik.errors.instructions &&
+                        "form-control is-invalid"
+                      } ${
+                        formik.touched.instructions &&
+                        !formik.errors.instructions
+                          ? "form-control is-valid"
+                          : "form-control"
+                      }`}
+                      placeholder="Enter instructions"
+                      id="instructions"
+                      name="instructions"
+                      type="text"
+                      onChange={handleInstructionsChange}
+                      onBlur={formik.handleBlur}
+                      value={instruction}></input>
+                    {formik.touched.instructions &&
+                    formik.errors.instructions ? (
+                      <div className="invalid-feedback">
+                        {formik.errors.instructions}
+                      </div>
+                    ) : null}
                   </div>
-                  <div className="col">
+                  <div className="mt-auto">
                     <button
                       type="button"
                       className="btn btn-success"
-                      onClick={handleAddInstructionClick}
-                    >
+                      onClick={handleAddInstructionClick}>
                       Add
                     </button>
                   </div>
                 </div>
+                {/* ================ DISPLAY INSTRUCTIONS ================== */}
+
                 <div className="mb-3">
                   {instructionsArray.length > 0 && (
                     <div>
                       {instructionsArray.map((instruction, index) => (
-                        <div className="d-flex" key={index}>
+                        <div
+                          className="d-flex justify-content-between"
+                          key={index}>
                           <li>{instruction}</li>
                           <div
-                            className="ml-5"
-                            onClick={() => handleDeleteInstructionClick(index)}
-                          >
-                            <BsTrash />
+                            className="mt-auto"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleDeleteInstructionClick(index)}>
+                            <BsTrash size={20} />
                           </div>
                         </div>
                       ))}
@@ -333,8 +368,27 @@ export default function CreateRecipe() {
             </div>
           </div>
         </div>
-        <div className="col">
-          <DisplayUserCreatedRecipe userCreatedRecipe={userCreatedRecipe} />
+
+        {/* ================ display the users created recipe ================== */}
+
+        <div className="col-lg-6 col-sm-12">
+          {userCreatedRecipe === null ? (
+            <div className="card">
+              <div className="card-body">
+                <h3 className="card-title text-center mb-4">Recipe Preview</h3>
+                <h5 className="card-title text-center">
+                  Please build your recipe...
+                </h5>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <DisplayUserCreatedRecipe
+                userCreatedRecipe={userCreatedRecipe}
+                handleSaveClick={handleSaveClick}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

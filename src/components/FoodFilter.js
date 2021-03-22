@@ -124,27 +124,45 @@ export default function FoodFilter(props) {
           type='text'
           value={props.maxTime}
           onChange={props.updateMaxTime}
-          placeholder="Time (mins)"
+          placeholder='Time (mins)'
         />
-        <br/>
-        </span>
-      <div className="col text-center">
+        <br />
+      </span>
+      <div className='col text-center'>
         <span>
-
-          <button className="btn btn-secondary w-25" onClick={props.removeFilters}>
+          <button
+            className='btn btn-secondary w-25'
+            onClick={props.removeFilters}>
             Remove Filters
           </button>
-        </span> 
-      &nbsp;  &nbsp; &nbsp; &nbsp;
-      <span>
-      {props.enabled ==false &&
-        <button className="btn btn-danger w-25 disabled">
-          Apply Filters
-      </button>}
-      {props.enabled ==true &&
-          <button className="btn btn-success w-25" onClick={props.applyFilters}>
-            Apply Filters
-        </button>}
+        </span>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <span>
+          {props.enabled == false && (
+            <button className='btn btn-danger w-25 disabled'>
+              Apply Filters
+            </button>
+          )}
+          {props.enabled == true && (
+            <button
+              className='btn btn-success w-25'
+              onClick={props.applyFilters}>
+              Apply Filters
+            </button>
+          )}
+          <div>
+            <button
+              className='btn btn-success w-100'
+              disabled={
+                !props.cuisine &&
+                !props.diet &&
+                !props.mealType &&
+                !props.maxTime &&
+                !props.intolerance
+              }>
+              Apply Filters
+            </button>
+          </div>
         </span>
       </div>
     </div>

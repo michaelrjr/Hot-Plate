@@ -1,84 +1,86 @@
 import React, { useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
+import { BsInfoSquare } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
+import ShareRecipeModal from "./ShareRecipeModal";
+import { Modal } from "react-bootstrap";
 
 export default function DisplayUserCreatedRecipe(props) {
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
-    <div>
-      {props.userCreatedRecipe === null ? (
-        <div className="card">
+    <div className="card-deck">
+      {props.userCreatedRecipe.map((recipe, index) => (
+        <div className="card mb-3" key={index}>
+          <img className="card-img-top mb-3" src={recipe.image} />
           <div className="card-body">
-            <h3 className="card-title text-center mb-4">Recipe Preview</h3>
-            <h5 className="card-title text-center">
-              Please build your recipe...
-            </h5>
-          </div>
-        </div>
-      ) : (
-        <div>
-          {props.userCreatedRecipe.map((recipe, index) => (
-            <div className="card mb-3" key={index}>
-              <div className="card-body">
-                <h3 className="card-title text-center mb-4">Recipe Preview</h3>
-                <img className="card-img-top mb-3" src={recipe.image} />
-                <div className="mb-2">
-                  <h3>{recipe.title}</h3>
+            <div className="mb-2">
+              <h3>{recipe.title}</h3>
+            </div>
+            <div className="mb-3">{recipe.description}</div>
+            <div className="mb-3">
+              <button
+                className="btn btn-warning w-100"
+                onClick={() => setShowIngredients(!showIngredients)}>
+                Ingredients
+              </button>
+              {showIngredients && (
+                <div className="mt-3">
+                  {recipe.ingredients.map((ingredient, index) => (
+                    <li key={index}>{ingredient}</li>
+                  ))}
                 </div>
-                <div className="mb-3">{recipe.description}</div>
-                <div className="mb-3">
-                  <button
-                    className="btn btn-warning w-100"
-                    onClick={() => setShowIngredients(!showIngredients)}
-                  >
-                    Ingredients
-                  </button>
-                  {showIngredients && (
-                    <div className="mt-3">
-                      {recipe.ingredients.map((ingredient, index) => (
-                        <li key={index}>{ingredient}</li>
-                      ))}
-                    </div>
-                  )}
+              )}
+            </div>
+            <div className="mb-3">
+              <button
+                className="btn btn-danger w-100"
+                onClick={() => setShowInstructions(!showInstructions)}>
+                Instructions
+              </button>
+              {showInstructions && (
+                <div className="mt-3">
+                  {recipe.instructions.map((instruction, index) => (
+                    <li key={index}>{instruction}</li>
+                  ))}
                 </div>
-                <div className="mb-3">
-                  <button
-                    class="btn btn-danger w-100"
-                    onClick={() => setShowInstructions(!showInstructions)}
-                  >
-                    Instructions
-                  </button>
-                  {showInstructions && (
-                    <div className="mt-3">
-                      {recipe.instructions.map((instruction, index) => (
-                        <li key={index}>{instruction}</li>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div className="mb-3">
-                  <button className="btn btn-primary w-100">
-                    <div className="d-inline mr-1">
-                      <AiOutlineShareAlt size={20} />
-                    </div>
-                    <div className="d-inline">Share to feed</div>
-                  </button>
-                </div>
-                <div>
-                  <button className="btn btn-success w-100">
-                    <div className="d-inline mr-1">
-                      <BiSave size={20} />
-                    </div>
-                    <div className="d-inline">Save to my recipes</div>
-                  </button>
-                </div>
+              )}
+            </div>
+            <div className="row">
+              <div className="col">
+                <button className="btn btn-primary w-100" onClick={handleShow}>
+                  <div className="d-inline mr-1">
+                    <AiOutlineShareAlt size={20} />
+                  </div>
+                  <div className="d-inline">Share</div>
+                </button>
+              </div>
+              <div className="col">
+                <button className="btn btn-success w-100">
+                  <div className="d-inline mr-1">
+                    <BiSave size={20} />
+                  </div>
+                  <div className="d-inline" onClick={props.handleSaveClick}>
+                    Save
+                  </div>
+                </button>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      )}
+      ))}
+      <div>
+        <ShareRecipeModal
+          show={show}
+          userCreatedRecipe={props.userCreatedRecipe}
+          handleClose={handleClose}
+        />
+      </div>
     </div>
   );
 }

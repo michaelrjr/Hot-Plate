@@ -13,6 +13,7 @@ import Profile from "./Profile";
 import RecipeSearch from "./RecipeSearch";
 import Chat from "./Chat";
 import CreateRecipe from "./CreateRecipe";
+import MyRecipes from "./MyRecipes";
 
 function App() {
   return (
@@ -25,11 +26,11 @@ function App() {
             <Route path="/chat" component={Chat} />
             <Route path="/moreinfo" component={MoreInfo} />
             <PrivateRoute path="/createrecipe" component={CreateRecipe} />
+            <PrivateRoute path="/myrecipes" component={MyRecipes} />
             <div
               className="container d-flex justify-content-center"
-              style={{ minHeight: "100vh" }}
-            >
-              <div className="w-100" style={{ maxWidth: "400px" }}>
+              style={{ minHeight: "100vh" }}>
+              <div className="w-100" style={{ maxWidth: "500px" }}>
                 <Route path="/signUp" component={SignUp} />
                 <Route path="/signIn" component={SignIn} />
                 <PrivateRoute path="/updateProfile" component={UpdateProfile} />
