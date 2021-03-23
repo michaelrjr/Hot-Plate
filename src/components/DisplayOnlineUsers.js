@@ -17,7 +17,7 @@ export default function DisplayOnlineUsers(props) {
   return (
     <div className='card online-user-body'>
       <div className='card-header online-user-nav'>
-        <h3>Online Users</h3>
+        <h3>Users</h3>
         <input
           type='text'
           className='form-control shadow-none'
