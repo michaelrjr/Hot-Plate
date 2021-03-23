@@ -62,7 +62,7 @@ function SignUp() {
         email: values.email,
         online: false,
         avatar: null,
-        joined: new Date().toLocaleDateString(),
+        joined: new Date().toDateString(),
       });
 
       setLoading(false);
@@ -217,8 +217,7 @@ function SignUp() {
             <button
               type="submit"
               className="btn btn-success w-100"
-              disabled={loading}
-            >
+              disabled={loading}>
               Sign up
             </button>
           </div>

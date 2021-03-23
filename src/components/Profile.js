@@ -33,7 +33,7 @@ export default function Profile() {
     }),
     onSubmit: async (e, values) => {
       //e.preventDefault();
-      //   ref.doc(currentUser.email).update({ avatar: fileURL });
+      ref.doc(currentUser.email).update({ avatar: fileURL });
     },
   });
 
@@ -44,6 +44,12 @@ export default function Profile() {
       .then((doc) => {
         let tempArr = [];
         tempArr.push(doc.data());
+        // console.log(tempArr);
+        if(tempArr[0].joined.seconds){
+          var t = new Date(1970, 0, 1); // Epoch
+          t.setSeconds(tempArr[0].joined.seconds);
+          tempArr[0].joined = t.toString();
+        }
         setUserDetails(tempArr);
       })
       .catch((error) => {
@@ -76,14 +82,14 @@ export default function Profile() {
             <div className="d-flex justify-content-center mb-3">
               {user.avatar === null ? (
                 <img
-                  className="rounded-circle "
+                  className="rounded-circle"
                   src="defaultuser.png"
                   width="150"
                   height="150"
                 />
               ) : (
                 <img
-                  className="rounded-circle "
+                  className="rounded-circle"
                   src={user.avatar}
                   width="150"
                   height="150"

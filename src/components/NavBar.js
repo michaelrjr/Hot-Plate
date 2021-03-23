@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
@@ -6,8 +6,10 @@ import { BiFoodMenu } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
 import { GrRestaurant } from "react-icons/gr";
 import { RiRestaurantLine } from "react-icons/ri";
+import SignOut from "./SignOut";
 
 export default function NavBar() {
+  const [error, setError] = useState("");
   return (
     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -66,6 +68,9 @@ export default function NavBar() {
           </div>
           <div>Chat</div>
         </Link>
+        <div>
+          <SignOut setError={setError} />
+        </div>
       </div>
     </nav>
   );
