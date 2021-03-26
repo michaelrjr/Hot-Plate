@@ -3,19 +3,22 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Collapse } from "react-bootstrap";
 import ShareRecipeModal from "./ShareRecipeModal";
+import app from "../firebase";
+import { v4 as uuidv4 } from "uuid";
 
 export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [nutritionChart, setNutritionChart] = useState({});
-  const { recipeID } = useAuth();
+  const { recipeID, currentUser } = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showNutrition, setShowNutrition] = useState(false);
   const recipeInfoURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/information?includeNutrition=false&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
   const nutritionVisualisationURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
   const [show, setShow] = useState(false);
+  const ref = app.firestore().collection("Users");
 
   let mounted = true;
 
@@ -61,6 +64,20 @@ export default function MoreInfo() {
       });
   };
 
+  const saveAPIRecipe = (id, image, ingred, instruct) => {
+    const apiRecToSave = uuidv4();
+    let apiref = ref.doc(currentUser.email).collection("recipeAPI");
+
+    apiref.doc(apiRecToSave)
+    .set({
+      id: id,
+      image: image,
+      ingredients: ingred,
+      instructions: instruct
+    })
+    alert("Saved to My Recipes");
+  }
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -104,7 +121,7 @@ export default function MoreInfo() {
                     Servings: {" " + recipe.servings}
                   </p>
                   <button className="btn btn-primary" onClick={handleShow}>Share</button>
-                  <button className="btn btn-secondary float-right">
+                  <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
                     Save
                   </button>
 
