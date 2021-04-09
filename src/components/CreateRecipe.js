@@ -30,8 +30,7 @@ export default function CreateRecipe() {
       description: "",
       ingredients: [],
       instructions: [],
-      id: "CR-"+uuidv4(),
-      fromAPI: false
+      id: "CR-" + uuidv4()
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Required"),
