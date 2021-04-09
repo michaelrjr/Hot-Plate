@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import app from "../firebase";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { BsInfoSquare } from "react-icons/bs";
@@ -8,18 +9,24 @@ import ShareRecipeModal from "./ShareRecipeModal";
 
 export default function MyRecipes() {
   const [recipes, setRecipes] = useState([]);
+  const { currentUser, setRecipeID } = useAuth();
   const userCreatedRecipesRef = app
     .firestore()
     .collection("userCreatedRecipes");
-  const { currentUser } = useAuth();
+  const userAPIRecipeRef = app
+    .firestore()
+    .collection("Users")
+    .doc(currentUser.email)
+    .collection("recipeAPI");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
-
+  var tempArr = [];
   useEffect(() => {
     getUserCreatedRecipes();
+    getSavedAPIRecipes();
   }, []);
 
   const getUserCreatedRecipes = () => {
@@ -28,14 +35,26 @@ export default function MyRecipes() {
       .collection("recipes")
       .get()
       .then((querySnapshot) => {
-        let tempArr = [];
         querySnapshot.forEach((doc) => {
           tempArr.push(doc.data());
         });
-        setRecipes(tempArr);
-        console.log(tempArr);
+        // getSavedAPIRecipes();
+        // setRecipes(tempArr);
+        // console.log(tempArr);
       });
   };
+
+  const getSavedAPIRecipes = () => {
+    userAPIRecipeRef
+    .get()
+    .then((queryAPISnapshot) =>{
+      queryAPISnapshot.forEach((doc) =>{
+        tempArr.push(doc.data());
+      })
+      setRecipes(tempArr);
+      console.log(tempArr);
+    })
+  } 
 
   return (
     <div className="container">
@@ -57,12 +76,18 @@ export default function MyRecipes() {
                   </button>
                 </div>
                 <div className="col">
-                  <button className="btn btn-success w-100">
-                    <div className="d-inline mr-1">
-                      <BsInfoSquare size={20} />
-                    </div>
-                    <div className="d-inline">Info</div>
-                  </button>
+                  <Link to='/moreinfo'>
+                    <button className="btn btn-success w-100" 
+                    onClick={() => setRecipeID(recipe.id)}>
+                      <div className="d-inline mr-1">
+                        <BsInfoSquare size={20} />
+                      </div>
+                      <div
+                        className="d-inline"
+                        
+                      >Info</div>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

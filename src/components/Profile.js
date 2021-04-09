@@ -24,6 +24,12 @@ export default function Profile() {
       .then((doc) => {
         let tempArr = [];
         tempArr.push(doc.data());
+        // console.log(tempArr);
+        if(tempArr[0].joined.seconds){
+          var t = new Date(1970, 0, 1); // Epoch
+          t.setSeconds(tempArr[0].joined.seconds);
+          tempArr[0].joined = t.toString();
+        }
         setUserDetails(tempArr);
       })
       .catch((error) => {
