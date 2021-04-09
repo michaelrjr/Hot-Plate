@@ -17,7 +17,7 @@ export default function MoreInfo() {
   const recipeInfoURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/information?includeNutrition=false&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
   const nutritionVisualisationURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
   const [show, setShow] = useState(false);
-  const ref = app.firestore().collection("Users");
+  const ref = app.firestore().collection("userCreatedRecipes");
   const [delOrSave, setDelOrSave] = useState(false);
 
   let mounted = true;
@@ -65,9 +65,9 @@ export default function MoreInfo() {
         setErrorMsg(error);
       });
   };
-
+  //check if user has already added recipe to their saved recipes
   const checkRecipeAdded = () => {
-    let apiref = ref.doc(currentUser.email).collection("recipeAPI");
+    let apiref = ref.doc(currentUser.uid).collection("recipes");
     apiref.doc(recipeID.toString()).get().then((docSnapshot) => {
       if (docSnapshot.exists) setDelOrSave(true);
     })
@@ -76,7 +76,7 @@ export default function MoreInfo() {
 //Duplicate handling already implemented in this method.
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
     if (currentUser != null) {
-      let apiref = ref.doc(currentUser.email).collection("recipeAPI");
+      let apiref = ref.doc(currentUser.uid).collection("recipes");
       apiref.doc(id.toString()).get().then((docSnapshot) =>{
         if(docSnapshot.exists) alert("Recipe already saved!");
         else{
@@ -87,7 +87,7 @@ export default function MoreInfo() {
             image: image,
             ingredients: ingred,
             instructions: instruct,
-            fromAPI: false
+            fromAPI: true
           })
           setDelOrSave(true);
           alert("Saved to My Recipes");
@@ -99,7 +99,7 @@ export default function MoreInfo() {
   }
 
   const removeAPIRecipe = (id) => {
-    let apiref = ref.doc(currentUser.email).collection("recipeAPI");
+    let apiref = ref.doc(currentUser.uid).collection("recipes");
     apiref.doc(id.toString()).delete();
     setDelOrSave(false);
     alert("Recipe removed");
