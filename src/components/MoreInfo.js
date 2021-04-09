@@ -4,7 +4,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { Collapse } from "react-bootstrap";
 import ShareRecipeModal from "./ShareRecipeModal";
 import app from "../firebase";
-import { v4 as uuidv4 } from "uuid";
 
 export default function MoreInfo() {
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
@@ -19,12 +18,15 @@ export default function MoreInfo() {
   const nutritionVisualisationURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
   const [show, setShow] = useState(false);
   const ref = app.firestore().collection("Users");
+  const [delOrSave, setDelOrSave] = useState(false);
 
   let mounted = true;
+  
 
   useEffect(() => {
     getRecipeInfo();
     getRecipeNutritionVisualised();
+    checkRecipeAdded();
     return () => {
       mounted = false;
     };
@@ -64,18 +66,43 @@ export default function MoreInfo() {
       });
   };
 
-  const saveAPIRecipe = (id, image, ingred, instruct) => {
-    const apiRecToSave = uuidv4();
+  const checkRecipeAdded = () => {
     let apiref = ref.doc(currentUser.email).collection("recipeAPI");
-
-    apiref.doc(apiRecToSave)
-    .set({
-      id: id,
-      image: image,
-      ingredients: ingred,
-      instructions: instruct
+    apiref.doc(recipeID.toString()).get().then((docSnapshot) => {
+      if (docSnapshot.exists) setDelOrSave(true);
     })
-    alert("Saved to My Recipes");
+  }
+//allow Signed-In users to save recipes to the database.
+//Duplicate handling already implemented in this method.
+  const saveAPIRecipe = (id, title, image, ingred, instruct) => {
+    if (currentUser != null) {
+      let apiref = ref.doc(currentUser.email).collection("recipeAPI");
+      apiref.doc(id.toString()).get().then((docSnapshot) =>{
+        if(docSnapshot.exists) alert("Recipe already saved!");
+        else{
+          apiref.doc(id.toString())
+          .set({
+            id: id,
+            title: title,
+            image: image,
+            ingredients: ingred,
+            instructions: instruct,
+            fromAPI: false
+          })
+          setDelOrSave(true);
+          alert("Saved to My Recipes");
+        }
+      });
+    } else {
+      alert("Please Sign-in to start saving recipes.");
+    }
+  }
+
+  const removeAPIRecipe = (id) => {
+    let apiref = ref.doc(currentUser.email).collection("recipeAPI");
+    apiref.doc(id.toString()).delete();
+    setDelOrSave(false);
+    alert("Recipe removed");
   }
 
   const handleClose = () => setShow(false);
@@ -121,9 +148,12 @@ export default function MoreInfo() {
                     Servings: {" " + recipe.servings}
                   </p>
                   <button className="btn btn-primary" onClick={handleShow}>Share</button>
-                  <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
+                  {delOrSave && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
+                    Remove Recipe
+                  </button>}
+                  {!delOrSave &&<button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.title, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
                     Save
-                  </button>
+                  </button>}
 
                   <hr />
                   <button
