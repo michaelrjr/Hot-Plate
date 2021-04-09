@@ -267,7 +267,7 @@ export default function CreateRecipe() {
                       </div>
                     ) : null}
                   </div>
-                  <div className="mt-auto">
+                  <div className="align-self-center">
                     <button
                       type="button"
                       className="btn btn-success"
@@ -329,7 +329,7 @@ export default function CreateRecipe() {
                       </div>
                     ) : null}
                   </div>
-                  <div className="mt-auto">
+                  <div className="align-self-center">
                     <button
                       type="button"
                       className="btn btn-success"

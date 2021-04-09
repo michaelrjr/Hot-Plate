@@ -102,8 +102,7 @@ function SignIn() {
             <button
               type="submit"
               className="btn btn-success w-100"
-              disabled={loading}
-            >
+              disabled={loading}>
               Sign in
             </button>
           </div>

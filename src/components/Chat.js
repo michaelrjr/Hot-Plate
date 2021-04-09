@@ -18,6 +18,7 @@ export default function Chat() {
 
   //database ref
   const ref = app.firestore().collection("Users");
+  const convoRef = app.firestore().collection("conversations");
 
   useEffect(() => {
     getOnlineUsers();
@@ -86,30 +87,57 @@ export default function Chat() {
 
     // reference to users collection -> then other users document -> then the sub-collection with the current user
     // -> then add the message to the sub-colletion as a document
-    ref.doc(otherUserEmail).collection(currentUser.email).add({
-      message: message,
-      from: currentUser.email,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    // ref.doc(otherUserEmail).collection(currentUser.email).add({
+    //   message: message,
+    //   from: currentUser.email,
+    //   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    // });
 
     // reference to users collection -> then the current users document -> then the sub-collection with the other users email
     // -> then add the message to the sub-colletion as a document
-    ref.doc(currentUser.email).collection(otherUserEmail).add({
-      message: message,
-      from: currentUser.email,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    // ref.doc(currentUser.email).collection(otherUserEmail).add({
+    //   message: message,
+    //   from: currentUser.email,
+    //   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    // });
+
+    convoRef
+      .doc(`${otherUserEmail}_${currentUser.email}`)
+      .collection("messages")
+      .add({
+        message: message,
+        from: currentUser.email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+    convoRef
+      .doc(`${currentUser.email}_${otherUserEmail}`)
+      .collection("messages")
+      .add({
+        message: message,
+        from: currentUser.email,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
     // reset message to empty string
     setMessage("");
   };
 
   // get the chat messages (docs) from current users sub-collection
   const getChatMessages = (email) => {
-    ref
-      .doc(currentUser.email)
-      .collection(email)
+    // ref
+    //   .doc(currentUser.email)
+    //   .collection(email)
+    //   .orderBy("timestamp", "asc")
+    //   .onSnapshot((snapshot) => {
+    //     setChatMessages(snapshot.docs.map((doc) => doc.data()));
+    //   });
+    convoRef
+      .doc(`${currentUser.email}_${email}`)
+      .collection("messages")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
+        console.log(snapshot.docs.map((doc) => doc.data()));
         setChatMessages(snapshot.docs.map((doc) => doc.data()));
       });
   };
@@ -139,7 +167,7 @@ export default function Chat() {
   };
 
   return (
-    <div className='container chat-container p-2'>
+    <div className="container chat-container p-2">
       {showChat == false ? (
         <DisplayOnlineUsers
           members={members}
