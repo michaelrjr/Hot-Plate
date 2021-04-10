@@ -55,7 +55,6 @@ export default function Profile() {
       .catch((error) => {
         setError("Error retrieving user details");
       });
-    console.log("userDetails: " + userDetails);
   };
 
   // const handleSubmit = (e) => {

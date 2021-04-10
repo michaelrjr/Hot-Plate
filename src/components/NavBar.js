@@ -6,10 +6,33 @@ import { BiFoodMenu } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
 import { GrRestaurant } from "react-icons/gr";
 import { RiRestaurantLine } from "react-icons/ri";
+import { useAuth } from "../contexts/AuthContext";
+import app from "../firebase";
 import SignOut from "./SignOut";
+import { SettingsSystemDaydreamRounded } from "@material-ui/icons";
 
 export default function NavBar() {
+  const { currentUser } = useAuth();
+  const db = app.firestore().collection("conversations");
   const [error, setError] = useState("");
+
+  //query 'conversations' collection -> 'users' document (email address) -> collection 'messages'
+  //in all the docs in messages collection where message is to current user, see if any are unread.
+  function notify() {
+    db.doc(`${currentUser.email}`)
+      .collection("messages")
+      .where("to", "==", currentUser.email)
+      .where("read", "==", false)
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, "=>", doc.data());
+        });
+      });
+  }
+
+//When a user logs in the above 'listener' query runs 
+  if(currentUser != null) notify();
+
   return (
     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -58,7 +81,6 @@ export default function NavBar() {
           </div>
           <div>Profile</div>
         </Link>
-
         <Link
           className="navbar__item"
           to="/chat"
@@ -75,3 +97,5 @@ export default function NavBar() {
     </nav>
   );
 }
+          //UI change for if notify returns true or false
+          //<div>{notify? "New Msg": "Chat"</div>

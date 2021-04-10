@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import DisplayEachPost from "./DisplayEachPost";
 
 export default function DisplayPost(props) {
-
   return (
     <div>
       {props.postArray.map((post) => (
         <DisplayEachPost
+          key={post.uuid}
           post={post.post}
           email={post.email}
           timestamp={post.timestamp}
