@@ -114,6 +114,7 @@ export default function Chat() {
       .collection("messages")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
+        console.log(snapshot.docs.map((doc) => doc.data()));
         setChatMessages(snapshot.docs.map((doc) => doc.data()));
       });
   };

@@ -139,7 +139,7 @@ export default function FoodFilter(props) {
         &nbsp; &nbsp; &nbsp; &nbsp;
         <span>
           {props.enabled == false && (
-            <button className='btn btn-danger w-25 disabled'>
+            <button className='btn btn-success w-25 disabled'>
               Apply Filters
             </button>
           )}
@@ -150,19 +150,6 @@ export default function FoodFilter(props) {
               Apply Filters
             </button>
           )}
-          <div>
-            <button
-              className='btn btn-success w-100'
-              disabled={
-                !props.cuisine &&
-                !props.diet &&
-                !props.mealType &&
-                !props.maxTime &&
-                !props.intolerance
-              }>
-              Apply Filters
-            </button>
-          </div>
         </span>
       </div>
     </div>

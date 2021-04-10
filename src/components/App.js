@@ -23,21 +23,27 @@ function App() {
           <NavBar />
           <br />
           <Switch>
-            <Route path="/chat" component={Chat} />
-            <Route path="/moreinfo" component={MoreInfo} />
             <PrivateRoute path="/createrecipe" component={CreateRecipe} />
             <PrivateRoute path="/myrecipes" component={MyRecipes} />
+            <PrivateRoute path="/chat" component={Chat} />
+            <PrivateRoute path="/moreinfo" component={MoreInfo} />
             <div
               className="container d-flex justify-content-center"
               style={{ minHeight: "100vh" }}>
-              <div className="w-100" style={{ maxWidth: "500px" }}>
+              <div className="w-100" style={{ maxWidth: "450px" }}>
                 <Route path="/signUp" component={SignUp} />
                 <Route path="/signIn" component={SignIn} />
-                <PrivateRoute path="/updateProfile" component={UpdateProfile} />
+                <PrivateRoute
+                  path="/update-profile"
+                  component={UpdateProfile}
+                />
                 <PrivateRoute path="/profile" component={Profile} />
-                <Route path="/forgotPassword" component={ForgotPassword} />
-                <Route path="/feed" component={Feed} />
-                <Route path="/recipesearch" component={RecipeSearch} />
+                <PrivateRoute
+                  path="/forgotPassword"
+                  component={ForgotPassword}
+                />
+                <PrivateRoute path="/feed" component={Feed} />
+                <PrivateRoute path="/recipesearch" component={RecipeSearch} />
               </div>
             </div>
           </Switch>

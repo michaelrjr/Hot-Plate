@@ -3,8 +3,6 @@ import SignOut from "./SignOut";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import app from "../firebase";
-import * as Yup from "yup";
-import { useFormik } from "formik";
 
 export default function Profile() {
   const [error, setError] = useState("");
@@ -18,24 +16,6 @@ export default function Profile() {
   useEffect(() => {
     getUserDetails();
   }, []);
-
-  const formik = useFormik({
-    initialValues: {
-      image: "",
-    },
-    validationSchema: Yup.object({
-      image: Yup.mixed()
-        .required("Required")
-        .test("type", "Only jpeg files are supported", (value) => {
-          console.log(value);
-          return value && value[0].type === "image/jpeg";
-        }),
-    }),
-    onSubmit: async (e, values) => {
-      //e.preventDefault();
-      ref.doc(currentUser.email).update({ avatar: fileURL });
-    },
-  });
 
   const getUserDetails = () => {
     ref
@@ -57,10 +37,10 @@ export default function Profile() {
       });
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   ref.doc(currentUser.email).update({ avatar: fileURL });
-  // }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    ref.doc(currentUser.email).update({ avatar: fileURL });
+  };
 
   // handles the users uploaded image
   const handleFileChange = async (e) => {
@@ -96,23 +76,14 @@ export default function Profile() {
               )}
             </div>
             <div className="mb-3">
-              <form onSubmit={formik.handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <div className="custom-file mb-3">
                   <input
                     type="file"
-                    className={`${
-                      formik.touched.image &&
-                      formik.errors.image &&
-                      "custom-file-input is-invalid"
-                    } ${
-                      formik.touched.image && !formik.errors.image
-                        ? "custom-file-input is-valid"
-                        : "custom-file-input"
-                    }`}
+                    className="custom-file-input"
                     id="image"
                     name="image"
                     onChange={handleFileChange}
-                    onBlur={formik.handleBlur}
                   />
                   {fileName ? (
                     <label className="custom-file-label" htmlFor="file-upload">
@@ -123,14 +94,9 @@ export default function Profile() {
                       Choose profile image...
                     </label>
                   )}
-                  {formik.touched.image && formik.errors.image ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.image}
-                    </div>
-                  ) : null}
                 </div>
                 <div>
-                  <button type="submit" className="btn btn-warning w-100 mt-3">
+                  <button type="submit" className="btn btn-warning w-100">
                     Upload
                   </button>
                 </div>
@@ -159,7 +125,7 @@ export default function Profile() {
               <SignOut setError={setError} />
             </div>
             <div>
-              <Link to="/updateProfile">
+              <Link to="/update-profile">
                 <button className="btn btn-info w-100">Update profile</button>
               </Link>
             </div>

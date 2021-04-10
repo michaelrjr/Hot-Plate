@@ -59,7 +59,7 @@ export default function RecipeSearch() {
 
   // if we are at the end of the array set recipeNum to 0
   // otherwise increment recipeNum by 1
-  function nextRecipe() {
+  const nextRecipe = () => {
     if (recipeNum === apiData.length - 1) {
       setRecipeNum(0);
       // will need to handle what happens when we reach the end of the array with both random recipes and filtered recipes...
@@ -68,32 +68,32 @@ export default function RecipeSearch() {
     }
   }
 
-  function updateCuisine(event) {
+  const updateCuisine = (event) => {
     setCuisine(event.target.value);
     setEnabled(true);
   }
 
-  function updateDiet(event) {
+  const updateDiet = (event) => {
     setDiet(event.target.value);
     setEnabled(true);
   }
 
-  function updateIntolerance(event) {
+  const updateIntolerance = (event) => {
     setIntolerance(event.target.value);
     setEnabled(true);
   }
 
-  function updateMealType(event) {
+  const updateMealType = (event) => {
     setMealType(event.target.value);
     setEnabled(true);
   }
 
-  function updateMaxTime(event) {
+  const updateMaxTime = (event) => {
     setMaxTime(event.target.value);
     setEnabled(true);
   }
 
-  function applyFilters() {
+  const applyFilters = () => {
     if ((maxTime !== "" && !/^\d+$/.test(maxTime)) || parseInt(maxTime) <= 0) {
       setMaxTime("");
       setEnabled(false);
@@ -107,7 +107,7 @@ export default function RecipeSearch() {
   }
 
   //resets inputs to default values
-  function removeFilters() {
+  const removeFilters = () => {
     if ((cuisine, diet, intolerance, maxTime, mealType !== "")) {
       setCuisine("");
       setDiet("");
