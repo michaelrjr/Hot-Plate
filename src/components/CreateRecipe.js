@@ -40,7 +40,7 @@ export default function CreateRecipe() {
       instructions: Yup.array().min(1).required("Required"),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      console.log(values.id);
       getUserCreatedRecipe(values);
     },
   });
@@ -58,7 +58,7 @@ export default function CreateRecipe() {
         lastName: userDetails.lastName,
       })
       .then(() => {
-        ref.doc(currentUser.uid).collection("recipes").add(formik.values);
+        ref.doc(currentUser.uid).collection("recipes").doc(formik.values.id).set(formik.values);
       });
   };
 
