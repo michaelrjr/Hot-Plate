@@ -20,13 +20,9 @@ export default function DisplayEachPost(props) {
 
   const [likeOrUnlike, setLikeOrUnlike] = useState(false);
 
-  useEffect(() => {
-    checkLiked();
-  }, []);
-
   const checkLiked = () => {
     likeRef.doc(currentUser.email).get().then((docSnapshot) => {
-      if (!docSnapshot.exists) setLikeOrUnlike(true);
+      if (docSnapshot.exists) setLikeOrUnlike(true);
     })
   }
 
@@ -63,6 +59,7 @@ export default function DisplayEachPost(props) {
 
   useEffect(() => {
     getUserData();
+    checkLiked();
     // console.log(avatar);
   }, []);
 
