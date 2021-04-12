@@ -14,76 +14,87 @@ import NavBar2 from "./NavBar2";
 
 export default function NavBar() {
   const { currentUser } = useAuth();
+
   const [error, setError] = useState("");
 
   return (
     <div>
-      <Navbar bg="light" sticky="top">
-        <div className="container d-flex justify-content-between">
-          <Nav className="m-auto container-fluid">
-            <Nav.Link>
-              <Link to="/feed">
+      {currentUser === null ? (
+        <NavBar2 />
+      ) : (
+        <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
+          <Navbar.Brand>
+            <img src="hotPlate_Logo_Full_gradient_fullcol_240x90.svg" width="150" alt="logo" />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <div className="container d-flex justify-content-between">
+              <Nav className="m-auto container-fluid">
                 <div>
-                  <AiOutlineHome size={30} />
+                  <Link to="/feed">
+                    <div>
+                      <AiOutlineHome size={30} />
+                    </div>
+                    <div>Feed</div>
+                  </Link>
                 </div>
-                <div>Feed</div>
-              </Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to="/recipesearch">
                 <div>
-                  <BiFoodMenu size={30} />
+                  <Link to="/recipesearch">
+                    <div>
+                      <BiFoodMenu size={30} />
+                    </div>
+                    <div>Food</div>
+                  </Link>
                 </div>
-                <div>Food</div>
-              </Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to="/chat">
                 <div>
-                  <BsChatDots size={30} />
+                  <Link to="/chat">
+                    <div>
+                      <BsChatDots size={30} />
+                    </div>
+                    <div>Chat</div>
+                  </Link>
                 </div>
-                <div>Chat</div>
-              </Link>
-            </Nav.Link>
-            <Dropdown drop="left">
-              <Dropdown.Toggle>
-                <FiSettings size={30} />
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="text-center">
-                <Dropdown.Item>
-                  <Link to="/profile">
-                    <div>
-                      <CgProfile size={30} />
-                    </div>
-                    <div>Profile</div>
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link to="/createrecipe">
-                    <div>
-                      <GrRestaurant size={30} />
-                    </div>
-                    <div>Create Recipe</div>
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link to="/myrecipes">
-                    <div>
-                      <RiRestaurantLine size={30} />
-                    </div>
-                    <div>My Recipes</div>
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <div>
-                    <SignOut setError={setError} />
-                  </div>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Nav>
-        </div>
-      </Navbar>
+                <Dropdown drop="left">
+                  <Dropdown.Toggle>
+                    <FiSettings size={30} />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="text-center">
+                    <Dropdown.Item>
+                      <Link to="/profile">
+                        <div>
+                          <CgProfile size={30} />
+                        </div>
+                        <div>Profile</div>
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Link to="/createrecipe">
+                        <div>
+                          <GrRestaurant size={30} />
+                        </div>
+                        <div>Create Recipe</div>
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Link to="/myrecipes">
+                        <div>
+                          <RiRestaurantLine size={30} />
+                        </div>
+                        <div>My Recipes</div>
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <div>
+                        <SignOut setError={setError} />
+                      </div>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Nav>
+            </div>
+          </Navbar.Collapse>
+        </Navbar>
+      )}
     </div>
   );
 }

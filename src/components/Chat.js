@@ -101,23 +101,17 @@ export default function Chat() {
     //   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     // });
 
-    convoRef
-      .doc(`${otherUserEmail}_${currentUser.email}`)
-      .collection("messages")
-      .add({
-        message: message,
-        from: currentUser.email,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    convoRef.doc(`${otherUserEmail}_${currentUser.email}`).collection("messages").add({
+      message: message,
+      from: currentUser.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 
-    convoRef
-      .doc(`${currentUser.email}_${otherUserEmail}`)
-      .collection("messages")
-      .add({
-        message: message,
-        from: currentUser.email,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    convoRef.doc(`${currentUser.email}_${otherUserEmail}`).collection("messages").add({
+      message: message,
+      from: currentUser.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 
     // reset message to empty string
     setMessage("");

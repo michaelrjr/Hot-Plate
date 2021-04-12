@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import DisplayEachPost from "./DisplayEachPost";
 
 export default function DisplayPost(props) {
-
   return (
     <div>
       {props.postArray.map((post) => (
