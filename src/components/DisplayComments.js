@@ -33,6 +33,7 @@ export default function DisplayComments(props){
             { commentsArray &&
                 commentsArray.map((comment) => (
                     <DisplayEachComment 
+                        key = {comment.timestamp}
                         email = {comment.from}
                         comment = {comment.comment}
                         timestamp = {comment.timestamp}

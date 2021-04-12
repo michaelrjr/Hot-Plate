@@ -176,10 +176,6 @@ export default function MoreInfo() {
 
     return (
       <div className="container">
-        { console.log("Recipe:",recipeInfoArray) }
-        {/*
-           NB: Could put an if(!spoonacularRecipe) in here, and if so load a separate component. That way it should satisfy Michael. Not mess too much with this file.
-        */}
         <div className="row">
           <div className="col-lg-6 col-sm-12">
             {recipeInfoArray.map((recipe) => (
@@ -233,16 +229,16 @@ export default function MoreInfo() {
                   {spoonacularRecipe ?
                     <Collapse in={showIngredients}>
                       <div className="mt-3">
-                        {recipe.extendedIngredients.map((ingredients) => (
-                          <li>{ingredients.original}</li>
+                        {recipe.extendedIngredients.map((ingredients, index) => (
+                          <li key={index}>{ingredients.original}</li>
                         ))}
                       </div>
                     </Collapse>
                     : recipe?.ingredients &&
                     <Collapse in={showIngredients}>
                         <div className="mt-3">
-                          {recipe.ingredients.map((ingredient) => (
-                            <li>{ingredient}</li>
+                          {recipe.ingredients.map((ingredient, index) => (
+                            <li key={index}>{ingredient}</li>
                           ))}
                         </div>
                     </Collapse>
@@ -273,8 +269,8 @@ export default function MoreInfo() {
                     : recipe?.instructions &&
                     <Collapse in={showInstructions}>
                         <div className="mt-3">
-                          {recipe.instructions.map((instruction) => (
-                                  <li>{instruction}</li>
+                          {recipe.instructions.map((instruction, index) => (
+                                  <li key={index}>{instruction}</li>
                           ))}
                         </div>
                     </Collapse>
