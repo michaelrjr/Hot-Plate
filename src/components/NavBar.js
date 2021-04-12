@@ -7,15 +7,33 @@ import { BsChatDots } from "react-icons/bs";
 import { GrRestaurant } from "react-icons/gr";
 import { RiRestaurantLine } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
-import SignOut from "./SignOut";
-import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
+import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import NavBar2 from "./NavBar2";
+import app from "../firebase";
+import SignOut from "./SignOut";
 
 export default function NavBar() {
   const { currentUser } = useAuth();
-
+  const db = app.firestore().collection("conversations");
   const [error, setError] = useState("");
+
+  //query 'conversations' collection -> 'users' document (email address) -> collection 'messages'
+  //in all the docs in messages collection where message is to current user, see if any are unread.
+  function notify() {
+    db.doc(`${currentUser.email}`)
+      .collection("messages")
+      .where("to", "==", currentUser.email)
+      .where("read", "==", false)
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, "=>", doc.data());
+        });
+      });
+  }
+
+  //When a user logs in the above query runs listening for updates
+  if (currentUser != null) notify();
 
   return (
     <div>
@@ -27,33 +45,33 @@ export default function NavBar() {
             <img src="hotPlate_Logo_Full_gradient_fullcol_240x90.svg" width="150" alt="logo" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
+          <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
             <div className="container d-flex justify-content-between">
               <Nav className="m-auto container-fluid">
-                <div>
+                <Nav.Link>
                   <Link to="/feed">
                     <div>
                       <AiOutlineHome size={30} />
                     </div>
                     <div>Feed</div>
                   </Link>
-                </div>
-                <div>
+                </Nav.Link>
+                <Nav.Link>
                   <Link to="/recipesearch">
                     <div>
                       <BiFoodMenu size={30} />
                     </div>
                     <div>Food</div>
                   </Link>
-                </div>
-                <div>
+                </Nav.Link>
+                <Nav.Link>
                   <Link to="/chat">
                     <div>
                       <BsChatDots size={30} />
                     </div>
                     <div>Chat</div>
                   </Link>
-                </div>
+                </Nav.Link>
                 <Dropdown drop="left">
                   <Dropdown.Toggle>
                     <FiSettings size={30} />

@@ -17,15 +17,16 @@ export default function Chat() {
   const [searchMember, setSearchMember] = useState("");
 
   //database ref
+  const db = app.firestore().collection("conversations");
   const ref = app.firestore().collection("Users");
-  const convoRef = app.firestore().collection("conversations");
 
   useEffect(() => {
     getOnlineUsers();
     getMembers();
-    if (showChat === true) {
+    if (showChat == true) {
       getChatMessages();
     }
+    return () => setShowChat(false);
   }, []);
 
   // query users collection for documents where online == true, these are currently "online" users
@@ -57,19 +58,20 @@ export default function Chat() {
         let tempArr = [];
         tempArr.push(doc.data());
         setOtherUserDetails(tempArr);
-        console.log(tempArr);
       })
       .catch((error) => {
         console.log("Error getting document:", error);
       });
   };
 
-  // show chat and also get chat messages from firestore
-  const handleStartChatClick = (email) => {
-    setOtherUserEmail(email);
+  // show chat and also get chat messages from firestore, second param allows for
+  //update of message.read field from false to true for the current users received messages
+  const handleStartChatClick = (otherEmail, currentEmail) => {
+    setOtherUserEmail(otherEmail);
     setShowChat(true);
-    getChatMessages(email);
-    getOtherUserDetails(email);
+    getChatMessages(otherEmail);
+    setMessageToRead(currentEmail);
+    getOtherUserDetails(otherEmail);
   };
 
   // close chat
@@ -81,53 +83,29 @@ export default function Chat() {
     setMessage(event.target.value);
   };
 
-  // send message to the current user and the other user (user you are messaging)
   const handleSendMessage = (event) => {
     event.preventDefault();
-
-    // reference to users collection -> then other users document -> then the sub-collection with the current user
-    // -> then add the message to the sub-colletion as a document
-    // ref.doc(otherUserEmail).collection(currentUser.email).add({
-    //   message: message,
-    //   from: currentUser.email,
-    //   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    // });
-
-    // reference to users collection -> then the current users document -> then the sub-collection with the other users email
-    // -> then add the message to the sub-colletion as a document
-    // ref.doc(currentUser.email).collection(otherUserEmail).add({
-    //   message: message,
-    //   from: currentUser.email,
-    //   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    // });
-
-    convoRef.doc(`${otherUserEmail}_${currentUser.email}`).collection("messages").add({
+    db.doc(`${otherUserEmail}`).collection("messages").add({
       message: message,
       from: currentUser.email,
+      to: otherUserEmail,
+      read: false,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    db.doc(`${currentUser.email}`).collection("messages").add({
+      message: message,
+      from: currentUser.email,
+      to: otherUserEmail,
+      read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
-    convoRef.doc(`${currentUser.email}_${otherUserEmail}`).collection("messages").add({
-      message: message,
-      from: currentUser.email,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-
-    // reset message to empty string
     setMessage("");
   };
 
   // get the chat messages (docs) from current users sub-collection
   const getChatMessages = (email) => {
-    // ref
-    //   .doc(currentUser.email)
-    //   .collection(email)
-    //   .orderBy("timestamp", "asc")
-    //   .onSnapshot((snapshot) => {
-    //     setChatMessages(snapshot.docs.map((doc) => doc.data()));
-    //   });
-    convoRef
-      .doc(`${currentUser.email}_${email}`)
+    db.doc(`${email}`)
       .collection("messages")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
@@ -136,11 +114,23 @@ export default function Chat() {
       });
   };
 
+  //update read status to true when start chat button is clicked
+  const setMessageToRead = (email) => {
+    db.doc(`${email}`)
+      .collection("messages")
+      .where("to", "==", email)
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.update({ read: true });
+          console.log(doc.data());
+        });
+      });
+  };
+
   //handle delete
   const handleDeleteMessageClick = (msg) => {
-    ref
-      .doc(currentUser.email)
-      .collection(otherUserEmail)
+    db.doc(`${currentUser.email}`)
+      .collection("messages")
       .where("message", "==", msg)
       .get()
       .then((querySnapshot) => {
@@ -148,9 +138,8 @@ export default function Chat() {
           doc.ref.delete();
         });
       });
-    ref
-      .doc(otherUserEmail)
-      .collection(currentUser.email)
+    db.doc(`${otherUserEmail}`)
+      .collection("messages")
       .where("message", "==", msg)
       .get()
       .then((querySnapshot) => {
@@ -162,9 +151,11 @@ export default function Chat() {
 
   return (
     <div className="container chat-container p-2">
+      {/* {console.log(showChat)} */}
       {showChat == false ? (
         <DisplayOnlineUsers
           members={members}
+          chatMessages={chatMessages}
           searchMember={searchMember}
           currentUser={currentUser}
           onlineUsers={onlineUsers}

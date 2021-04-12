@@ -26,7 +26,7 @@ export default function MyRecipes() {
   var tempArr = [];
   useEffect(() => {
     getUserCreatedRecipes();
-    getSavedAPIRecipes();
+    // getSavedAPIRecipes();
   }, []);
 
   const getUserCreatedRecipes = () => {
@@ -37,24 +37,28 @@ export default function MyRecipes() {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           tempArr.push(doc.data());
+          
         });
+        setRecipes(tempArr);
+      console.log(tempArr)
         // getSavedAPIRecipes();
         // setRecipes(tempArr);
         // console.log(tempArr);
       });
+      ;
   };
 
-  const getSavedAPIRecipes = () => {
-    userAPIRecipeRef
-    .get()
-    .then((queryAPISnapshot) =>{
-      queryAPISnapshot.forEach((doc) =>{
-        tempArr.push(doc.data());
-      })
-      setRecipes(tempArr);
-      console.log(tempArr);
-    })
-  } 
+  // const getSavedAPIRecipes = () => {
+  //   userAPIRecipeRef
+  //   .get()
+  //   .then((queryAPISnapshot) =>{
+  //     queryAPISnapshot.forEach((doc) =>{
+  //       tempArr.push(doc.data());
+  //     })
+  //     setRecipes(tempArr);
+  //     console.log(tempArr);
+  //   })
+  // } 
 
   return (
     <div className="container">
@@ -82,10 +86,7 @@ export default function MyRecipes() {
                       <div className="d-inline mr-1">
                         <BsInfoSquare size={20} />
                       </div>
-                      <div
-                        className="d-inline"
-                        
-                      >Info</div>
+                      <div className="d-inline">Info</div>
                     </button>
                   </Link>
                 </div>
