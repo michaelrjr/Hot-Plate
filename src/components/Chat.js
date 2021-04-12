@@ -64,7 +64,7 @@ export default function Chat() {
       });
   };
 
-  // show chat and also get chat messages from firestore, second param allows for 
+  // show chat and also get chat messages from firestore, second param allows for
   //update of message.read field from false to true for the current users received messages
   const handleStartChatClick = (otherEmail, currentEmail) => {
     setOtherUserEmail(otherEmail);
@@ -73,7 +73,7 @@ export default function Chat() {
     setMessageToRead(currentEmail);
     getOtherUserDetails(otherEmail);
   };
-  
+
   // close chat
   const handleCloseChatClick = () => {
     setShowChat(false);
@@ -83,27 +83,22 @@ export default function Chat() {
     setMessage(event.target.value);
   };
 
-  
   const handleSendMessage = (event) => {
     event.preventDefault();
-    db.doc(`${otherUserEmail}`)
-      .collection("messages")
-      .add({
-        message: message,
-        from: currentUser.email,
-        to: otherUserEmail,
-        read: false,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    db.doc(`${currentUser.email}`)
-      .collection("messages")
-      .add({
-        message: message,
-        from: currentUser.email,
-        to: otherUserEmail,
-        read: false,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    db.doc(`${otherUserEmail}`).collection("messages").add({
+      message: message,
+      from: currentUser.email,
+      to: otherUserEmail,
+      read: false,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    db.doc(`${currentUser.email}`).collection("messages").add({
+      message: message,
+      from: currentUser.email,
+      to: otherUserEmail,
+      read: false,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 
     setMessage("");
   };
@@ -121,21 +116,20 @@ export default function Chat() {
 
   //update read status to true when start chat button is clicked
   const setMessageToRead = (email) => {
-     db.doc(`${email}`)
+    db.doc(`${email}`)
       .collection("messages")
       .where("to", "==", email)
       .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          doc.ref.update({read:true});
+          doc.ref.update({ read: true });
           console.log(doc.data());
         });
-      });  
-  }
+      });
+  };
 
   //handle delete
   const handleDeleteMessageClick = (msg) => {
-    db
-      .doc(`${currentUser.email}`)
+    db.doc(`${currentUser.email}`)
       .collection("messages")
       .where("message", "==", msg)
       .get()
@@ -144,8 +138,7 @@ export default function Chat() {
           doc.ref.delete();
         });
       });
-    db
-      .doc(`${otherUserEmail}`)
+    db.doc(`${otherUserEmail}`)
       .collection("messages")
       .where("message", "==", msg)
       .get()
@@ -158,7 +151,7 @@ export default function Chat() {
 
   return (
     <div className="container chat-container p-2">
-    {/* {console.log(showChat)} */}
+      {/* {console.log(showChat)} */}
       {showChat == false ? (
         <DisplayOnlineUsers
           members={members}
@@ -183,7 +176,7 @@ export default function Chat() {
           handleInputBoxChange={handleInputBoxChange}
           handleDeleteMessageClick={handleDeleteMessageClick}
         />
-      ): null}
+      ) : null}
     </div>
   );
 }

@@ -55,7 +55,6 @@ export default function DisplayEachPost(props) {
   const getUserData = () => {
     userDBRef.doc(props.email).get().then( (doc) => {
       setCurrentUserData( doc.data() );
-      console.log("tempArr: "+JSON.stringify(currentUserData));
   })
     .catch((error) => {
       console.log("Error getting document:", error);

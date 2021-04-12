@@ -20,9 +20,7 @@ function SignIn() {
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string()
-        .min(8, "Password must be at least 8 characters")
-        .required("Required"),
+      password: Yup.string().min(8, "Password must be at least 8 characters").required("Required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -34,18 +32,16 @@ function SignIn() {
       } catch {
         setError("Error, incorrect email or password. Please try again.");
       }
-
+      setLoading(false);
       // update online to true if sign in is successful
       ref.doc(values.email).update({ online: true });
-
-      setLoading(false);
     },
   });
 
   return (
     <div className="card">
       <div className="card-body">
-        <h3 className="card-title text-center mb-4">Sign In</h3>
+        <h3 className="card-title text-center mb-3">Sign In</h3>
         <form onSubmit={formik.handleSubmit}>
           {error && (
             <div className="alert alert-danger" role="alert">
@@ -55,14 +51,8 @@ function SignIn() {
           <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
-              className={`${
-                formik.touched.email &&
-                formik.errors.email &&
-                "form-control is-invalid"
-              } ${
-                formik.touched.email && !formik.errors.email
-                  ? "form-control is-valid"
-                  : "form-control"
+              className={`${formik.touched.email && formik.errors.email && "form-control is-invalid"} ${
+                formik.touched.email && !formik.errors.email ? "form-control is-valid" : "form-control"
               }`}
               type="email"
               placeholder="Enter email"
@@ -78,14 +68,8 @@ function SignIn() {
           <div className="mb-3">
             <label htmlFor="loginPassword">Password</label>
             <input
-              className={`${
-                formik.touched.password &&
-                formik.errors.password &&
-                "form-control is-invalid"
-              } ${
-                formik.touched.password && !formik.errors.password
-                  ? "form-control is-valid"
-                  : "form-control"
+              className={`${formik.touched.password && formik.errors.password && "form-control is-invalid"} ${
+                formik.touched.password && !formik.errors.password ? "form-control is-valid" : "form-control"
               }`}
               type="password"
               placeholder="Enter password"
@@ -99,10 +83,7 @@ function SignIn() {
             ) : null}
           </div>
           <div className="mb-3">
-            <button
-              type="submit"
-              className="btn btn-success w-100"
-              disabled={loading}>
+            <button type="submit" className="btn btn-success w-100" disabled={loading}>
               Sign in
             </button>
           </div>
