@@ -17,6 +17,7 @@ export default function Profile() {
     getUserDetails();
   }, []);
 
+  // get the current users details from firestore
   const getUserDetails = () => {
     ref
       .doc(currentUser.email)
@@ -24,12 +25,6 @@ export default function Profile() {
       .then((doc) => {
         let tempArr = [];
         tempArr.push(doc.data());
-        // console.log(tempArr);
-        if(tempArr[0].joined.seconds){
-          var t = new Date(1970, 0, 1); // Epoch
-          t.setSeconds(tempArr[0].joined.seconds);
-          tempArr[0].joined = t.toString();
-        }
         setUserDetails(tempArr);
       })
       .catch((error) => {
@@ -37,6 +32,7 @@ export default function Profile() {
       });
   };
 
+  // when the user clicks "upload" update that users avatar image
   const handleSubmit = (e) => {
     e.preventDefault();
     ref.doc(currentUser.email).update({ avatar: fileURL });
@@ -60,19 +56,9 @@ export default function Profile() {
             <h3 className="card-title text-center mb-3">Profile</h3>
             <div className="d-flex justify-content-center mb-3">
               {user.avatar === null ? (
-                <img
-                  className="rounded-circle"
-                  src="defaultuser.png"
-                  width="150"
-                  height="150"
-                />
+                <img className="rounded-circle" src="defaultuser.png" width="150" height="150" />
               ) : (
-                <img
-                  className="rounded-circle"
-                  src={user.avatar}
-                  width="150"
-                  height="150"
-                />
+                <img className="rounded-circle" src={user.avatar} width="150" height="150" />
               )}
             </div>
             <div className="mb-3">

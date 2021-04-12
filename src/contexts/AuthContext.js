@@ -11,7 +11,7 @@ export function useAuth() {
 }
 //contexts allow for passing functions and variables around the app.
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [recipeID, setID] = useState(0);
   //database ref
@@ -167,11 +167,7 @@ export function AuthProvider({ children }) {
     CheckCommentsExist,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;

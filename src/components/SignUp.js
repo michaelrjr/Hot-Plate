@@ -28,17 +28,12 @@ function SignUp() {
       firstName: Yup.string().required("Required"),
       lastName: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string()
-        .min(8, "Password must be at least 8 characters")
-        .required("Required"),
+      password: Yup.string().min(8, "Password must be at least 8 characters").required("Required"),
       confirmPassword: Yup.string()
         .required("Please confirm your password")
         .when("password", {
           is: (password) => (password && password.length > 0 ? true : false),
-          then: Yup.string().oneOf(
-            [Yup.ref("password")],
-            "Passwords do not match"
-          ),
+          then: Yup.string().oneOf([Yup.ref("password")], "Passwords do not match"),
         }),
     }),
     onSubmit: async (values) => {
@@ -72,7 +67,7 @@ function SignUp() {
   return (
     <div className="card">
       <div className="card-body">
-        <h3 className="card-title text-center mb-4">Sign Up</h3>
+        <h3 className="card-title text-center mb-3">Sign Up</h3>
         <form onSubmit={formik.handleSubmit}>
           {message && (
             <div className="alert alert-success" role="alert">
@@ -90,14 +85,8 @@ function SignUp() {
                 <div className="mb-3">
                   <label htmlFor="firstName">First Name</label>
                   <input
-                    className={`${
-                      formik.touched.firstName &&
-                      formik.errors.firstName &&
-                      "form-control is-invalid"
-                    } ${
-                      formik.touched.firstName && !formik.errors.firstName
-                        ? "form-control is-valid"
-                        : "form-control"
+                    className={`${formik.touched.firstName && formik.errors.firstName && "form-control is-invalid"} ${
+                      formik.touched.firstName && !formik.errors.firstName ? "form-control is-valid" : "form-control"
                     }`}
                     type="text"
                     placeholder="Enter first name"
@@ -107,9 +96,7 @@ function SignUp() {
                     value={formik.values.firstName}
                   />
                   {formik.touched.firstName && formik.errors.firstName ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.firstName}
-                    </div>
+                    <div className="invalid-feedback">{formik.errors.firstName}</div>
                   ) : null}
                 </div>
               </div>
@@ -117,14 +104,8 @@ function SignUp() {
                 <div className="mb-3">
                   <label htmlFor="lastName">Last Name</label>
                   <input
-                    className={`${
-                      formik.touched.lastName &&
-                      formik.errors.lastName &&
-                      "form-control is-invalid"
-                    } ${
-                      formik.touched.lastName && !formik.errors.lastName
-                        ? "form-control is-valid"
-                        : "form-control"
+                    className={`${formik.touched.lastName && formik.errors.lastName && "form-control is-invalid"} ${
+                      formik.touched.lastName && !formik.errors.lastName ? "form-control is-valid" : "form-control"
                     }`}
                     type="text"
                     placeholder="Enter last name"
@@ -134,9 +115,7 @@ function SignUp() {
                     value={formik.values.lastName}
                   />
                   {formik.touched.lastName && formik.errors.lastName ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.lastName}
-                    </div>
+                    <div className="invalid-feedback">{formik.errors.lastName}</div>
                   ) : null}
                 </div>
               </div>
@@ -145,14 +124,8 @@ function SignUp() {
           <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
-              className={`${
-                formik.touched.email &&
-                formik.errors.email &&
-                "form-control is-invalid"
-              } ${
-                formik.touched.email && !formik.errors.email
-                  ? "form-control is-valid"
-                  : "form-control"
+              className={`${formik.touched.email && formik.errors.email && "form-control is-invalid"} ${
+                formik.touched.email && !formik.errors.email ? "form-control is-valid" : "form-control"
               }`}
               type="email"
               placeholder="Enter email"
@@ -168,14 +141,8 @@ function SignUp() {
           <div className="mb-3">
             <label htmlFor="password">Password</label>
             <input
-              className={`${
-                formik.touched.password &&
-                formik.errors.password &&
-                "form-control is-invalid"
-              } ${
-                formik.touched.password && !formik.errors.password
-                  ? "form-control is-valid"
-                  : "form-control"
+              className={`${formik.touched.password && formik.errors.password && "form-control is-invalid"} ${
+                formik.touched.password && !formik.errors.password ? "form-control is-valid" : "form-control"
               }`}
               type="password"
               placeholder="Enter password"
@@ -192,9 +159,7 @@ function SignUp() {
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               className={`${
-                formik.touched.confirmPassword &&
-                formik.errors.confirmPassword &&
-                "form-control is-invalid"
+                formik.touched.confirmPassword && formik.errors.confirmPassword && "form-control is-invalid"
               } ${
                 formik.touched.confirmPassword && !formik.errors.confirmPassword
                   ? "form-control is-valid"
@@ -208,16 +173,11 @@ function SignUp() {
               value={formik.values.confirmPassword}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="invalid-feedback">
-                {formik.errors.confirmPassword}
-              </div>
+              <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
             ) : null}
           </div>
           <div className="mb-3">
-            <button
-              type="submit"
-              className="btn btn-success w-100"
-              disabled={loading}>
+            <button type="submit" className="btn btn-success w-100" disabled={loading}>
               Sign up
             </button>
           </div>

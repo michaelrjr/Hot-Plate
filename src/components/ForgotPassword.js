@@ -21,9 +21,7 @@ function ForgotPassword() {
         setError("");
         setLoading(true);
         await resetPassword(values.email);
-        setMessage(
-          `An email has been sent to ${values.email} to reset your password. Please check your inbox.`
-        );
+        setMessage(`An email has been sent to ${values.email} to reset your password. Please check your inbox.`);
       } catch {
         setError("Error, incorrect email. Please try again.");
       }
@@ -34,7 +32,7 @@ function ForgotPassword() {
     <div className="card">
       <div className="card-body">
         <form onSubmit={formik.handleSubmit}>
-          <h3 className="card-title text-center mb-4">Password Reset</h3>
+          <h3 className="card-title text-center mb-3">Password Reset</h3>
           {message && (
             <div className="alert alert-success" role="alert">
               {message}
@@ -48,14 +46,8 @@ function ForgotPassword() {
           <div className="mb-3">
             <label htmlFor="email">Email</label>
             <input
-              className={`${
-                formik.touched.email &&
-                formik.errors.email &&
-                "form-control is-invalid"
-              } ${
-                formik.touched.email && !formik.errors.email
-                  ? "form-control is-valid"
-                  : "form-control"
+              className={`${formik.touched.email && formik.errors.email && "form-control is-invalid"} ${
+                formik.touched.email && !formik.errors.email ? "form-control is-valid" : "form-control"
               }`}
               type="email"
               placeholder="Enter email"
@@ -69,11 +61,7 @@ function ForgotPassword() {
             ) : null}
           </div>
           <div className="mb-3">
-            <button
-              type="submit"
-              className="btn btn-primary w-100"
-              disabled={loading}
-            >
+            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
               Reset Password
             </button>
           </div>

@@ -16,8 +16,8 @@ export default function MoreInfo() {
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showNutrition, setShowNutrition] = useState(false);
-  const recipeInfoURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/information?includeNutrition=false&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
-  const nutritionVisualisationURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
+  const recipeInfoURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/information?includeNutrition=false&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
+  const nutritionVisualisationURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
   const [show, setShow] = useState(false);
   const ref = app.firestore().collection("userCreatedRecipes");
   const [delOrSave, setDelOrSave] = useState(false);
@@ -26,6 +26,7 @@ export default function MoreInfo() {
 
   let mounted = true;
   
+
   useEffect(() => {
 
     if(recipeID.toString().substring(0,3) == "CR-"){
@@ -106,43 +107,47 @@ export default function MoreInfo() {
   //check if user has already added recipe to their saved recipes
   const checkRecipeAdded = () => {
     let apiref = ref.doc(currentUser.uid).collection("recipes");
-    apiref.doc(recipeID.toString()).get().then((docSnapshot) => {
-      if (docSnapshot.exists) setDelOrSave(true);
-    })
-  }
-
-//allow Signed-In users to save recipes to the database.
-//Duplicate handling already implemented in this method.
+    apiref
+      .doc(recipeID.toString())
+      .get()
+      .then((docSnapshot) => {
+        if (docSnapshot.exists) setDelOrSave(true);
+      });
+  };
+  //allow Signed-In users to save recipes to the database.
+  //Duplicate handling already implemented in this method.
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
-      apiref.doc(id.toString()).get().then((docSnapshot) =>{
-        if(docSnapshot.exists) alert("Recipe already saved!");
-        else{
-          apiref.doc(id.toString())
-          .set({
-            id: id,
-            title: title,
-            image: image,
-            ingredients: ingred,
-            instructions: instruct,
-            fromAPI: true
-          })
-          setDelOrSave(true);
-          alert("Saved to My Recipes");
-        }
-      });
+      apiref
+        .doc(id.toString())
+        .get()
+        .then((docSnapshot) => {
+          if (docSnapshot.exists) alert("Recipe already saved!");
+          else {
+            apiref.doc(id.toString()).set({
+              id: id,
+              title: title,
+              image: image,
+              ingredients: ingred,
+              instructions: instruct,
+              fromAPI: true,
+            });
+            setDelOrSave(true);
+            alert("Saved to My Recipes");
+          }
+        });
     } else {
       alert("Please Sign-in to start saving recipes.");
     }
-  }
+  };
 
   const removeAPIRecipe = (id) => {
     let apiref = ref.doc(currentUser.uid).collection("recipes");
     apiref.doc(id.toString()).delete();
     setDelOrSave(false);
     alert("Recipe removed");
-  }
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -217,9 +222,7 @@ export default function MoreInfo() {
                   </button>}
 
                   <hr />
-                  <button
-                    className="btn btn-warning w-100"
-                    onClick={() => setShowIngredients(!showIngredients)}>
+                  <button className="btn btn-warning w-100" onClick={() => setShowIngredients(!showIngredients)}>
                     Ingredients
                   </button>
                   {/*
@@ -245,9 +248,7 @@ export default function MoreInfo() {
                     </Collapse>
                   }
                   <hr />
-                  <button
-                    className="btn btn-success w-100"
-                    onClick={() => setShowInstructions(!showInstructions)}>
+                  <button className="btn btn-success w-100" onClick={() => setShowInstructions(!showInstructions)}>
                     Instructions
                   </button>
                   {/*
