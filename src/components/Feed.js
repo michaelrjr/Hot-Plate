@@ -6,9 +6,7 @@ import { firebase } from "@firebase/app";
 import DisplayPost from "./DisplayPost";
 
 export default function Feed() {
-  const { currentUser, signOut, handlePostClick } = useAuth();
   const [postArray, setPostArray] = useState([]);
-  const [post, setPost] = useState("");
 
   let mounted;
 
@@ -26,20 +24,11 @@ export default function Feed() {
     ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
       setPostArray(snapshot.docs.map((doc) => doc.data()));
     });
-    setPost("");
-  };
-
-  const handleInputBoxChange = (e) => {
-    setPost(e.target.value);
   };
 
   return (
     <div>
-      <FeedInputBox
-        handlePostClick={handlePostClick}
-        post={post}
-        handleInputBoxChange={handleInputBoxChange}
-      />
+      <FeedInputBox />
       <br />
       <DisplayPost postArray={postArray} />
     </div>

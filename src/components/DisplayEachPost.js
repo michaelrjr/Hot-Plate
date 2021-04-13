@@ -81,15 +81,16 @@ export default function DisplayEachPost(props) {
               <CommentBox
                 postID = {props.postID}
                 commentSectionID = {props.childCommentSectionID}
+                setShowCommentBox = {setShowCommentBox}
               />
             )}
-            {
-              CheckCommentsExist(props.postID, props.childCommentSectionID) &&
+            {/* {
+              CheckCommentsExist(props.postID, props.childCommentSectionID) && */}
                 <DisplayComments
                   postID = {props.postID}
                   commentSectionID = {props.childCommentSectionID}
                 />
-            }
+            {/*}*/}
           </div>
         </div>
     </div>

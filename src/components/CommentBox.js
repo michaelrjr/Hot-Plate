@@ -7,7 +7,8 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function CommentBox(props) {
   const postID = props.postID;
-  const { comment, setComment, handlePostComment } = useAuth();
+  const {handlePostComment } = useAuth();
+  const [comment, setComment] = useState("");
 
   const handleCommentBoxChange = (e) => {
     setComment(e.target.value);
@@ -18,12 +19,15 @@ export default function CommentBox(props) {
       <input
         type="text"
         placeholder="Enter comment"
+        value={comment}
         onChange={
           handleCommentBoxChange
         }
       />
       <button className="comment-btn btn-primary btn-sm" onClick={() => {
         handlePostComment(comment, postID, props.commentSectionID)
+        setComment("");
+        props.setShowCommentBox(false);
       }}>
         Post
       </button>
