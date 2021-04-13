@@ -14,7 +14,8 @@ export default function DisplayEachPost(props) {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const { CheckCommentsExist, currentUser } = useAuth();
   const userDBRef = app.firestore().collection("Users");
-  const likeRef = app.firestore().collection("feed").doc(props.postID).collection("Likes");;
+  const likeRef = app.firestore().collection("feed").doc(props.postID).collection("Likes");
+  const [numLikes, setNumLikes] = useState(0);
   
   const [ currentUserData, setCurrentUserData ] = useState();
 
@@ -23,6 +24,12 @@ export default function DisplayEachPost(props) {
   const checkLiked = () => {
     likeRef.doc(currentUser.email).get().then((docSnapshot) => {
       if (docSnapshot.exists) setLikeOrUnlike(true);
+    })
+  }
+
+  const checkNumLikes = () => {
+    likeRef.onSnapshot((snapShot) =>{
+      setNumLikes(snapShot.size);
     })
   }
 
@@ -40,10 +47,12 @@ export default function DisplayEachPost(props) {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           });
           setLikeOrUnlike(true);
+          checkNumLikes();
       }else{
         likeRef.doc(currentUser.email)
           .delete();
         setLikeOrUnlike(false);
+        checkNumLikes();
       }
     })
   }
@@ -59,6 +68,7 @@ export default function DisplayEachPost(props) {
 
   useEffect(() => {
     getUserData();
+    checkNumLikes();
     checkLiked();
     // console.log(avatar);
   }, []);
@@ -90,6 +100,7 @@ export default function DisplayEachPost(props) {
             <div className="d-inline">
               <button className="btn btn-like btn-sm w-50 d-inline" onClick={()=> likedPost()}>
                 <div className="d-inline mr-1">
+                  {numLikes}
                   <AiOutlineLike />
                 </div>
                 {!likeOrUnlike && <div className="d-inline">Like</div>}
