@@ -14,6 +14,28 @@ a {
   transition: 0.3s;
 }
 
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.link:hover {
+  text-decoration: none;
+  color: blue;
+}
+.dropdown-toggle[aria-expanded="true"] {
+  outline: none !important;
+
+}
+.dropdown-toggle {
+  text-decoration: none;
+  color: black;
+}
+.dropdown-toggle:hover {
+  text-decoration: none;
+  color: blue;
+}
+
 /*********chat styling starts***********/
 
 .chat-container{

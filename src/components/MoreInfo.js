@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
-import { Collapse } from "react-bootstrap";
+import { Collapse, Button } from "react-bootstrap";
 import ShareRecipeModal from "./ShareRecipeModal";
 import app from "../firebase";
 

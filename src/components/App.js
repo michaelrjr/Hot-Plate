@@ -36,6 +36,7 @@ function App() {
                 <Route path="/forgotPassword" component={ForgotPassword} />
                 <PrivateRoute path="/feed" component={Feed} />
                 <PrivateRoute path="/recipesearch" component={RecipeSearch} />
+                <Route exact path="/" component={SignIn} />
               </div>
             </div>
           </Switch>
