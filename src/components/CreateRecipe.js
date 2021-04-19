@@ -30,7 +30,8 @@ export default function CreateRecipe() {
       description: "",
       ingredients: [],
       instructions: [],
-      id: "CR-" + uuidv4()
+      id: "CR-" + uuidv4(),
+      authorUID: currentUser.uid,
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Required"),
@@ -40,7 +41,6 @@ export default function CreateRecipe() {
       instructions: Yup.array().min(1).required("Required"),
     }),
     onSubmit: async (values) => {
-      console.log(values.id);
       getUserCreatedRecipe(values);
     },
   });
@@ -50,6 +50,7 @@ export default function CreateRecipe() {
   }, []);
 
   const handleSaveClick = () => {
+    console.log("Setting new custom recipe. Details:",formik.values);
     ref
       .doc(currentUser.uid)
       .set({
@@ -58,7 +59,13 @@ export default function CreateRecipe() {
         lastName: userDetails.lastName,
       })
       .then(() => {
-        ref.doc(currentUser.uid).collection("recipes").doc(formik.values.id).set(formik.values);
+        ref.doc(formik.values.id).set(formik.values).then(() =>{
+          console.log("Recipe Set:");
+          console.log("ID: "+formik.values.id);
+        }).catch((error) =>{
+          console.log("Failed to save recipe");
+          console.log("Error:",error);
+        });
       });
   };
 

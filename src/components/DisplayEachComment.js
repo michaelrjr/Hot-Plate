@@ -12,7 +12,6 @@ export default function DisplayEachComment(props){
     const getUserData = (email) => {
         userDBRef.doc(email).get().then( (doc) => {
             setCurrentUserData( doc.data() );
-            console.log("tempArr: "+JSON.stringify(currentUserData));
         })
         .catch((error) => {
             console.log("Error getting document:", error);

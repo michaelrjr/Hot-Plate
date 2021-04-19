@@ -6,7 +6,7 @@ export default function DisplayPost(props) {
     <div>
       {props.postArray.map((post) => (
         <DisplayEachPost
-          key={post.uuid}
+          key={post.postID}
           post={post.post}
           email={post.email}
           timestamp={post.timestamp}

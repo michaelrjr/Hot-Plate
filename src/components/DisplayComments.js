@@ -12,6 +12,7 @@
 import React, {useEffect, useState} from 'react';
 import app from "../firebase";
 import DisplayEachComment from './DisplayEachComment';
+import { v4 as uuidv4 } from "uuid";
 
 export default function DisplayComments(props){
     const dbRef = app.firestore().collection("feed");
@@ -33,6 +34,7 @@ export default function DisplayComments(props){
             { commentsArray &&
                 commentsArray.map((comment) => (
                     <DisplayEachComment 
+                        key = {uuidv4()}
                         email = {comment.from}
                         comment = {comment.comment}
                         timestamp = {comment.timestamp}

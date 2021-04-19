@@ -8,7 +8,7 @@ export default function ComponentC(props) {
   const { setRecipeID } = useAuth();
 
   return (
-    <div class="recipeShare">
+    <div className="recipeShare">
       {props.image === null ? (
         <img src="noimage.jpg" />
       ) : (
