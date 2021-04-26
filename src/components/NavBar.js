@@ -98,7 +98,15 @@ export default function NavBar() {
                         <div>
                           <RiRestaurantLine size={30} />
                         </div>
-                        <div>My Recipes</div>
+                        <div>My Favourites</div>
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Link to="/myrecipes2">
+                        <div>
+                          <RiRestaurantLine size={30} />
+                        </div>
+                        <div>My Custom Recipes</div>
                       </Link>
                     </Dropdown.Item>
                     <Dropdown.Item>

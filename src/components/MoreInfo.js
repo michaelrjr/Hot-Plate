@@ -19,21 +19,22 @@ export default function MoreInfo() {
   const recipeInfoURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/information?includeNutrition=false&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
   const nutritionVisualisationURL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/nutritionWidget?&defaultCss=true&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
   const [show, setShow] = useState(false);
-  const ref = app.firestore().collection("userCreatedRecipes");
+  const ref = app.firestore().collection("userAPIRecipes");
   const [delOrSave, setDelOrSave] = useState(false);
   const [spoonacularRecipe, setSpoonacularRecipe] = useState(null);
   const [currentUserIsAuthor, setCurrentUserIsAuthor] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  const userRef = app.firestore().collection("Users");
 
   let mounted = true;
   
 
   useEffect(() => {
-
+    getUserDetails();
     if(recipeID.toString().substring(0,3) == "CR-"){
       setSpoonacularRecipe(false);
       // act here for custom recipe data
       getLocalRecipeInfo();
-      checkIfCurrentUserIsAuthor();
     } else{
       setSpoonacularRecipe(true);
       getRecipeInfo();
@@ -47,10 +48,22 @@ export default function MoreInfo() {
   }, []);
 
   function checkIfCurrentUserIsAuthor(){
-    if(!spoonacularRecipe && currentUser.uid == recipeInfoArray.uid){
+    console.log(recipeInfoArray);
+    if(!spoonacularRecipe && currentUser.uid == recipeInfoArray[0].authorUID){
       setCurrentUserIsAuthor(true);
     }
   }
+  const getUserDetails = () => {
+    userRef
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        setUserDetails(doc.data());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   function getLocalRecipeInfo(){
     // copy pasta from MyRecipes I think
@@ -66,6 +79,8 @@ export default function MoreInfo() {
         setIsFetched(false);
         setErrorMsg(error);
         console.log("Error getting API recipe:",error);
+      }).finally(() =>{
+        checkIfCurrentUserIsAuthor();
       });
       ;
   };
@@ -117,6 +132,12 @@ export default function MoreInfo() {
   //allow Signed-In users to save recipes to the database.
   //Duplicate handling already implemented in this method.
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
+    ref.doc(currentUser.uid)
+      .set({
+        uid: currentUser.uid,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+      });
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
       apiref
@@ -143,10 +164,17 @@ export default function MoreInfo() {
   };
 
   const removeAPIRecipe = (id) => {
-    let apiref = ref.doc(currentUser.uid).collection("recipes");
-    apiref.doc(id.toString()).delete();
-    setDelOrSave(false);
-    alert("Recipe removed");
+    if (!currentUserIsAuthor) {
+      let apiref = ref.doc(currentUser.uid).collection("recipes");
+      apiref.doc(id.toString()).delete();
+      setDelOrSave(false);
+      alert("Recipe removed");
+    } else {
+      let apiref = userCreatedRecipesRef.doc(recipeID);
+      apiref.delete();
+      setDelOrSave(false);
+      alert("Recipe removed");
+    }
   };
 
   const handleClose = () => setShow(false);
@@ -207,15 +235,18 @@ export default function MoreInfo() {
                       NB: We can check to see if the currentUser is the author of this recipe, and if so, we should not show the save/delete button since this recipe is already present in saved recipes.
                       It would be a good idea though to actually separate saved recipes and custom created recipes. They are not the same thing and we will run into problems storing them in the same collection.
                   */}
-                  {(delOrSave && !currentUserIsAuthor) && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
+                  {((delOrSave && !currentUserIsAuthor) || currentUserIsAuthor) && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
                     { console.log(currentUserIsAuthor) }
                     { console.log("current user:",currentUser.uid) }
-                    { console.log("author:", recipe.uid) }
+                    { console.log("author:", recipe.authorUID) }
                     Remove Recipe
                   </button>}
                   {(!delOrSave && !currentUserIsAuthor) && <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.title, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
                     Save
                   </button>}
+                  {/* {((!delOrSave && !currentUserIsAuthor) && ( /^CR.*$/.test(recipe.id))) && <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.title, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
+                    Save
+                  </button>} */}
 
                   <hr />
                   <button className="btn btn-warning w-100" onClick={() => setShowIngredients(!showIngredients)}>

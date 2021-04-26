@@ -7,17 +7,17 @@ import { BsInfoSquare } from "react-icons/bs";
 import DisplayUserCreatedRecipe from "./DisplayUserCreatedRecipe";
 import ShareRecipeModal from "./ShareRecipeModal";
 
-export default function MyRecipes() {
+export default function MyRecipes2() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
-  // const userCreatedRecipesRef = app
-  //   .firestore()
-  //   .collection("userCreatedRecipes");
-  const userAPIRecipeRef = app
+  const userCreatedRecipesRef = app
     .firestore()
-    .collection("userAPIRecipes")
-    .doc(currentUser.uid)
-    .collection("recipes");
+    .collection("userCreatedRecipes");
+//   const userAPIRecipeRef = app
+//     .firestore()
+//     .collection("userAPIRecipes")
+//     .doc(currentUser.uid)
+//     .collection("recipes");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -25,34 +25,35 @@ export default function MyRecipes() {
   const [showInstructions, setShowInstructions] = useState(false);
   var tempArr = [];
   useEffect(() => {
-    // getUserCreatedRecipes();
-    getSavedAPIRecipes();
+    getUserCreatedRecipes();
+    // getSavedAPIRecipes();
    
   }, []);
 
-  // const getUserCreatedRecipes = () => {
-  //   userCreatedRecipesRef
-  //     .where("authorUID", "==", currentUser.uid)
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         tempArr.push(doc.data());          
-  //       });        
-  //     });
-  //     ;
-  // };
+  const getUserCreatedRecipes = () => {
+    userCreatedRecipesRef
+      .where("authorUID", "==", currentUser.uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          tempArr.push(doc.data());          
+        });  
+        setRecipes(tempArr);
+        console.log(tempArr);      
+    });
+  };
 
-  const getSavedAPIRecipes = () => {
-    userAPIRecipeRef
-    .get()
-    .then((queryAPISnapshot) =>{
-      queryAPISnapshot.forEach((doc) =>{
-        tempArr.push(doc.data());
-      }) ;
-      setRecipes(tempArr);
-      console.log(tempArr);
-    })
-  } 
+//   const getSavedAPIRecipes = () => {
+//     userAPIRecipeRef
+//     .get()
+//     .then((queryAPISnapshot) =>{
+//       queryAPISnapshot.forEach((doc) =>{
+//         tempArr.push(doc.data());
+//       }) ;
+//       setRecipes(tempArr);
+//       console.log(tempArr);
+//     })
+//   } 
 
 
   return (
