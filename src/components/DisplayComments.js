@@ -9,7 +9,7 @@
 */
 
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import app from "../firebase";
 import DisplayEachComment from './DisplayEachComment';
 import { v4 as uuidv4 } from "uuid";
@@ -19,27 +19,39 @@ export default function DisplayComments(props){
     const postRef = dbRef.doc(props.postID);
     const commentSectionRef = postRef.collection(props.commentSectionID);
     const [commentsArray, setCommentsArray] = useState();
+    const bottomElement = useRef();
 
     useEffect(() => {
         const getData = async () => {
-            commentSectionRef.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+            commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
                 setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
             });
         }
         getData();
-      }, []);
+    }, []);
+
+    function scrollToBottomElement(){
+        if(bottomElement.current){
+            bottomElement.current.scrollTop = bottomElement.current.scrollHeight;
+        }
+    }
 
     return(
-        <div className="displayComments">
+        <div className="displayComments" ref={bottomElement}>
             { commentsArray &&
-                commentsArray.map((comment) => (
-                    <DisplayEachComment 
-                        key = {uuidv4()}
-                        email = {comment.from}
-                        comment = {comment.comment}
-                        timestamp = {comment.timestamp}
-                    />
-                ))
+                commentsArray.map((comment, key) => {
+                    return(
+                        <div>
+                            <DisplayEachComment 
+                                key = {uuidv4()}
+                                email = {comment.from}
+                                comment = {comment.comment}
+                                timestamp = {comment.timestamp}
+                            />
+                            {key==commentsArray.length-1 && scrollToBottomElement()}
+                        </div>
+                    )
+                })
             }
         </div>
     )
