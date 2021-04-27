@@ -160,4 +160,11 @@ width: 90vw;
 .commentBox button{
   float:right;
 }
+
+.displayComments{
+  font-size:80%;
+  max-height:300px;
+  overflow-y:auto;
+}
+
 /*Post/Comment Styles ends*/

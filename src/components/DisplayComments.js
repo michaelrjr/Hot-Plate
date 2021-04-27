@@ -9,7 +9,7 @@
 */
 
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import app from "../firebase";
 import DisplayEachComment from './DisplayEachComment';
 import { v4 as uuidv4 } from "uuid";
@@ -19,18 +19,28 @@ export default function DisplayComments(props){
     const postRef = dbRef.doc(props.postID);
     const commentSectionRef = postRef.collection(props.commentSectionID);
     const [commentsArray, setCommentsArray] = useState();
+    const bottomElement = useRef();
 
     useEffect(() => {
         const getData = async () => {
-            commentSectionRef.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+            commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
                 setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
+                // this.bottomElement.scrollIntoView();
+                // scrollToBottomElement(false);
+                if(bottomElement){
+                    bottomElement.current.scrollTop = bottomElement.current.scrollHeight;
+                }
             });
         }
         getData();
-      }, []);
+    }, []);
+
+    function scrollToBottomElement(){
+        bottomElement.scrollTop = bottomElement.scrollHeight;
+    }
 
     return(
-        <div className="displayComments">
+        <div className="displayComments" ref={bottomElement}>
             { commentsArray &&
                 commentsArray.map((comment) => (
                     <DisplayEachComment 
