@@ -25,31 +25,33 @@ export default function DisplayComments(props){
         const getData = async () => {
             commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
                 setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
-                // this.bottomElement.scrollIntoView();
-                // scrollToBottomElement(false);
-                if(bottomElement){
-                    bottomElement.current.scrollTop = bottomElement.current.scrollHeight;
-                }
             });
         }
         getData();
     }, []);
 
     function scrollToBottomElement(){
-        bottomElement.scrollTop = bottomElement.scrollHeight;
+        if(bottomElement.current){
+            bottomElement.current.scrollTop = bottomElement.current.scrollHeight;
+        }
     }
 
     return(
         <div className="displayComments" ref={bottomElement}>
             { commentsArray &&
-                commentsArray.map((comment) => (
-                    <DisplayEachComment 
-                        key = {uuidv4()}
-                        email = {comment.from}
-                        comment = {comment.comment}
-                        timestamp = {comment.timestamp}
-                    />
-                ))
+                commentsArray.map((comment, key) => {
+                    return(
+                        <div>
+                            <DisplayEachComment 
+                                key = {uuidv4()}
+                                email = {comment.from}
+                                comment = {comment.comment}
+                                timestamp = {comment.timestamp}
+                            />
+                            {key==commentsArray.length-1 && scrollToBottomElement()}
+                        </div>
+                    )
+                })
             }
         </div>
     )
