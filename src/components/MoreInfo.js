@@ -213,6 +213,7 @@ export default function MoreInfo() {
                     show={show}
                     userCreatedRecipe={recipeInfoArray}
                     handleClose={handleClose}
+                    spoonacularRecipe={spoonacularRecipe}
                   />
                   }
                 </div>

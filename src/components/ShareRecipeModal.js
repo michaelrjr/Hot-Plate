@@ -8,10 +8,13 @@ export default function ShareRecipeModal(props) {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPostButton, setShowPostButton] = useState(true);
   const [postMessage, setPostMessage] = useState("");
+  const [fromSpoonacular, setFromSpoonacular] = useState(true);
 
   const handlePostMessageChange = (event) => {
     setPostMessage(event.target.value);
   };
+
+
 
   return (
     <div>
@@ -27,22 +30,42 @@ export default function ShareRecipeModal(props) {
               <button className="btn btn-warning w-100" onClick={() => setShowIngredients(!showIngredients)}>
                 Ingredients
               </button>
-              {showIngredients && (
+              {!props.spoonacularRecipe && showIngredients && (
                 <div className="mt-3">
                   {recipe.ingredients.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
                   ))}
                 </div>
               )}
+              {props.spoonacularRecipe && showIngredients && (
+                <div className="mt-3">
+                {recipe.extendedIngredients.map((ingredients, index) => (
+                  <li key={index}>{ingredients.original}</li>
+                ))}
+              </div>
+              )}
             </div>
             <div className="mb-3">
               <button className="btn btn-danger w-100" onClick={() => setShowInstructions(!showInstructions)}>
                 Instructions
               </button>
-              {showInstructions && (
+              {!props.spoonacularRecipe && showInstructions && (
                 <div className="mt-3">
                   {recipe.instructions.map((instruction, index) => (
                     <li key={index}>{instruction}</li>
+                  ))}
+                </div>
+              )}
+              {props.spoonacularRecipe && showInstructions && (
+                <div className="mt-3">
+                  {recipe.analyzedInstructions.map((instruction, index) => (
+                    <div key={index}>
+                      {instruction.steps.map((step) => (
+                        <div key={step.number}>
+                          <li>{step.step}</li>
+                        </div>
+                      ))}
+                    </div>
                   ))}
                 </div>
               )}
