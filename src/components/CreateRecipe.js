@@ -49,8 +49,13 @@ export default function CreateRecipe() {
     getUserDetails();
   }, []);
 
+  // .onSnapshot((snapshot) => {
+  //   console.log(snapshot.docs.map((doc) => doc.data()));
+  //   setChatMessages(snapshot.docs.map((doc) => doc.data()));
+  // });
+
   const handleSaveClick = () => {
-    console.log("Setting new custom recipe. Details:",formik.values);
+    console.log("Setting new custom recipe. Details:", formik.values);
     ref
       .doc(currentUser.uid)
       .set({
@@ -59,13 +64,17 @@ export default function CreateRecipe() {
         lastName: userDetails.lastName,
       })
       .then(() => {
-        ref.doc(formik.values.id).set(formik.values).then(() =>{
-          console.log("Recipe Set:");
-          console.log("ID: "+formik.values.id);
-        }).catch((error) =>{
-          console.log("Failed to save recipe");
-          console.log("Error:",error);
-        });
+        ref
+          .doc(formik.values.id)
+          .set(formik.values)
+          .then(() => {
+            console.log("Recipe Set:");
+            console.log("ID: " + formik.values.id);
+          })
+          .catch((error) => {
+            console.log("Failed to save recipe");
+            console.log("Error:", error);
+          });
       });
   };
 

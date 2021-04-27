@@ -26,7 +26,7 @@ export default function Chat() {
     if (showChat == true) {
       getChatMessages();
     }
-    return () => setShowChat(false);
+    // return () => setShowChat(false);
   }, []);
 
   // query users collection for documents where online == true, these are currently "online" users

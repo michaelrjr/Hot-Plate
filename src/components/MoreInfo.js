@@ -6,7 +6,9 @@ import ShareRecipeModal from "./ShareRecipeModal";
 import app from "../firebase";
 
 export default function MoreInfo() {
-  const userCreatedRecipesRef = app.firestore().collection("userCreatedRecipes");
+  const userCreatedRecipesRef = app
+    .firestore()
+    .collection("userCreatedRecipes");
   const [firestoreRecipe, setFirestoreRecipe] = useState();
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
@@ -27,15 +29,14 @@ export default function MoreInfo() {
   const userRef = app.firestore().collection("Users");
 
   let mounted = true;
-  
 
   useEffect(() => {
     getUserDetails();
-    if(recipeID.toString().substring(0,3) == "CR-"){
+    if (recipeID.toString().substring(0, 3) == "CR-") {
       setSpoonacularRecipe(false);
       // act here for custom recipe data
       getLocalRecipeInfo();
-    } else{
+    } else {
       setSpoonacularRecipe(true);
       getRecipeInfo();
       getRecipeNutritionVisualised();
@@ -44,15 +45,15 @@ export default function MoreInfo() {
     return () => {
       mounted = false;
     };
-
   }, []);
 
-  function checkIfCurrentUserIsAuthor(){
+  function checkIfCurrentUserIsAuthor() {
     console.log(recipeInfoArray);
-    if(!spoonacularRecipe && currentUser.uid == recipeInfoArray[0].authorUID){
+    if (!spoonacularRecipe) {
       setCurrentUserIsAuthor(true);
     }
   }
+
   const getUserDetails = () => {
     userRef
       .doc(currentUser.email)
@@ -65,7 +66,7 @@ export default function MoreInfo() {
       });
   };
 
-  function getLocalRecipeInfo(){
+  function getLocalRecipeInfo() {
     // copy pasta from MyRecipes I think
     userCreatedRecipesRef
       .doc(recipeID)
@@ -75,15 +76,16 @@ export default function MoreInfo() {
         tempArr.push(response.data());
         setIsFetched(true);
         setRecipeInfoArray(tempArr);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         setIsFetched(false);
         setErrorMsg(error);
-        console.log("Error getting API recipe:",error);
-      }).finally(() =>{
+        console.log("Error getting API recipe:", error);
+      })
+      .finally(() => {
         checkIfCurrentUserIsAuthor();
       });
-      ;
-  };
+  }
 
   // get more information about a recipe from spoonacular
   const getRecipeInfo = () => {
@@ -132,12 +134,12 @@ export default function MoreInfo() {
   //allow Signed-In users to save recipes to the database.
   //Duplicate handling already implemented in this method.
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
-    ref.doc(currentUser.uid)
-      .set({
-        uid: currentUser.uid,
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-      });
+    ref.doc(currentUser.uid).set({
+      uid: currentUser.uid,
+      firstName: userDetails.firstName,
+      lastName: userDetails.lastName,
+    });
+
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
       apiref
@@ -162,6 +164,12 @@ export default function MoreInfo() {
       alert("Please Sign-in to start saving recipes.");
     }
   };
+
+  // .onSnapshot((snapshot) => {
+  //   console.log(snapshot.docs.map((doc) => doc.data()));
+  //   setChatMessages(snapshot.docs.map((doc) => doc.data()));
+  // });
+   
 
   const removeAPIRecipe = (id) => {
     if (!currentUserIsAuthor) {
@@ -193,12 +201,12 @@ export default function MoreInfo() {
         <h3>Loading please wait...</h3>
       </div>
     );
-  // } else if(recipeInfoArray.length<2){
-  //   return (
-  //     <div>
-  //       <h3>No recipe data was found</h3>
-  //     </div>
-  //   );
+    // } else if(recipeInfoArray.length<2){
+    //   return (
+    //     <div>
+    //       <h3>No recipe data was found</h3>
+    //     </div>
+    //   );
   } else {
     // we have no errors and we have data
 
@@ -209,47 +217,76 @@ export default function MoreInfo() {
             {recipeInfoArray.map((recipe) => (
               <div className="card mb-3" key={recipe?.id}>
                 <div>
-                  {recipe &&
-                  <ShareRecipeModal
-                    show={show}
-                    userCreatedRecipe={recipeInfoArray}
-                    handleClose={handleClose}
-                  />
-                  }
+                  {recipe && (
+                    <ShareRecipeModal
+                      show={show}
+                      userCreatedRecipe={recipeInfoArray}
+                      handleClose={handleClose}
+                    />
+                  )}
                 </div>
-                <img className="card-img-top" src={ recipe?.image ? recipe?.image : "noimage.jpg" } alt="recipe" />
+                <img
+                  className="card-img-top"
+                  src={recipe?.image ? recipe?.image : "noimage.jpg"}
+                  alt="recipe"
+                />
                 <div className="card-body">
                   <h4>
-                    <b>{ recipe?.title ? recipe.title : 'No Recipe Data Found! The recipe might have been deleted' } </b>
+                    <b>
+                      {recipe?.title
+                        ? recipe.title
+                        : "No Recipe Data Found! The recipe might have been deleted"}{" "}
+                    </b>
                   </h4>
-                  {spoonacularRecipe &&
+                  {spoonacularRecipe && (
                     <p>
                       {" "}
                       Ready in: {" " + recipe.readyInMinutes + " "} minutes
                       <br />
                       Servings: {" " + recipe.servings}
                     </p>
-                  }
-                  <button className="btn btn-primary" onClick={handleShow}>Share</button>
+                  )}
+                  <button className="btn btn-primary" onClick={handleShow}>
+                    Share
+                  </button>
                   {/*
                       NB: We can check to see if the currentUser is the author of this recipe, and if so, we should not show the save/delete button since this recipe is already present in saved recipes.
                       It would be a good idea though to actually separate saved recipes and custom created recipes. They are not the same thing and we will run into problems storing them in the same collection.
                   */}
-                  {((delOrSave && !currentUserIsAuthor) || currentUserIsAuthor) && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
-                    { console.log(currentUserIsAuthor) }
-                    { console.log("current user:",currentUser.uid) }
-                    { console.log("author:", recipe.authorUID) }
-                    Remove Recipe
-                  </button>}
-                  {(!delOrSave && !currentUserIsAuthor) && <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.title, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
-                    Save
-                  </button>}
+                  {((delOrSave && !currentUserIsAuthor) ||
+                    currentUserIsAuthor) && (
+                    <button
+                      className="btn btn-danger float-right"
+                      onClick={() => removeAPIRecipe(recipe.id)}>
+                      {console.log(currentUserIsAuthor)}
+                      {console.log("current user:", currentUser.uid)}
+                      {console.log("author:", recipe.authorUID)}
+                      Remove Recipe
+                    </button>
+                  )}
+                  {!delOrSave && !currentUserIsAuthor && (
+                    <button
+                      className="btn btn-secondary float-right"
+                      onClick={() =>
+                        saveAPIRecipe(
+                          recipe.id,
+                          recipe.title,
+                          recipe.image,
+                          recipe.extendedIngredients,
+                          recipe.analyzedInstructions
+                        )
+                      }>
+                      Save
+                    </button>
+                  )}
                   {/* {((!delOrSave && !currentUserIsAuthor) && ( /^CR.*$/.test(recipe.id))) && <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.title, recipe.image, recipe.extendedIngredients, recipe.analyzedInstructions)}>
                     Save
                   </button>} */}
 
                   <hr />
-                  <button className="btn btn-warning w-100" onClick={() => setShowIngredients(!showIngredients)}>
+                  <button
+                    className="btn btn-warning w-100"
+                    onClick={() => setShowIngredients(!showIngredients)}>
                     Ingredients
                   </button>
                   {/*
@@ -257,25 +294,31 @@ export default function MoreInfo() {
                     That is the equivalent array to use.
                     Each item is a string. Would just need to map through and add each one as a list item.
                    */}
-                  {spoonacularRecipe ?
+                  {spoonacularRecipe ? (
                     <Collapse in={showIngredients}>
                       <div className="mt-3">
-                        {recipe.extendedIngredients.map((ingredients, index) => (
-                          <li key={index}>{ingredients.original}</li>
-                        ))}
+                        {recipe.extendedIngredients.map(
+                          (ingredients, index) => (
+                            <li key={index}>{ingredients.original}</li>
+                          )
+                        )}
                       </div>
                     </Collapse>
-                    : recipe?.ingredients &&
-                    <Collapse in={showIngredients}>
+                  ) : (
+                    recipe?.ingredients && (
+                      <Collapse in={showIngredients}>
                         <div className="mt-3">
                           {recipe.ingredients.map((ingredient, index) => (
                             <li key={index}>{ingredient}</li>
                           ))}
                         </div>
-                    </Collapse>
-                  }
+                      </Collapse>
+                    )
+                  )}
                   <hr />
-                  <button className="btn btn-success w-100" onClick={() => setShowInstructions(!showInstructions)}>
+                  <button
+                    className="btn btn-success w-100"
+                    onClick={() => setShowInstructions(!showInstructions)}>
                     Instructions
                   </button>
                   {/*
@@ -283,34 +326,38 @@ export default function MoreInfo() {
                     That is the equivalent array to use.
                     Each item is a string. Would just need to map through and add each one as a list item.
                    */}
-                  {spoonacularRecipe ?
+                  {spoonacularRecipe ? (
                     <Collapse in={showInstructions}>
                       <div className="mt-3">
-                        {recipe.analyzedInstructions.map((instruction, index) => (
-                          <div key={index}>
-                            {instruction.steps.map((step) => (
-                              <div key={step.number}>
-                                <li>{step.step}</li>
-                              </div>
-                            ))}
-                          </div>
-                        ))}
+                        {recipe.analyzedInstructions.map(
+                          (instruction, index) => (
+                            <div key={index}>
+                              {instruction.steps.map((step) => (
+                                <div key={step.number}>
+                                  <li>{step.step}</li>
+                                </div>
+                              ))}
+                            </div>
+                          )
+                        )}
                       </div>
                     </Collapse>
-                    : recipe?.instructions &&
-                    <Collapse in={showInstructions}>
+                  ) : (
+                    recipe?.instructions && (
+                      <Collapse in={showInstructions}>
                         <div className="mt-3">
                           {recipe.instructions.map((instruction, index) => (
-                                  <li key={index}>{instruction}</li>
+                            <li key={index}>{instruction}</li>
                           ))}
                         </div>
-                    </Collapse>
-                  }
+                      </Collapse>
+                    )
+                  )}
                 </div>
               </div>
             ))}
           </div>
-          {spoonacularRecipe &&
+          {spoonacularRecipe && (
             <div className="col-lg-6 col-sm-12">
               <button
                 className="btn btn-primary w-100 mb-2"
@@ -330,7 +377,7 @@ export default function MoreInfo() {
                 </div>
               </Collapse>
             </div>
-          }
+          )}
         </div>
       </div>
     );
