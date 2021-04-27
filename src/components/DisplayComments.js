@@ -39,16 +39,15 @@ export default function DisplayComments(props){
     return(
         <div className="displayComments" ref={bottomElement}>
             { commentsArray &&
-                commentsArray.map((comment, key) => {
+                commentsArray.map((comment, index) => {
                     return(
-                        <div>
-                            <DisplayEachComment 
-                                key = {uuidv4()}
+                        <div key = {uuidv4()}>
+                            <DisplayEachComment
                                 email = {comment.from}
                                 comment = {comment.comment}
                                 timestamp = {comment.timestamp}
                             />
-                            {key==commentsArray.length-1 && scrollToBottomElement()}
+                            {index==commentsArray.length-1 && scrollToBottomElement()}
                         </div>
                     )
                 })
