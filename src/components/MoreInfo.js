@@ -47,9 +47,9 @@ export default function MoreInfo() {
     };
   }, []);
 
-  function checkIfCurrentUserIsAuthor() {
-    console.log(recipeInfoArray);
-    if (!spoonacularRecipe) {
+  function checkIfCurrentUserIsAuthor(tempArr){
+    console.log(tempArr);
+    if(!spoonacularRecipe && currentUser.uid == tempArr[0].authorUID){
       setCurrentUserIsAuthor(true);
     }
   }
@@ -76,14 +76,11 @@ export default function MoreInfo() {
         tempArr.push(response.data());
         setIsFetched(true);
         setRecipeInfoArray(tempArr);
-      })
-      .catch((error) => {
+        checkIfCurrentUserIsAuthor(tempArr);
+      }).catch((error) => {
         setIsFetched(false);
         setErrorMsg(error);
-        console.log("Error getting API recipe:", error);
-      })
-      .finally(() => {
-        checkIfCurrentUserIsAuthor();
+        console.log("Error getting API recipe:",error);
       });
   }
 
