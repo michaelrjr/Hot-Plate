@@ -15,23 +15,6 @@ a {
 }
 
 /*********chat styling starts***********/
-/* .chat-container{
-  display: flex;
-    flex-direction: column;
-    flex:0.80;
-    height: 100vh;
-    background-color: white;
-}
-
-.online-user-body{
-  flex: 0.20;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color:#f5f5f5;
-  border-right: 1px solid lightgray;
-} */
-
 .chat-container{
   display: flex;
   justify-content: center;
@@ -40,6 +23,7 @@ a {
 
 .chat-body{
   height: 55vh;
+  /* width:70vw;  */
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -52,7 +36,7 @@ a {
 
 
 .online-user-body{
-width: 90vw;
+width: 30vw;
 }
 
 .online-user-nav{
@@ -82,7 +66,13 @@ width: 90vw;
 }
 
 
-.chat-nav, .online-user-nav {
+.online-user-nav  {
+font-size: large;
+background-color: #ffffff;
+}
+
+.chat-nav {
+  padding: 22px;
   font-size: large;
   background-color: #ffffff;
 }
@@ -99,6 +89,7 @@ width: 90vw;
   border-radius: 20px 20px 4px 20px;
   background: #00b9fb;
   color: #f5f5f5;
+  /* margin-left: 250px; */
 }
 
 .other-user-msg {
@@ -124,9 +115,10 @@ width: 90vw;
 }
 
 .message-timestamp {
+  /* margin-left: 50px; */
   color: #a9a9a9;
   font-size: xx-small;
-} */
+} 
 /*********chat styling ends********/
 
 
