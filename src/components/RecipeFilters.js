@@ -147,25 +147,6 @@ export default function FoodFilter(props) {
                   <input type="checkbox" value="tree-nut" onChange={handleIntoleranceBox}/><label>Tree Nut</label><br/>
                   <input type="checkbox" value="wheat" onChange={handleIntoleranceBox}/><label>Wheat</label><br/>
                 </form>}
-                {/* <select
-                  className="btn btn-light dropdown-toggle w-100"
-                  id="intolerance"
-                  name="intolerance"
-                  onChange={props.updateIntolerance}>
-                  <option value="">None</option>
-                  <option value="dairy">Dairy</option>
-                  <option value="egg">Egg</option>
-                  <option value="gluten">Gluten</option>
-                  <option value="grain">Grain</option>
-                  <option value="peanut">Peanut</option>
-                  <option value="seafood">Seafood</option>
-                  <option value="sesame">Sesame</option>
-                  <option value="shellfish">Shellfish</option>
-                  <option value="soy">Soy</option>
-                  <option value="sulfite">Sulfite</option>
-                  <option value="tree-nut">Tree Nut</option>
-                  <option value="wheat">Wheat</option>
-                </select> */}
               </div>
               <div className="mb-2">
                 <button

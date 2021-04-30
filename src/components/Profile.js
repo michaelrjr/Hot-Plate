@@ -59,6 +59,7 @@ export default function Profile() {
                 <img className="rounded-circle" src="defaultuser.png" width="150" height="150" />
               ) : (
                 <img className="rounded-circle" src={user.avatar} width="150" height="150" />
+                
               )}
             </div>
             <div className="mb-3">

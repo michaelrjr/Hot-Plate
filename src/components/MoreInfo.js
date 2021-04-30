@@ -182,8 +182,11 @@ export default function MoreInfo() {
   // if there is an error
   if (errorMsg) {
     return (
-      <div>
-        <h3>An error has occured</h3>
+      <div className="container">
+        <div className="alert alert-danger" role="alert">
+          {console.log(errorMsg)}
+          <h3>An error has occured. Recipe may no longer exist.</h3>
+        </div>
       </div>
     );
   } else if (!isFetched) {
@@ -235,7 +238,7 @@ export default function MoreInfo() {
                       NB: We can check to see if the currentUser is the author of this recipe, and if so, we should not show the save/delete button since this recipe is already present in saved recipes.
                       It would be a good idea though to actually separate saved recipes and custom created recipes. They are not the same thing and we will run into problems storing them in the same collection.
                   */}
-                  {(delOrSave && !currentUserIsAuthor) && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
+                  {((delOrSave && !currentUserIsAuthor) || (currentUserIsAuthor)) && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
                     { console.log(currentUserIsAuthor) }
                     { console.log("current user:",currentUser.uid) }
                     { console.log("author:", recipe.authorUID) }
