@@ -12,8 +12,8 @@ import app from "../firebase";
 import { Modal } from "react-bootstrap";
 
 export default function DisplayEachPost(props) {
-  const [showCommentBox, setShowCommentBox] = useState(false);
-  const { CheckCommentsExist, currentUser } = useAuth();
+  const currentUser = useAuth();
+  const [showCommentSection, setShowCommentSection] = useState(false);
   const userDBRef = app.firestore().collection("Users");
   const likeRef = app.firestore().collection("feed").doc(props.postID).collection("Likes");
   const [numLikes, setNumLikes] = useState(0);
@@ -47,9 +47,9 @@ export default function DisplayEachPost(props) {
     }
   }
 
-  const showCommentInputBox = () => {
-    setShowCommentBox(!showCommentBox);
-  };
+  const revealCommentSection = () => {
+    setShowCommentSection(!showCommentSection);
+  }
   
   const likedPost = () => {
     likeRef.doc(currentUser.email).get().then((docSnapshot) => {
@@ -141,30 +141,35 @@ export default function DisplayEachPost(props) {
               </button>
             </div>
             <div className="d-inline">
-              <button
-                className="btn btn-comment btn-sm w-50 d-inline"
-                onClick={showCommentInputBox}
-              >
-                <div className="d-inline mr-1">
-                  <FaRegCommentDots />
-                </div>
-                <div className="d-inline">Comment</div>
-              </button>
+
+              { showCommentSection ?
+                <button
+                  className="btn btn-secondary btn-sm w-50 d-inline"
+                  onClick={revealCommentSection}
+                >
+                  <div className="d-inline mr-1">
+                    <FaRegCommentDots />
+                  </div>
+                  <div className="d-inline">Hide Comments</div>
+                </button>
+                :
+                <button
+                  className="btn btn-comment btn-sm w-50 d-inline"
+                  onClick={revealCommentSection}
+                >
+                  <div className="d-inline mr-1">
+                    <FaRegCommentDots />
+                  </div>
+                  <div className="d-inline">Show Comments</div>
+                </button>
+              }
             </div>
-            {showCommentBox && (
-              <CommentBox
+            { showCommentSection &&
+              <DisplayComments
                 postID = {props.postID}
                 commentSectionID = {props.childCommentSectionID}
-                setShowCommentBox = {setShowCommentBox}
               />
-            )}
-            {/* {
-              CheckCommentsExist(props.postID, props.childCommentSectionID) && */}
-                <DisplayComments
-                  postID = {props.postID}
-                  commentSectionID = {props.childCommentSectionID}
-                />
-            {/*}*/}
+            }
           </div>
         </div>
     </div>

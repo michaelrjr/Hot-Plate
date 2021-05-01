@@ -1,18 +1,9 @@
-/*
-    To Do:
-        -- Refactor this in the same way as DisplayPost.js, ie:
-            -- Create a new file DisplayEachComment.js
-            -- Call that file for each iteration of the array (as with DisplayPost)
-            -- Inside each "DisplayEachComment", do a getData to get the userData for that comment.
-            -- Do this up the top, as component loads, same as in DisplayEachPost.js
-            -- Then go at it, insert avatar etc.
-*/
-
-
 import React, {useEffect, useState, useRef} from 'react';
 import app from "../firebase";
 import DisplayEachComment from './DisplayEachComment';
 import { v4 as uuidv4 } from "uuid";
+import CommentBox from "./CommentBox";
+import { FaRegCommentDots } from "react-icons/fa";
 
 export default function DisplayComments(props){
     const dbRef = app.firestore().collection("feed");
@@ -20,11 +11,13 @@ export default function DisplayComments(props){
     const commentSectionRef = postRef.collection(props.commentSectionID);
     const [commentsArray, setCommentsArray] = useState();
     const bottomElement = useRef();
+    const [showCommentBox, setShowCommentBox] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
             commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
                 setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
+                scrollToBottomElement();
             });
         }
         getData();
@@ -36,22 +29,51 @@ export default function DisplayComments(props){
         }
     }
 
+    const showCommentInputBox = () => {
+      setShowCommentBox(!showCommentBox);
+    };
+
     return(
-        <div className="displayComments" ref={bottomElement}>
-            { commentsArray &&
-                commentsArray.map((comment, index) => {
-                    return(
-                        <div key = {uuidv4()}>
-                            <DisplayEachComment
-                                email = {comment.from}
-                                comment = {comment.comment}
-                                timestamp = {comment.timestamp}
-                            />
-                            {index==commentsArray.length-1 && scrollToBottomElement()}
-                        </div>
-                    )
-                })
-            }
-        </div>
+            <div className="displayComments" ref={bottomElement}>
+                { commentsArray?.map((comment) => {
+                        return(
+                            <div key = {uuidv4()}>
+                                <DisplayEachComment
+                                    email = {comment.from}
+                                    comment = {comment.comment}
+                                    timestamp = {comment.timestamp}
+                                />
+                            </div>
+                        )
+                    })
+                }
+                { commentsArray?.length==0 &&
+                    <div className="emptyCommentSection mt-2">
+                        No comments yet ... be the first to leave a comment!
+                    </div> 
+                } 
+                <div className="d-block mt-2 w-100">
+                    {!showCommentBox &&
+                        <button
+                            className="btn btn-comment btn-sm w-100 d-inline"
+                            onClick={showCommentInputBox}
+                        >
+                            <div className="d-inline mr-1">
+                            <FaRegCommentDots />
+                            </div>
+                            <div className="d-inline">Leave a Comment</div>
+                        </button>
+                    }
+                
+                    {showCommentBox && (
+                        <CommentBox
+                        postID = {props.postID}
+                        commentSectionID = {props.commentSectionID}
+                        setShowCommentBox = {setShowCommentBox}
+                        scrollToBottomElement = {scrollToBottomElement}
+                        />
+                    )}
+                </div>
+            </div>
     )
 }
