@@ -41,9 +41,14 @@ export default function Profile() {
   // handles the users uploaded image
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const fileNameArray = file?.name.split('.');
+    var fileNameForDB="";
+    for(var i=0; i<fileNameArray.length-1; i++) fileNameForDB += fileNameArray[i];
+    fileNameForDB+=Date.now().toString()+"."+fileNameArray[fileNameArray.length-1];
+    
     setFileName(e.target.files[0].name);
     const storageRef = app.storage().ref(); //firebase storage ref
-    const fileRef = storageRef.child(file.name);
+    const fileRef = storageRef.child(fileNameForDB);
     await fileRef.put(file); // put file in storage
     setFileURL(await fileRef.getDownloadURL());
   };

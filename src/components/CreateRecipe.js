@@ -76,9 +76,14 @@ export default function CreateRecipe() {
   // uploads a file and adds it to firebase storage
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const fileNameArray = file?.name.split('.');
+    var fileNameForDB="";
+    for(var i=0; i<fileNameArray.length-1; i++) fileNameForDB += fileNameArray[i];
+    fileNameForDB+=Date.now().toString()+"."+fileNameArray[fileNameArray.length-1];
+
     setFileName(e.target.files[0].name);
     const storageRef = app.storage().ref();
-    const fileRef = storageRef.child(file.name);
+    const fileRef = storageRef.child(fileNameForDB);
     await fileRef.put(file);
     setFileURL(await fileRef.getDownloadURL());
     formik.setFieldValue("image", await fileRef.getDownloadURL());
