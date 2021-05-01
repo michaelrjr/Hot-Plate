@@ -12,7 +12,7 @@ import app from "../firebase";
 import { Modal } from "react-bootstrap";
 
 export default function DisplayEachPost(props) {
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
   const [showCommentSection, setShowCommentSection] = useState(false);
   const userDBRef = app.firestore().collection("Users");
   const likeRef = app.firestore().collection("feed").doc(props.postID).collection("Likes");
