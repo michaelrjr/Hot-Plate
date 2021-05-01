@@ -14,8 +14,6 @@ export default function ShareRecipeModal(props) {
     setPostMessage(event.target.value);
   };
 
-
-
   return (
     <div>
       {props.userCreatedRecipe.map((recipe) => (

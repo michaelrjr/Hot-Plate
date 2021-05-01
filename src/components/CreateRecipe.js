@@ -50,23 +50,15 @@ export default function CreateRecipe() {
   }, []);
 
   const handleSaveClick = () => {
-    console.log("Setting new custom recipe. Details:",formik.values);
-    ref
-      .doc(currentUser.uid)
-      .set({
-        uid: currentUser.uid,
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-      })
-      .then(() => {
-        ref.doc(formik.values.id).set(formik.values).then(() =>{
-          console.log("Recipe Set:");
-          console.log("ID: "+formik.values.id);
-        }).catch((error) =>{
-          console.log("Failed to save recipe");
-          console.log("Error:",error);
-        });
-      });
+    console.log("Setting new custom recipe. Details:", formik.values);
+    ref.doc(formik.values.id).set(formik.values).then(() => {
+      console.log("Recipe Set:");
+      console.log("ID: " + formik.values.id);
+      alert("Custom Recipe Saved.")
+    }).catch((error) => {
+      console.log("Failed to save recipe");
+      console.log("Error:", error);
+    });
   };
 
   const getUserDetails = () => {
