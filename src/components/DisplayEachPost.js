@@ -16,7 +16,9 @@ export default function DisplayEachPost(props) {
   const [showCommentSection, setShowCommentSection] = useState(false);
   const userDBRef = app.firestore().collection("Users");
   const likeRef = app.firestore().collection("feed").doc(props.postID).collection("Likes");
+  const commentSectionRef = app.firestore().collection("feed").doc(props.postID).collection(props.childCommentSectionID);
   const [numLikes, setNumLikes] = useState(0);
+  const [numComments, setNumComments] = useState(0);
   
   const [ currentUserData, setCurrentUserData ] = useState();
 
@@ -34,6 +36,12 @@ export default function DisplayEachPost(props) {
     likeRef.onSnapshot((snapShot) =>{
       setNumLikes(snapShot.size);
     })
+  }
+
+  const checkNumComments = () => {
+    commentSectionRef.onSnapshot((snapshot) => {
+      setNumComments(snapshot.size);
+    });
   }
 
   const deletePost = (id) =>{
@@ -87,9 +95,9 @@ export default function DisplayEachPost(props) {
   useEffect(() => {
     getUserData();
     checkNumLikes();
+    checkNumComments();
     checkLiked();
     checkPostByCurrentUser();
-    // console.log(avatar);
   }, []);
 
   // NB: Need to put a useEffect here to CheckCommentsExist(props.postID) on re-load (so if a comment is entered, it shows up without refresh)
@@ -158,9 +166,10 @@ export default function DisplayEachPost(props) {
                   onClick={revealCommentSection}
                 >
                   <div className="d-inline mr-1">
+                    
                     <FaRegCommentDots />
                   </div>
-                  <div className="d-inline">Show Comments</div>
+                  <div className="d-inline">Show Comments {numComments>0 && "("+numComments+")"}</div>
                 </button>
               }
             </div>
