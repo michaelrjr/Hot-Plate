@@ -100,8 +100,6 @@ export default function DisplayEachPost(props) {
     checkPostByCurrentUser();
   }, []);
 
-  // NB: Need to put a useEffect here to CheckCommentsExist(props.postID) on re-load (so if a comment is entered, it shows up without refresh)
-
   return (
     <div>
       <div className="card mb-3" key={props.postID}>
