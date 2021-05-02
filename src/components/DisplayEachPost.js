@@ -116,7 +116,7 @@ export default function DisplayEachPost(props) {
               </Modal.Body>
             </Modal>
           </div>
-          <div className="row">
+          <div className="row mb-2">
             <div className="d-inline-block">
                 <img src ={currentUserData?.avatar} className="rounded-circle ml-3 mr-3 mb-1" height="60" width="60"/>
               </div>
@@ -127,7 +127,7 @@ export default function DisplayEachPost(props) {
               </div>
             </div>
             
-            <p>{props.post}</p>
+            {props.post?.length>0 && <p>{props.post}</p>}
             {
               props.image &&
               <ComponentC
