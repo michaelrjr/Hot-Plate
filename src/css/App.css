@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
+
+
 .App {
-  background-color: #ffffff;
   margin-top: 75px;
+  background-color: opa;
 }
 
 a {
@@ -17,30 +19,32 @@ a {
 /*********chat styling starts***********/
 .chat-container{
   display: flex;
+  height: 85vh;
   justify-content: center;
   font-family: 'Varela Round', sans-serif;
 }
 
 .chat-body{
-  height: 55vh;
+  /* height: 55vh; */
   /* width:70vw;  */
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
+.online-user-body{
+  text-align: center;
+  width: 30vw;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .chat-body::-webkit-scrollbar{
   display:none;
 }
-
-
-.online-user-body{
-width: 30vw;
-}
-
-.online-user-nav{
-  text-align: center;
+.online-user-body::-webkit-scrollbar{
+  display:none;
 }
 
 .online-user-email{
@@ -79,7 +83,7 @@ background-color: #ffffff;
 
 .current-user-msg, .other-user-msg {
   overflow-wrap: break-word;
-  min-width: 15%;
+  min-width: 70%;
   max-width: 70%;
   padding: 10px 15px 5px 15px;
 }

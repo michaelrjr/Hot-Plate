@@ -15,13 +15,14 @@ import Chat from "./Chat/Chat";
 import CreateRecipe from "./CreateRecipe";
 import MyRecipes from "./MyRecipes";
 import MyRecipes2 from "./MyRecipes2";
+import food from "../../src/css/food_pattern_repeating.jpg";
 
 //style={{ maxWidth: "450px" }} for main div container
 
 function App() {
   return (
     <AuthProvider>
-      <div className="App">
+      <div className="App" style={{ backgroundImage: `url(${food})` }}>
         <Router>
           <NavBar />
           <br />
