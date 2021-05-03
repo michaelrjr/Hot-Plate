@@ -8,20 +8,16 @@ import DisplayPost from "./DisplayPost";
 export default function Feed() {
   const [postArray, setPostArray] = useState([]);
 
-  let mounted;
-
   //database ref
   const ref = app.firestore().collection("feed");
-  const userRef = app.firestore().collection("Users");
 
   useEffect(() => {
-    getData();
-    mounted = true;
-    //getUserDetails();
+    const unsub = getData();
+    return () => unsub();
   }, []);
 
-  const getData = () => {
-    ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+  function getData(){
+    return ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
       setPostArray(snapshot.docs.map((doc) => doc.data()));
     });
   };

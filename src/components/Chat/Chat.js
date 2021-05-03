@@ -152,7 +152,7 @@ export default function Chat() {
   return (
     <div className="container chat-container p-2">
       {/* {console.log(showChat)} */}
-      {/* {showChat == false ? ( */}
+      {showChat == false ? (
         <DisplayOnlineUsers
           members={members}
           chatMessages={chatMessages}
@@ -162,8 +162,8 @@ export default function Chat() {
           handleStartChatClick={handleStartChatClick}
           handleSearch={handleSearch}
         />
-      {/* ) : null} */}
-      {/* {showChat == true ? ( */}
+      ) : null}
+      {showChat == true ? (
         <DisplayChat
           otherUserDetails={otherUserDetails}
           currentUser={currentUser}
@@ -176,7 +176,7 @@ export default function Chat() {
           handleInputBoxChange={handleInputBoxChange}
           handleDeleteMessageClick={handleDeleteMessageClick}
         />
-      {/* ) : null} */}
+      ) : null}
     </div>
   );
 }

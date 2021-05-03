@@ -65,7 +65,7 @@ export default function DisplayUserCreatedRecipe(props) {
                   <div className="d-inline mr-1">
                     <BiSave size={20} />
                   </div>
-                  <div className="d-inline" onClick={props.handleSaveClick}>
+                  <div className="d-inline" onClick={() => props.handleSaveClick()}>
                     Save
                   </div>
                 </button>
