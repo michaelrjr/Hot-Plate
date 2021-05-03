@@ -6,17 +6,14 @@ export default function DisplayEachComment(props){
     const [ currentUserData, setCurrentUserData ] = useState();
 
     useEffect(() => {
-        getUserData(props.email);
-      }, []);
-
-    const getUserData = (email) => {
-        userDBRef.doc(email).get().then( (doc) => {
-            setCurrentUserData( doc.data() );
-        })
-        .catch((error) => {
+        let isMounted = true;
+        userDBRef.doc(props.email).get().then( (doc) => {
+            if(isMounted) setCurrentUserData( doc.data() );
+        }).catch((error) => {
             console.log("Error getting document:", error);
         });
-    };
+        return () => isMounted = false;
+      }, []);
 
     return(
         <div className="aComment mt-3">

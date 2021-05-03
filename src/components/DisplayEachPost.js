@@ -26,20 +26,20 @@ export default function DisplayEachPost(props) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [postByCurrentUser, setPostByCurrentUser] = useState(false);
 
-  const checkLiked = () => {
-    likeRef.doc(currentUser.email).get().then((docSnapshot) => {
-      if (docSnapshot.exists) setLikeOrUnlike(true);
-    })
-  }
+  // const checkLiked = () => {
+  //   likeRef.doc(currentUser.email).get().then((docSnapshot) => {
+  //     if (docSnapshot.exists) setLikeOrUnlike(true);
+  //   })
+  // }
 
   const checkNumLikes = () => {
-    likeRef.onSnapshot((snapShot) =>{
+    return likeRef.onSnapshot((snapShot) =>{
       setNumLikes(snapShot.size);
     })
   }
 
   const checkNumComments = () => {
-    commentSectionRef.onSnapshot((snapshot) => {
+    return commentSectionRef.onSnapshot((snapshot) => {
       setNumComments(snapshot.size);
     });
   }
@@ -50,7 +50,7 @@ export default function DisplayEachPost(props) {
   }
 
   const checkPostByCurrentUser = () => {
-    if (currentUser.email == props.email){
+    if (currentUser.email === props.email){
       setPostByCurrentUser(true);
     }
   }
@@ -79,25 +79,31 @@ export default function DisplayEachPost(props) {
     })
   }
 
-  const getUserData = () => {
-    userDBRef.doc(props.email).get().then( (doc) => {
-      setCurrentUserData( doc.data() );
-  })
-    .catch((error) => {
-      console.log("Error getting document:", error);
-    });
-  };
-
   const handleCloseFilters = () => {
     setShowDeleteModal(false);
   }
 
   useEffect(() => {
-    getUserData();
-    checkNumLikes();
-    checkNumComments();
-    checkLiked();
+    let isMounted=true;
+    // Get User Data
+    userDBRef.doc(props.email).get().then( (doc) => {
+      if(isMounted) setCurrentUserData( doc.data() );
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+    const unsub1 = checkNumLikes();
+    const unsub2 = checkNumComments();
+    // Check if post is liked by current user
+    likeRef.doc(currentUser.email).get().then((docSnapshot) => {
+      if(isMounted && docSnapshot.exists) setLikeOrUnlike(true);
+    })
+    // checkLiked();
     checkPostByCurrentUser();
+    return () => {
+      unsub1();
+      unsub2();
+      isMounted=false;
+    }
   }, []);
 
   return (

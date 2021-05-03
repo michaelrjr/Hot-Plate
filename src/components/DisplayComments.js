@@ -8,20 +8,24 @@ import { FaRegCommentDots } from "react-icons/fa";
 export default function DisplayComments(props){
     const dbRef = app.firestore().collection("feed");
     const postRef = dbRef.doc(props.postID);
-    const commentSectionRef = postRef.collection(props.commentSectionID);
     const [commentsArray, setCommentsArray] = useState();
     const bottomElement = useRef();
     const [showCommentBox, setShowCommentBox] = useState(false);
 
+    
+    const commentSectionRef = postRef.collection(props.commentSectionID);
+    
     useEffect(() => {
-        const getData = async () => {
-            commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
-                setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
-                scrollToBottomElement();
-            });
-        }
-        getData();
+        const unsub = getData();
+        return () => unsub();
     }, []);
+
+    function getData(){
+        return commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
+            setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
+            scrollToBottomElement();
+        });
+    }
 
     function scrollToBottomElement(){
         if(bottomElement.current){
