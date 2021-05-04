@@ -389,7 +389,7 @@ export default function CreateRecipe() {
             <div>
               <DisplayUserCreatedRecipe
                 userCreatedRecipe={userCreatedRecipe}
-                handleSaveClick={() => handleSaveClick()}
+                handleSaveClick={handleSaveClick}
               />
             </div>
           )}

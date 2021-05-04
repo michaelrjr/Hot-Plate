@@ -172,22 +172,14 @@ export default function MoreInfo() {
   }
 
   const removeAPIRecipe = (id) => {
-    // if (!currentUserIsAuthor) {
     let apiref = ref.doc(currentUser.uid).collection("recipes");
     apiref.doc(id.toString()).delete();
     setDelOrSave(false);
     alert("Recipe removed");
-    // } else {
-    //   let apiref = userCreatedRecipesRef.doc(recipeID);
-    //   apiref.delete();
-    //   setDelOrSave(false);
-    //   alert("Recipe removed");
-    // }
   };
 
   const removeCustomRecipe = (id) =>{
     userCreatedRecipesRef.doc(id).delete();
-    alert("Recipe removed");
     setShowDeleteModal(false);
     setCustomRecipeIsRemoved(true);
   }
@@ -211,12 +203,6 @@ export default function MoreInfo() {
         <h3>Loading please wait...</h3>
       </div>
     );
-  // } else if(recipeInfoArray.length<2){
-  //   return (
-  //     <div>
-  //       <h3>No recipe data was found</h3>
-  //     </div>
-  //   );
   } else {
     // we have no errors and we have data
 

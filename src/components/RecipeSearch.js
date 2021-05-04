@@ -167,15 +167,14 @@ export default function RecipeSearch() {
         <div className="card-body">
           <h4 className="card-title">{apiData[recipeNum].title}</h4>
           <div>
-            <button type="button" className="btn btn-danger w-100 mb-3" onClick={nextRecipe}>
+            <button type="button" className="btn btn-danger w-50 mb-3" onClick={nextRecipe}>
               Next
             </button>
-          </div>
-          <div>
+          
             <Link to="/moreinfo">
               <button
                 type="button"
-                className="btn btn-success w-100 mb-3"
+                className="btn btn-success w-50 mb-3"
                 onClick={() => setRecipeID(apiData[recipeNum].id)}>
                 More Info
               </button>

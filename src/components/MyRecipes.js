@@ -10,9 +10,6 @@ import ShareRecipeModal from "./ShareRecipeModal";
 export default function MyRecipes() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
-  // const userCreatedRecipesRef = app
-  //   .firestore()
-  //   .collection("userCreatedRecipes");
   const userAPIRecipeRef = app
     .firestore()
     .collection("userAPIRecipes")
@@ -25,22 +22,9 @@ export default function MyRecipes() {
   const [showInstructions, setShowInstructions] = useState(false);
   var tempArr = [];
   useEffect(() => {
-    // getUserCreatedRecipes();
     getSavedAPIRecipes();
 
   }, []);
-
-  // const getUserCreatedRecipes = () => {
-  //   userCreatedRecipesRef
-  //     .where("authorUID", "==", currentUser.uid)
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         tempArr.push(doc.data());          
-  //       });        
-  //     });
-  //     ;
-  // };
 
   const getSavedAPIRecipes = () => {
     userAPIRecipeRef
