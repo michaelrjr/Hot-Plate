@@ -7,6 +7,7 @@ import { BsChatDots } from "react-icons/bs";
 import { GrRestaurant } from "react-icons/gr";
 import { RiRestaurantLine } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "../contexts/AuthContext";
 import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import NavBar2 from "./NavBar2";
@@ -66,7 +67,7 @@ export default function NavBar() {
                   </div>
                   <div>Chat</div>
                 </Link>
-                <Dropdown drop="left">
+                <Dropdown>
                   <Dropdown.Toggle className="dropdown-toggle text-center shadow-none">
                     <FiSettings size={30} />
                   </Dropdown.Toggle>

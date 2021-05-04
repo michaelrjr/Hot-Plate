@@ -30,7 +30,7 @@ function SignIn() {
         await signIn(values.email, values.password);
         history.push("/profile");
       } catch {
-        setError("Error, incorrect email or password. Please try again.");
+        setError("incorrect email or password");
       }
       setLoading(false);
       // update online to true if sign in is successful
