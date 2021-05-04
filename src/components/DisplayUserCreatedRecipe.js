@@ -61,11 +61,11 @@ export default function DisplayUserCreatedRecipe(props) {
                 </button>
               </div>
               <div className="col">
-                <button className="btn btn-success w-100">
+                <button className="btn btn-success w-100"  onClick={() => props.handleSaveClick()}>
                   <div className="d-inline mr-1">
                     <BiSave size={20} />
                   </div>
-                  <div className="d-inline" onClick={props.handleSaveClick}>
+                  <div className="d-inline">
                     Save
                   </div>
                 </button>

@@ -14,6 +14,7 @@ import RecipeSearch from "./RecipeSearch";
 import Chat from "./Chat";
 import CreateRecipe from "./CreateRecipe";
 import MyRecipes from "./MyRecipes";
+import MyRecipes2 from "./MyRecipes2";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Switch>
             <PrivateRoute path="/createrecipe" component={CreateRecipe} />
             <PrivateRoute path="/myrecipes" component={MyRecipes} />
+            <PrivateRoute path="/myrecipes2" component={MyRecipes2} />
             <PrivateRoute path="/chat" component={Chat} />
             <PrivateRoute path="/moreinfo" component={MoreInfo} />
             <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>

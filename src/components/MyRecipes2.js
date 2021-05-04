@@ -7,14 +7,17 @@ import { BsInfoSquare } from "react-icons/bs";
 import DisplayUserCreatedRecipe from "./DisplayUserCreatedRecipe";
 import ShareRecipeModal from "./ShareRecipeModal";
 
-export default function MyRecipes() {
+export default function MyRecipes2() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
-  const userAPIRecipeRef = app
+  const userCreatedRecipesRef = app
     .firestore()
-    .collection("userAPIRecipes")
-    .doc(currentUser.uid)
-    .collection("recipes");
+    .collection("userCreatedRecipes");
+  //   const userAPIRecipeRef = app
+  //     .firestore()
+  //     .collection("userAPIRecipes")
+  //     .doc(currentUser.uid)
+  //     .collection("recipes");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -22,26 +25,41 @@ export default function MyRecipes() {
   const [showInstructions, setShowInstructions] = useState(false);
   var tempArr = [];
   useEffect(() => {
-    getSavedAPIRecipes();
+    getUserCreatedRecipes();
+    // getSavedAPIRecipes();
 
   }, []);
 
-  const getSavedAPIRecipes = () => {
-    userAPIRecipeRef
+  const getUserCreatedRecipes = () => {
+    userCreatedRecipesRef
+      .where("authorUID", "==", currentUser.uid)
       .get()
-      .then((queryAPISnapshot) => {
-        queryAPISnapshot.forEach((doc) => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           tempArr.push(doc.data());
         });
         setRecipes(tempArr);
         console.log(tempArr);
-      })
-  }
+      });
+  };
+
+  //   const getSavedAPIRecipes = () => {
+  //     userAPIRecipeRef
+  //     .get()
+  //     .then((queryAPISnapshot) =>{
+  //       queryAPISnapshot.forEach((doc) =>{
+  //         tempArr.push(doc.data());
+  //       }) ;
+  //       setRecipes(tempArr);
+  //       console.log(tempArr);
+  //     })
+  //   } 
+
   if (recipes.length === 0) {
     return (
       <div className="container">
         <div className="alert alert-warning" role="alert">
-          <h3>Your favourite recipes will appear here.</h3>
+          <h3>Your custom recipes created will appear here.</h3>
         </div>
       </div>
     );

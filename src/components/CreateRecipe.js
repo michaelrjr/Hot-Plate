@@ -50,23 +50,15 @@ export default function CreateRecipe() {
   }, []);
 
   const handleSaveClick = () => {
-    console.log("Setting new custom recipe. Details:",formik.values);
-    ref
-      .doc(currentUser.uid)
-      .set({
-        uid: currentUser.uid,
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-      })
-      .then(() => {
-        ref.doc(formik.values.id).set(formik.values).then(() =>{
-          console.log("Recipe Set:");
-          console.log("ID: "+formik.values.id);
-        }).catch((error) =>{
-          console.log("Failed to save recipe");
-          console.log("Error:",error);
-        });
-      });
+    console.log("Setting new custom recipe. Details:", formik.values);
+    ref.doc(formik.values.id).set(formik.values).then(() => {
+      console.log("Recipe Set:");
+      console.log("ID: " + formik.values.id);
+      alert("Custom Recipe Saved.")
+    }).catch((error) => {
+      console.log("Failed to save recipe");
+      console.log("Error:", error);
+    });
   };
 
   const getUserDetails = () => {
@@ -84,9 +76,14 @@ export default function CreateRecipe() {
   // uploads a file and adds it to firebase storage
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const fileNameArray = file?.name.split('.');
+    var fileNameForDB="";
+    for(var i=0; i<fileNameArray.length-1; i++) fileNameForDB += fileNameArray[i];
+    fileNameForDB+=Date.now().toString()+"."+fileNameArray[fileNameArray.length-1];
+
     setFileName(e.target.files[0].name);
     const storageRef = app.storage().ref();
-    const fileRef = storageRef.child(file.name);
+    const fileRef = storageRef.child(fileNameForDB);
     await fileRef.put(file);
     setFileURL(await fileRef.getDownloadURL());
     formik.setFieldValue("image", await fileRef.getDownloadURL());

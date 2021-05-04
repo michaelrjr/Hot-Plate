@@ -3,6 +3,7 @@ import SignOut from "./SignOut";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import app from "../firebase";
+import { Modal } from "react-bootstrap";
 
 export default function Profile() {
   const [error, setError] = useState("");
@@ -10,6 +11,7 @@ export default function Profile() {
   const [userDetails, setUserDetails] = useState([]);
   const [fileURL, setFileURL] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   // db ref
   const ref = app.firestore().collection("Users");
 
@@ -34,16 +36,40 @@ export default function Profile() {
 
   // when the user clicks "upload" update that users avatar image
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (fileURL !== null){
     ref.doc(currentUser.email).update({ avatar: fileURL });
+    getUserDetails();
+    e.preventDefault();
+    }else{
+      alert("Please choose a photo.")
+      e.preventDefault();
+    }
+  };
+
+  const removeProfilePicture = (e) => {
+    if (userDetails[0].avatar !== null){
+    ref.doc(currentUser.email).update({ avatar: null });
+    getUserDetails();
+    setShowDeleteModal(false);
+    e.preventDefault();
+    }else{
+      alert("You currently do not have a profile picture.")
+      setShowDeleteModal(false);
+      e.preventDefault();
+    }
   };
 
   // handles the users uploaded image
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const fileNameArray = file?.name.split('.');
+    var fileNameForDB="";
+    for(var i=0; i<fileNameArray.length-1; i++) fileNameForDB += fileNameArray[i];
+    fileNameForDB+=Date.now().toString()+"."+fileNameArray[fileNameArray.length-1];
+    
     setFileName(e.target.files[0].name);
     const storageRef = app.storage().ref(); //firebase storage ref
-    const fileRef = storageRef.child(file.name);
+    const fileRef = storageRef.child(fileNameForDB);
     await fileRef.put(file); // put file in storage
     setFileURL(await fileRef.getDownloadURL());
   };
@@ -59,6 +85,7 @@ export default function Profile() {
                 <img className="rounded-circle" src="defaultuser.png" width="150" height="150" />
               ) : (
                 <img className="rounded-circle" src={user.avatar} width="150" height="150" />
+                
               )}
             </div>
             <div className="mb-3">
@@ -88,6 +115,20 @@ export default function Profile() {
                 </div>
               </form>
             </div>
+            <div>
+              <button className="btn btn-danger w-100" onClick={() => setShowDeleteModal(true)}>Remove Profile Picture</button>
+            </div>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+              <Modal.Header>
+                <Modal.Title>Are you sure you want to delete your current profile picture?</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <button className="btn btn-secondary btn-md" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                  <button className="btn btn-danger btn-md float-right" onClick={(e) => removeProfilePicture(e)}>
+                    Yes
+                  </button>
+              </Modal.Body>
+            </Modal>
             {error && (
               <div className="alert alert-danger" role="alert">
                 {error}

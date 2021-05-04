@@ -11,7 +11,7 @@ export default function RecipeSearch() {
   const [error, setError] = useState(null);
   const [cuisine, setCuisine] = useState("");
   const [mealType, setMealType] = useState("");
-  const [intolerance, setIntolerance] = useState("");
+  const [intolerance, setIntolerance] = useState([]);
   const [diet, setDiet] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const size = "636x393.jpg";
@@ -39,6 +39,7 @@ export default function RecipeSearch() {
   // this function requests filtered recipes from spoonacular
   const getFilteredRecipes = async () => {
     let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
+    // console.log(API_URL);
     try {
       const resp = await axios.get(API_URL);
       // if there are no results from filtered search
@@ -72,14 +73,24 @@ export default function RecipeSearch() {
   // some onChange handler functions for the the different form inputs
   const updateCuisine = (e) => setCuisine(e.target.value);
   const updateDiet = (e) => setDiet(e.target.value);
-  const updateIntolerance = (e) => setIntolerance(e.target.value);
+  const resetIntolerance= () => setIntolerance([]);
+  const updateIntolerance = (added, value) => {
+    if (added){
+      setIntolerance( intolerance =>[...intolerance, value]);
+    }
+    else{
+      var newAr = intolerance;
+      newAr.splice(intolerance.indexOf(value),1);
+      setIntolerance(newAr);
+    }
+  }
   const updateMealType = (e) => setMealType(e.target.value);
 
   // sets state variables to empty strings
   const removeFilters = () => {
     setCuisine("");
     setDiet("");
-    setIntolerance("");
+    setIntolerance([]);
     setMealType("");
   };
 
@@ -122,6 +133,7 @@ export default function RecipeSearch() {
               updateIntolerance={updateIntolerance}
               getFilteredRecipes={getFilteredRecipes}
               removeFilters={removeFilters}
+              resetIntolerance={resetIntolerance}
               cuisine={cuisine}
               mealType={mealType}
               intolerance={intolerance}
@@ -155,15 +167,14 @@ export default function RecipeSearch() {
         <div className="card-body">
           <h4 className="card-title">{apiData[recipeNum].title}</h4>
           <div>
-            <button type="button" className="btn btn-danger w-100 mb-3" onClick={nextRecipe}>
+            <button type="button" className="btn btn-danger w-50 mb-3" onClick={nextRecipe}>
               Next
             </button>
-          </div>
-          <div>
+          
             <Link to="/moreinfo">
               <button
                 type="button"
-                className="btn btn-success w-100 mb-3"
+                className="btn btn-success w-50 mb-3"
                 onClick={() => setRecipeID(apiData[recipeNum].id)}>
                 More Info
               </button>
@@ -176,6 +187,8 @@ export default function RecipeSearch() {
               updateMealType={updateMealType}
               updateIntolerance={updateIntolerance}
               getFilteredRecipes={getFilteredRecipes}
+              removeFilters={removeFilters}
+              resetIntolerance={resetIntolerance}
               cuisine={cuisine}
               mealType={mealType}
               intolerance={intolerance}

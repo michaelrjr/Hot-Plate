@@ -84,6 +84,7 @@ export function AuthProvider({ children }) {
             console.error("Error retrieving added data from firestore:", error);
           })
         }
+        alert("Post successful.")
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
