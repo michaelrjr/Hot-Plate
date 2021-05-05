@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import app from "../firebase";
+import { useAuth } from "../../contexts/AuthContext";
+import app from "../../firebase";
 import { firebase } from "@firebase/app";
 import DisplayOnlineUsers from "./DisplayOnlineUsers";
 import DisplayChat from "./DisplayChat";
@@ -26,7 +26,7 @@ export default function Chat() {
     if (showChat == true) {
       getChatMessages();
     }
-    return () => setShowChat(false);
+    // return () => setShowChat(false);
   }, []);
 
   // query users collection for documents where online == true, these are currently "online" users
@@ -129,6 +129,7 @@ export default function Chat() {
 
   //handle delete
   const handleDeleteMessageClick = (msg) => {
+    console.log(msg);
     db.doc(`${currentUser.email}`)
       .collection("messages")
       .where("message", "==", msg)
