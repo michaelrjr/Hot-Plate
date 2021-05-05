@@ -54,43 +54,6 @@ export function AuthProvider({ children }) {
     setID(id);
   }
 
-  // so we can use handlePostClick anywhere in the app for sharing recipes
-  const handlePostClick = (post, recipeID, image, title) => {
-    console.log("handlePostClick entered");
-    recipeID = recipeID ? recipeID : null;
-    image = image ? image : null;
-    title = title ? title : null;
-    const thisPostID = uuidv4();
-    ref
-      .doc(thisPostID)
-      .set({
-        email: currentUser.email,
-        post: post,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        recipeID: recipeID,
-        image: image,
-        recipeTitle: title,
-        postID: thisPostID,
-        childCommentSectionID: uuidv4(),
-      })
-      .then((docRef) => {
-        if(docRef) console.log("Document written with ID: ", docRef.id);
-        else{
-          const tempArr = [];
-          ref.doc(thisPostID).get().then((doc) => {
-            tempArr.push(doc.data());
-            console.log("Document written, details:", tempArr);
-          }).catch((error) => {
-            console.error("Error retrieving added data from firestore:", error);
-          })
-        }
-        alert("Post successful.")
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-  };
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -112,7 +75,6 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     recipeID,
     setRecipeID,
-    handlePostClick,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
