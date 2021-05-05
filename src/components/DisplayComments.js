@@ -46,6 +46,8 @@ export default function DisplayComments(props){
                                     email = {comment.from}
                                     comment = {comment.comment}
                                     timestamp = {comment.timestamp}
+                                    firstName = {comment.firstName}
+                                    lastName = {comment.lastName}
                                 />
                             </div>
                         )
