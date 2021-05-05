@@ -71,7 +71,7 @@ export default function ShareRecipeModal(props) {
             {showPostButton && (
               <div className="mb-3">
                 <button className="btn btn-success w-100" onClick={() => setShowPostButton(false)}>
-                  Click me to add a message to your post
+                  Post Description
                 </button>
               </div>
             )}

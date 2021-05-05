@@ -48,6 +48,8 @@ export default function DisplayComments(props){
                                     comment = {comment.comment}
                                     timestamp = {comment.timestamp}
                                     deleteComment = {deleteComment}
+                                    firstName = {comment.firstName}
+                                    lastName = {comment.lastName}
                                 />
                             </div>
                         )

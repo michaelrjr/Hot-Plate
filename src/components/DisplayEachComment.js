@@ -25,7 +25,10 @@ export default function DisplayEachComment(props){
                     currentUserData?.avatar ? currentUserData?.avatar : "defaultuser.png"
                 } className="rounded-circle d-inline-block mr-3" height="30" width="30"/>
             <div className="w-75 d-inline-block">
-                <small><b>{currentUserData?.firstName+" "+currentUserData?.lastName}</b></small> <small className="align-self-start comment-timestamp">
+                <small><b>  { props.firstName ? props.firstName+" " : currentUserData?.firstName+" " }
+                            {props.lastName ? props.lastName+" " : currentUserData?.lastName+" " }
+                </b></small>
+                <small className="align-self-start comment-timestamp">
                     {new Date(props.timestamp?.toDate()).toLocaleString()}
                 </small>
                 <small className="comment-delete">{currentUser.email === props.email && (

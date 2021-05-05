@@ -93,10 +93,9 @@ export function AuthProvider({ children }) {
 
   const handlePostComment = (comment, postID, childCommentSectionID) => {
     if (comment.length > 0 && postID) {
-      ref
-        .where("postID", "==", postID)
-        .get()
-        .then((snapshot) => {
+      app.firestore().collection("Users").doc(currentUser.email).get().then((doc) => {
+        const userData = doc.data();
+        ref.where("postID", "==", postID).get().then((snapshot) => {
           snapshot.forEach((doc) => {
             if (doc.exists) {
               doc.ref
@@ -105,6 +104,8 @@ export function AuthProvider({ children }) {
                   comment: comment,
                   commentSectionID: childCommentSectionID,
                   from: currentUser.email,
+                  firstName: userData.firstName,
+                  lastName: userData.lastName,
                   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 })
                 .then((docRef) => {
@@ -116,6 +117,8 @@ export function AuthProvider({ children }) {
             }
           });
         });
+      })
+    
     }
   };
 
