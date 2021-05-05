@@ -18,11 +18,12 @@ import MyRecipes2 from "./MyRecipes2";
 import food from "../../src/css/food_pattern_repeating.jpg";
 
 //style={{ maxWidth: "450px" }} for main div container
+{/* <div className="App" style={{ backgroundImage: `url(${food})` }}> */}
 
 function App() {
   return (
     <AuthProvider>
-      <div className="App" style={{ backgroundImage: `url(${food})` }}>
+      <div className="App">
         <Router>
           <NavBar />
           <br />
