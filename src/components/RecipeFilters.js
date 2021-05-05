@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 
-export default function FoodFilter(props) {
+export default function RecipeFilters(props) {
   const [show, setShow] = useState(false);
   const [showIntolerances, setShowIntolerances] = useState(false);
+
   // handle closing and opening modal
   const handleCloseFilters = () => {
     setShow(false);
@@ -15,7 +16,7 @@ export default function FoodFilter(props) {
     //to Hide the intolerance checkboxes and reset the intolerance array
   const closedIntolerance = () =>{
     setShowIntolerances(!showIntolerances);
-    props.resetIntolerance();
+    // props.resetIntolerance();
   }
 
   const handleIntoleranceBox = (event) =>{
@@ -31,7 +32,7 @@ export default function FoodFilter(props) {
   return (
     <div>
       <button type="button" className="btn btn-info w-100" onClick={handleShowFilters}>
-        Filters
+         Recipe Filters
       </button>
       <div>
         <Modal show={show} onHide={handleCloseFilters}>
@@ -48,6 +49,7 @@ export default function FoodFilter(props) {
                   className="btn btn-light dropdown-toggle w-100"
                   name="cuisine"
                   id="cuisine"
+                  value={props.cuisine}
                   onChange={props.updateCuisine}>
                   <option value="">None</option>
                   <option value="african">African</option>
@@ -86,6 +88,7 @@ export default function FoodFilter(props) {
                   className="btn btn-light dropdown-toggle w-100"
                   name="diet"
                   id="diet"
+                  value={props.diet}
                   onChange={props.updateDiet}>
                   <option value="">None</option>
                   <option value="gluten-free">Gluten Free</option>
@@ -109,6 +112,7 @@ export default function FoodFilter(props) {
                   className="btn btn-light dropdown-toggle w-100"
                   name="mealType"
                   id="mealType"
+                  value={props.mealType}
                   onChange={props.updateMealType}>
                   <option value="">None</option>
                   <option value="main-course">Main Course</option>
@@ -132,7 +136,7 @@ export default function FoodFilter(props) {
                   <b>Intolerances</b>
                 </label>
                 {!showIntolerances && <button className="btn btn-success btn-sm float-right" onClick={() =>setShowIntolerances(!showIntolerances)}>Show</button>}
-                {showIntolerances && <button className="btn btn-warning btn-sm float-right" onClick={closedIntolerance}>Hide</button>}
+                {showIntolerances && <button className="btn btn-warning btn-sm float-right" onClick={closedIntolerance}>{"Clear & Hide"}</button>}
                 {showIntolerances && <form>
                   <input type="checkbox" value="dairy" onChange={handleIntoleranceBox}/><label>Dairy</label><br/>
                   <input type="checkbox" value="egg" onChange={handleIntoleranceBox}/><label>Egg</label><br/>
@@ -154,6 +158,7 @@ export default function FoodFilter(props) {
                   disabled={!props.cuisine && !props.diet && !props.mealType && props.intolerance.length==0}
                   onClick={() => {
                     props.getFilteredRecipes();
+                    setShowIntolerances(false);
                     setShow(false);
                   }}>
                   Apply Filters
@@ -163,7 +168,10 @@ export default function FoodFilter(props) {
                 <button
                   className="btn btn-warning w-100"
                   disabled={!props.cuisine && !props.diet && !props.mealType && props.intolerance.length==0}
-                  onClick={props.removeFilters}>
+                  onClick={() =>{
+                    props.removeFilters();
+                    setShowIntolerances(false);
+                  }}>
                   Remove Filters
                 </button>
               </div>
