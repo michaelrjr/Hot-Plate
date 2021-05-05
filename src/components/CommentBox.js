@@ -7,8 +7,51 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function CommentBox(props) {
   const postID = props.postID;
-  const {handlePostComment } = useAuth();
+  // const {handlePostComment } = useAuth();
+  const {currentUser} = useAuth();
   const [comment, setComment] = useState("");
+  const [userData, setUserData] = useState(null);
+  const feedCollection = app.firestore().collection("feed");
+  var isMounted=false;
+
+  useEffect(() => {
+    isMounted=true;
+    getUserData();
+    return () => isMounted = false;
+  }, []);
+
+  function getUserData(){
+    app.firestore().collection("Users").doc(currentUser.email).get().then((doc) => {
+      if(isMounted) setUserData(doc.data());
+    });
+  }
+
+  const handlePostComment = (comment, postID, childCommentSectionID) => {
+    if (comment.length > 0 && postID) {
+      feedCollection.where("postID", "==", postID).get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          if (doc.exists) {
+            doc.ref
+              .collection(childCommentSectionID)
+              .add({
+                comment: comment,
+                commentSectionID: childCommentSectionID,
+                from: currentUser.email,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+              })
+              .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+          }
+        });
+      });
+    }
+  };
 
   const handleCommentBoxChange = (e) => {
     setComment(e.target.value);

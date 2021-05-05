@@ -91,70 +91,6 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const handlePostComment = (comment, postID, childCommentSectionID) => {
-    if (comment.length > 0 && postID) {
-      app.firestore().collection("Users").doc(currentUser.email).get().then((doc) => {
-        const userData = doc.data();
-        ref.where("postID", "==", postID).get().then((snapshot) => {
-          snapshot.forEach((doc) => {
-            if (doc.exists) {
-              doc.ref
-                .collection(childCommentSectionID)
-                .add({
-                  comment: comment,
-                  commentSectionID: childCommentSectionID,
-                  from: currentUser.email,
-                  firstName: userData.firstName,
-                  lastName: userData.lastName,
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                })
-                .then((docRef) => {
-                  console.log("Document written with ID: ", docRef.id);
-                })
-                .catch((error) => {
-                  console.error("Error adding document: ", error);
-                });
-            }
-          });
-        });
-      })
-    
-    }
-  };
-
-  const CheckCommentsExist = (postID, childCommentSectionID) => {
-    const [returnBool, setReturnBool] = useState(0);
-    useEffect(() => {
-      const getData = async () => {
-        if (postID) {
-          ref
-            .where("postID", "==", postID)
-            .get()
-            .then((snapshot) => {
-              snapshot.forEach((doc) => {
-                if (doc.exists) {
-                  doc.ref
-                    .collection(childCommentSectionID)
-                    .get()
-                    .then((sub) => {
-                      if (sub.docs.length > 0) {
-                        setReturnBool(true);
-                        return true;
-                      } else setReturnBool(false);
-                    });
-                }
-              });
-            })
-            .then(() => {
-              return returnBool;
-            });
-        } else setReturnBool(false);
-      };
-      getData();
-    }, []);
-    return returnBool;
-  };
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -177,8 +113,6 @@ export function AuthProvider({ children }) {
     recipeID,
     setRecipeID,
     handlePostClick,
-    handlePostComment,
-    CheckCommentsExist,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
