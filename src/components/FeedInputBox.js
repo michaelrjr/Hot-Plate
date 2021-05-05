@@ -5,7 +5,6 @@ import { firebase } from "@firebase/app";
 import app from "../firebase";
 
 export default function FeedInputBox(props) {
-  const [showPostDetails, setShowPostDetails] = useState(false);
   const [postDetails, setPostDetails] = useState(0);
   const feedCollection = app.firestore().collection("feed");
   const {currentUser} = useAuth();
@@ -16,10 +15,6 @@ export default function FeedInputBox(props) {
 
   function handlePostContentChange(e){
     setPostDetails(e.target.value)
-  }
-
-  function expandCustomPostSection(){
-    setShowPostDetails(true);
   }
 
   function handlePostClick(postDescription){
@@ -61,7 +56,6 @@ export default function FeedInputBox(props) {
             placeholder="Start a post"
             value={postDetails}
             onChange={handlePostContentChange}
-            onFocus={expandCustomPostSection}
             name="customPost"
           />
         </div>

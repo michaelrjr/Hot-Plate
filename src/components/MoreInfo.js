@@ -11,7 +11,6 @@ export default function MoreInfo() {
   const userCreatedRecipesRef = app
     .firestore()
     .collection("userCreatedRecipes");
-  const [firestoreRecipe, setFirestoreRecipe] = useState();
   const [recipeInfoArray, setRecipeInfoArray] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -52,7 +51,6 @@ export default function MoreInfo() {
   }, []);
 
   function checkIfCurrentUserIsAuthor(tempArr){
-    console.log(tempArr);
     if(!spoonacularRecipe && currentUser.uid == tempArr[0].authorUID){
       setCurrentUserIsAuthor(true);
     }
@@ -256,9 +254,6 @@ export default function MoreInfo() {
                       It would be a good idea though to actually separate saved recipes and custom created recipes. They are not the same thing and we will run into problems storing them in the same collection.
                   */}
                   {(delOrSave && !currentUserIsAuthor) && <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
-                    { console.log(currentUserIsAuthor) }
-                    { console.log("current user:",currentUser.uid) }
-                    { console.log("author:", recipe.authorUID) }
                     Remove Recipe
                   </button>}
                   {(!delOrSave && !currentUserIsAuthor) && <button className="btn btn-secondary float-right" onClick={() => saveAPIRecipe(recipe.id, recipe.title, recipe.image, recipe.extendedIngredients || recipe.ingredients, recipe.analyzedInstructions || recipe.instructions)}>
