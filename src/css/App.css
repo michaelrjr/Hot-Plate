@@ -105,7 +105,7 @@ width: 90vw;
 	outline: inherit;
 }
 
-.delete {
+.chat-delete {
   margin-left: 96%;
   cursor: pointer;
 }
@@ -166,6 +166,11 @@ h3.recipeTitlePost{
   font-size:80%;
   max-height:300px;
   overflow-y:auto;
+}
+
+.comment-delete {
+  margin-left: 2em;
+  cursor: pointer;
 }
 
 /* Below = scrollbar styling for comment sections */

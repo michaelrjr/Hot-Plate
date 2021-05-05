@@ -129,6 +129,7 @@ export default function Chat() {
 
   //handle delete
   const handleDeleteMessageClick = (msg) => {
+    console.log(msg);
     db.doc(`${currentUser.email}`)
       .collection("messages")
       .where("message", "==", msg)
