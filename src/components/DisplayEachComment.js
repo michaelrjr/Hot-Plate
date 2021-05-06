@@ -9,7 +9,6 @@ export default function DisplayEachComment(props){
     const { currentUser } = useAuth();
 
     useEffect(() => {
-        console.log(currentUser);
         let isMounted = true;
         userDBRef.doc(props.email).get().then( (doc) => {
             if(isMounted) setCurrentUserData( doc.data() );

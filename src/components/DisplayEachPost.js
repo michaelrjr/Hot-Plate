@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
-import CommentBox from "./CommentBox";
 import { firebase } from "@firebase/app";
-import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import ComponentC from "./ComponentC";
 import DisplayComments from "./DisplayComments";
-import { PinDropSharp } from "@material-ui/icons";
 import app from "../firebase";
 import { Modal } from "react-bootstrap";
 

@@ -65,127 +65,135 @@ function SignUp() {
   });
 
   return (
-    <div className="card">
-      <div className="card-body">
-        <h3 className="card-title text-center mb-3">Sign Up</h3>
-        <form onSubmit={formik.handleSubmit}>
-          {message && (
-            <div className="alert alert-success" role="alert">
-              {message}
-            </div>
-          )}
-          {error && (
-            <div className="alert alert-danger" role="alert">
-              {error}
-            </div>
-          )}
-          <div>
-            <div className="row">
-              <div className="col">
-                <div className="mb-3">
-                  <label htmlFor="firstName">First Name</label>
-                  <input
-                    className={`${formik.touched.firstName && formik.errors.firstName && "form-control is-invalid"} ${
-                      formik.touched.firstName && !formik.errors.firstName ? "form-control is-valid" : "form-control"
-                    }`}
-                    type="text"
-                    placeholder="Enter first name"
-                    id="firstName"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.firstName}
-                  />
-                  {formik.touched.firstName && formik.errors.firstName ? (
-                    <div className="invalid-feedback">{formik.errors.firstName}</div>
-                  ) : null}
+    <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
+      <div className="w-100" style={{ maxWidth: "450px" }}>
+        <div className="card">
+          <div className="card-body">
+            <h3 className="card-title text-center mb-3">Sign Up</h3>
+            <form onSubmit={formik.handleSubmit}>
+              {message && (
+                <div className="alert alert-success" role="alert">
+                  {message}
+                </div>
+              )}
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
+              <div>
+                <div className="row">
+                  <div className="col">
+                    <div className="mb-3">
+                      <label htmlFor="firstName">First Name</label>
+                      <input
+                        className={`${
+                          formik.touched.firstName && formik.errors.firstName && "form-control is-invalid"
+                        } ${
+                          formik.touched.firstName && !formik.errors.firstName
+                            ? "form-control is-valid"
+                            : "form-control"
+                        }`}
+                        type="text"
+                        placeholder="Enter first name"
+                        id="firstName"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.firstName}
+                      />
+                      {formik.touched.firstName && formik.errors.firstName ? (
+                        <div className="invalid-feedback">{formik.errors.firstName}</div>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="mb-3">
+                      <label htmlFor="lastName">Last Name</label>
+                      <input
+                        className={`${formik.touched.lastName && formik.errors.lastName && "form-control is-invalid"} ${
+                          formik.touched.lastName && !formik.errors.lastName ? "form-control is-valid" : "form-control"
+                        }`}
+                        type="text"
+                        placeholder="Enter last name"
+                        id="lastName"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.lastName}
+                      />
+                      {formik.touched.lastName && formik.errors.lastName ? (
+                        <div className="invalid-feedback">{formik.errors.lastName}</div>
+                      ) : null}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col">
-                <div className="mb-3">
-                  <label htmlFor="lastName">Last Name</label>
-                  <input
-                    className={`${formik.touched.lastName && formik.errors.lastName && "form-control is-invalid"} ${
-                      formik.touched.lastName && !formik.errors.lastName ? "form-control is-valid" : "form-control"
-                    }`}
-                    type="text"
-                    placeholder="Enter last name"
-                    id="lastName"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.lastName}
-                  />
-                  {formik.touched.lastName && formik.errors.lastName ? (
-                    <div className="invalid-feedback">{formik.errors.lastName}</div>
-                  ) : null}
-                </div>
+              <div className="mb-3">
+                <label htmlFor="email">Email</label>
+                <input
+                  className={`${formik.touched.email && formik.errors.email && "form-control is-invalid"} ${
+                    formik.touched.email && !formik.errors.email ? "form-control is-valid" : "form-control"
+                  }`}
+                  type="email"
+                  placeholder="Enter email"
+                  id="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="invalid-feedback">{formik.errors.email}</div>
+                ) : null}
               </div>
+              <div className="mb-3">
+                <label htmlFor="password">Password</label>
+                <input
+                  className={`${formik.touched.password && formik.errors.password && "form-control is-invalid"} ${
+                    formik.touched.password && !formik.errors.password ? "form-control is-valid" : "form-control"
+                  }`}
+                  type="password"
+                  placeholder="Enter password"
+                  id="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                />
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="invalid-feedback">{formik.errors.password}</div>
+                ) : null}
+              </div>
+              <div className="mb-3">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  className={`${
+                    formik.touched.confirmPassword && formik.errors.confirmPassword && "form-control is-invalid"
+                  } ${
+                    formik.touched.confirmPassword && !formik.errors.confirmPassword
+                      ? "form-control is-valid"
+                      : "form-control"
+                  }`}
+                  type="password"
+                  placeholder="Enter password"
+                  id="confirmPassword"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirmPassword}
+                />
+                {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                  <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
+                ) : null}
+              </div>
+              <div className="mb-3">
+                <button type="submit" className="btn btn-success w-100" disabled={loading}>
+                  Sign up
+                </button>
+              </div>
+            </form>
+            <div className="w-100 text-center">
+              <p>
+                Already have an account? <Link to="/signIn">Sign in</Link>.
+              </p>
             </div>
           </div>
-          <div className="mb-3">
-            <label htmlFor="email">Email</label>
-            <input
-              className={`${formik.touched.email && formik.errors.email && "form-control is-invalid"} ${
-                formik.touched.email && !formik.errors.email ? "form-control is-valid" : "form-control"
-              }`}
-              type="email"
-              placeholder="Enter email"
-              id="email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <div className="invalid-feedback">{formik.errors.email}</div>
-            ) : null}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password">Password</label>
-            <input
-              className={`${formik.touched.password && formik.errors.password && "form-control is-invalid"} ${
-                formik.touched.password && !formik.errors.password ? "form-control is-valid" : "form-control"
-              }`}
-              type="password"
-              placeholder="Enter password"
-              id="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <div className="invalid-feedback">{formik.errors.password}</div>
-            ) : null}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              className={`${
-                formik.touched.confirmPassword && formik.errors.confirmPassword && "form-control is-invalid"
-              } ${
-                formik.touched.confirmPassword && !formik.errors.confirmPassword
-                  ? "form-control is-valid"
-                  : "form-control"
-              }`}
-              type="password"
-              placeholder="Enter password"
-              id="confirmPassword"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.confirmPassword}
-            />
-            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
-            ) : null}
-          </div>
-          <div className="mb-3">
-            <button type="submit" className="btn btn-success w-100" disabled={loading}>
-              Sign up
-            </button>
-          </div>
-        </form>
-        <div className="w-100 text-center">
-          <p>
-            Already have an account? <Link to="/signIn">Sign in</Link>.
-          </p>
         </div>
       </div>
     </div>

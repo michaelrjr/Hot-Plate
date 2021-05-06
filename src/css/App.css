@@ -7,13 +7,29 @@
   margin-top: 90px;
 }
 
-a {
-  color: dodgerblue;
+.card {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
 }
 
-.card {
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.link:hover {
+  text-decoration: none;
+  color: blue;
+}
+
+a:hover {
+  color: blue;
+}
+
+@media only screen and (min-width: 720px) {
+  .link {
+    text-align: center;
+  }
 }
 
 /*********chat styling starts***********/

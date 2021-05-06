@@ -17,7 +17,7 @@ export default function SignOut(props) {
     ref.doc(currentUser.email).update({ online: false });
     try {
       await signOut();
-      history.pushState("/signIn");
+      history.push("/");
     } catch {
       props.setError("Failed to sign out");
     }

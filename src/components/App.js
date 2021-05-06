@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import MoreInfo from "./MoreInfo";
 import Feed from "./Feed";
-import NavBar from "./NavBar";
+import NewNavBar from "./NewNavBar";
 import Profile from "./Profile";
 import RecipeSearch from "./RecipeSearch";
 import Chat from "./Chat/Chat";
@@ -18,14 +18,16 @@ import MyRecipes2 from "./MyRecipes2";
 import food from "../../src/css/food_pattern_repeating.jpg";
 
 //style={{ maxWidth: "450px" }} for main div container
-{/* <div className="App" style={{ backgroundImage: `url(${food})` }}> */}
+{
+  /* <div className="App" style={{ backgroundImage: `url(${food})` }}> */
+}
 
 function App() {
   return (
     <AuthProvider>
       <div className="App">
         <Router>
-          <NavBar />
+          <NewNavBar />
           <br />
           <Switch>
             <PrivateRoute path="/createrecipe" component={CreateRecipe} />
@@ -33,17 +35,14 @@ function App() {
             <PrivateRoute path="/myrecipes2" component={MyRecipes2} />
             <PrivateRoute path="/chat" component={Chat} />
             <PrivateRoute path="/moreinfo" component={MoreInfo} />
-            <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
-              <div className="w-100" style={{ maxWidth: "450px" }}>
-                <Route path="/signUp" component={SignUp} />
-                <Route path="/signIn" component={SignIn} />
-                <PrivateRoute path="/update-profile" component={UpdateProfile} />
-                <PrivateRoute path="/profile" component={Profile} />
-                <Route path="/forgotPassword" component={ForgotPassword} />
-                <PrivateRoute path="/feed" component={Feed} />
-                <PrivateRoute path="/recipesearch" component={RecipeSearch} />
-              </div>
-            </div>
+            <PrivateRoute path="/profile" component={Profile} />
+            <Route path="/signUp" component={SignUp} />
+            <Route path="/signIn" component={SignIn} />
+            <PrivateRoute path="/update-profile" component={UpdateProfile} />
+            <Route path="/forgotPassword" component={ForgotPassword} />
+            <PrivateRoute path="/feed" component={Feed} />
+            <PrivateRoute path="/recipesearch" component={RecipeSearch} />
+            <Route exact path="/" component={SignIn} />
           </Switch>
         </Router>
       </div>

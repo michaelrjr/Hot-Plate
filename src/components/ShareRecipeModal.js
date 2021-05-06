@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Collapse, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import { firebase } from "@firebase/app";
@@ -11,7 +11,6 @@ export default function ShareRecipeModal(props) {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPostButton, setShowPostButton] = useState(true);
   const [postMessage, setPostMessage] = useState("");
-  const [fromSpoonacular, setFromSpoonacular] = useState(true);
   const feedCollection = app.firestore().collection("feed");
 
   const handlePostMessageChange = (event) => {

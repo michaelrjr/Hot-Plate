@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { firebase } from "@firebase/app";
 import app from "../firebase";
-import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../contexts/AuthContext";
 
 
