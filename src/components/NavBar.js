@@ -7,6 +7,7 @@ import { BsChatDots } from "react-icons/bs";
 import { GrRestaurant } from "react-icons/gr";
 import { RiRestaurantLine } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "../contexts/AuthContext";
 import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import NavBar2 from "./NavBar2";
@@ -48,37 +49,31 @@ export default function NavBar() {
           <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
             <div className="container d-flex justify-content-between">
               <Nav className="m-auto container-fluid">
-                <Nav.Link>
-                  <Link to="/feed">
-                    <div>
-                      <AiOutlineHome size={30} />
-                    </div>
-                    <div>Feed</div>
-                  </Link>
-                </Nav.Link>
-                <Nav.Link>
-                  <Link to="/recipesearch">
-                    <div>
-                      <BiFoodMenu size={30} />
-                    </div>
-                    <div>Food</div>
-                  </Link>
-                </Nav.Link>
-                <Nav.Link>
-                  <Link to="/chat">
-                    <div>
-                      <BsChatDots size={30} />
-                    </div>
-                    <div>Chat</div>
-                  </Link>
-                </Nav.Link>
-                <Dropdown drop="left">
-                  <Dropdown.Toggle>
+                <Link className="link text-center" to="/feed">
+                  <div>
+                    <AiOutlineHome size={30} />
+                  </div>
+                  <div>Feed</div>
+                </Link>
+                <Link className="link text-center" to="/recipesearch">
+                  <div>
+                    <BiFoodMenu size={30} />
+                  </div>
+                  <div>Food</div>
+                </Link>
+                <Link className="link text-center" to="/chat">
+                  <div>
+                    <BsChatDots size={30} />
+                  </div>
+                  <div>Chat</div>
+                </Link>
+                <Dropdown>
+                  <Dropdown.Toggle className="dropdown-toggle text-center shadow-none">
                     <FiSettings size={30} />
                   </Dropdown.Toggle>
                   <Dropdown.Menu className="text-center">
                     <Dropdown.Item>
-                      <Link to="/profile">
+                      <Link className="link" to="/profile">
                         <div>
                           <CgProfile size={30} />
                         </div>
@@ -86,7 +81,7 @@ export default function NavBar() {
                       </Link>
                     </Dropdown.Item>
                     <Dropdown.Item>
-                      <Link to="/createrecipe">
+                      <Link className="link" to="/createrecipe">
                         <div>
                           <GrRestaurant size={30} />
                         </div>
@@ -94,7 +89,7 @@ export default function NavBar() {
                       </Link>
                     </Dropdown.Item>
                     <Dropdown.Item>
-                      <Link to="/myrecipes">
+                      <Link className="link" to="/myrecipes">
                         <div>
                           <RiRestaurantLine size={30} />
                         </div>

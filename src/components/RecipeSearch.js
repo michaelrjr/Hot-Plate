@@ -73,17 +73,16 @@ export default function RecipeSearch() {
   // some onChange handler functions for the the different form inputs
   const updateCuisine = (e) => setCuisine(e.target.value);
   const updateDiet = (e) => setDiet(e.target.value);
-  const resetIntolerance= () => setIntolerance([]);
+  const resetIntolerance = () => setIntolerance([]);
   const updateIntolerance = (added, value) => {
-    if (added){
-      setIntolerance( intolerance =>[...intolerance, value]);
-    }
-    else{
+    if (added) {
+      setIntolerance((intolerance) => [...intolerance, value]);
+    } else {
       var newAr = intolerance;
-      newAr.splice(intolerance.indexOf(value),1);
+      newAr.splice(intolerance.indexOf(value), 1);
       setIntolerance(newAr);
     }
-  }
+  };
   const updateMealType = (e) => setMealType(e.target.value);
 
   // sets state variables to empty strings
@@ -97,48 +96,49 @@ export default function RecipeSearch() {
   // if the data is not yet fetched
   if (isFetched === false) {
     return (
-      <div>
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex justify-content-center">
-              <div className="spinner-border" style={{ width: "11rem", height: "11rem" }} role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
-          </div>
+      <div className="container-fluid">
+        <div className="d-flex">
+          <strong className="mr-3">
+            <h3>Loading..</h3>
+          </strong>
+          <div className="spinner-border" role="status" aria-hidden="true"></div>
         </div>
       </div>
     );
     // or if there is an error with the API request
   } else if (apiData.length < 1) {
     return (
-      <div className="card">
-        <div className="card-body">
-          {errorMsg && (
-            <div className="alert alert-danger" role="alert">
-              {errorMsg}
+      <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
+        <div className="w-100" style={{ maxWidth: "450px" }}>
+          <div className="card">
+            <div className="card-body">
+              {errorMsg && (
+                <div className="alert alert-danger" role="alert">
+                  {errorMsg}
+                </div>
+              )}
+              <div className="mb-3">
+                <h6 className="card-title mb-3">Get random recipes or change filters</h6>
+                <button className="btn btn-success w-100" onClick={getRandomRecipes}>
+                  Random
+                </button>
+              </div>
+              <div>
+                <RecipeFilters
+                  updateCuisine={updateCuisine}
+                  updateDiet={updateDiet}
+                  updateMealType={updateMealType}
+                  updateIntolerance={updateIntolerance}
+                  getFilteredRecipes={getFilteredRecipes}
+                  removeFilters={removeFilters}
+                  resetIntolerance={resetIntolerance}
+                  cuisine={cuisine}
+                  mealType={mealType}
+                  intolerance={intolerance}
+                  diet={diet}
+                />
+              </div>
             </div>
-          )}
-          <div className="mb-3">
-            <h6 className="card-title mb-3">Get random recipes or change filters</h6>
-            <button className="btn btn-success w-100" onClick={getRandomRecipes}>
-              Random
-            </button>
-          </div>
-          <div>
-            <RecipeFilters
-              updateCuisine={updateCuisine}
-              updateDiet={updateDiet}
-              updateMealType={updateMealType}
-              updateIntolerance={updateIntolerance}
-              getFilteredRecipes={getFilteredRecipes}
-              removeFilters={removeFilters}
-              resetIntolerance={resetIntolerance}
-              cuisine={cuisine}
-              mealType={mealType}
-              intolerance={intolerance}
-              diet={diet}
-            />
           </div>
         </div>
       </div>
@@ -158,42 +158,46 @@ export default function RecipeSearch() {
   } else {
     // otherwise, we have data
     return (
-      <div className="card">
-        {apiData[recipeNum].image === null ? (
-          <img className="card-img-top" src="noimage.jpg" />
-        ) : (
-          <img className="card-img-top" src={`${basePath}${apiData[recipeNum].id}-${size}`} alt="recipe" />
-        )}
-        <div className="card-body">
-          <h4 className="card-title">{apiData[recipeNum].title}</h4>
-          <div>
-            <button type="button" className="btn btn-danger w-50 mb-3" onClick={nextRecipe}>
-              Next
-            </button>
-          
-            <Link to="/moreinfo">
-              <button
-                type="button"
-                className="btn btn-success w-50 mb-3"
-                onClick={() => setRecipeID(apiData[recipeNum].id)}>
-                More Info
-              </button>
-            </Link>
-          </div>
-          <div>
-            <RecipeFilters
-              updateCuisine={updateCuisine}
-              updateDiet={updateDiet}
-              updateMealType={updateMealType}
-              updateIntolerance={updateIntolerance}
-              getFilteredRecipes={getFilteredRecipes}
-              removeFilters={removeFilters}
-              resetIntolerance={resetIntolerance}
-              cuisine={cuisine}
-              mealType={mealType}
-              intolerance={intolerance}
-              diet={diet}
-            />
+      <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
+        <div className="w-100" style={{ maxWidth: "450px" }}>
+          <div className="card">
+            {apiData[recipeNum].image === null ? (
+              <img className="card-img-top" src="noimage.jpg" />
+            ) : (
+              <img className="card-img-top" src={`${basePath}${apiData[recipeNum].id}-${size}`} alt="recipe" />
+            )}
+            <div className="card-body">
+              <h4 className="card-title">{apiData[recipeNum].title}</h4>
+              <div>
+                <button type="button" className="btn btn-danger w-50 mb-3" onClick={nextRecipe}>
+                  Next
+                </button>
+
+                <Link to="/moreinfo">
+                  <button
+                    type="button"
+                    className="btn btn-success w-50 mb-3"
+                    onClick={() => setRecipeID(apiData[recipeNum].id)}>
+                    More Info
+                  </button>
+                </Link>
+              </div>
+              <div>
+                <RecipeFilters
+                  updateCuisine={updateCuisine}
+                  updateDiet={updateDiet}
+                  updateMealType={updateMealType}
+                  updateIntolerance={updateIntolerance}
+                  getFilteredRecipes={getFilteredRecipes}
+                  removeFilters={removeFilters}
+                  resetIntolerance={resetIntolerance}
+                  cuisine={cuisine}
+                  mealType={mealType}
+                  intolerance={intolerance}
+                  diet={diet}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

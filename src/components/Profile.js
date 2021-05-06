@@ -12,6 +12,7 @@ export default function Profile() {
   const [fileURL, setFileURL] = useState(null);
   const [fileName, setFileName] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   // db ref
   const ref = app.firestore().collection("Users");
 
@@ -28,6 +29,7 @@ export default function Profile() {
         let tempArr = [];
         tempArr.push(doc.data());
         setUserDetails(tempArr);
+        setIsLoading(false);
       })
       .catch((error) => {
         setError("Error retrieving user details");
@@ -36,24 +38,24 @@ export default function Profile() {
 
   // when the user clicks "upload" update that users avatar image
   const handleSubmit = (e) => {
-    if (fileURL !== null){
-    ref.doc(currentUser.email).update({ avatar: fileURL });
-    getUserDetails();
-    e.preventDefault();
-    }else{
-      alert("Please choose a photo.")
+    if (fileURL !== null) {
+      ref.doc(currentUser.email).update({ avatar: fileURL });
+      getUserDetails();
+      e.preventDefault();
+    } else {
+      alert("Please choose a photo.");
       e.preventDefault();
     }
   };
 
   const removeProfilePicture = (e) => {
-    if (userDetails[0].avatar !== null){
-    ref.doc(currentUser.email).update({ avatar: null });
-    getUserDetails();
-    setShowDeleteModal(false);
-    e.preventDefault();
-    }else{
-      alert("You currently do not have a profile picture.")
+    if (userDetails[0].avatar !== null) {
+      ref.doc(currentUser.email).update({ avatar: null });
+      getUserDetails();
+      setShowDeleteModal(false);
+      e.preventDefault();
+    } else {
+      alert("You currently do not have a profile picture.");
       setShowDeleteModal(false);
       e.preventDefault();
     }
@@ -62,11 +64,11 @@ export default function Profile() {
   // handles the users uploaded image
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    const fileNameArray = file?.name.split('.');
-    var fileNameForDB="";
-    for(var i=0; i<fileNameArray.length-1; i++) fileNameForDB += fileNameArray[i];
-    fileNameForDB+=Date.now().toString()+"."+fileNameArray[fileNameArray.length-1];
-    
+    const fileNameArray = file?.name.split(".");
+    var fileNameForDB = "";
+    for (var i = 0; i < fileNameArray.length - 1; i++) fileNameForDB += fileNameArray[i];
+    fileNameForDB += Date.now().toString() + "." + fileNameArray[fileNameArray.length - 1];
+
     setFileName(e.target.files[0].name);
     const storageRef = app.storage().ref(); //firebase storage ref
     const fileRef = storageRef.child(fileNameForDB);
@@ -74,91 +76,111 @@ export default function Profile() {
     setFileURL(await fileRef.getDownloadURL());
   };
 
+  if (isLoading) {
+    return (
+      <div className="container-fluid">
+        <div className="d-flex">
+          <strong className="mr-3">
+            <h3>Loading..</h3>
+          </strong>
+          <div className="spinner-border" role="status" aria-hidden="true"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {userDetails.map((user) => (
-        <div className="card" key={user.email}>
-          <div className="card-body">
-            <h3 className="card-title text-center mb-3">Profile</h3>
-            <div className="d-flex justify-content-center mb-3">
-              {user.avatar === null ? (
-                <img className="rounded-circle" src="defaultuser.png" width="150" height="150" />
-              ) : (
-                <img className="rounded-circle" src={user.avatar} width="150" height="150" />
-                
-              )}
-            </div>
-            <div className="mb-3">
-              <form onSubmit={handleSubmit}>
-                <div className="custom-file mb-3">
-                  <input
-                    type="file"
-                    className="custom-file-input"
-                    id="image"
-                    name="image"
-                    onChange={handleFileChange}
-                  />
-                  {fileName ? (
-                    <label className="custom-file-label" htmlFor="file-upload">
-                      {fileName}
-                    </label>
+    <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
+      <div className="w-100" style={{ maxWidth: "450px" }}>
+        <div>
+          {userDetails.map((user) => (
+            <div className="card" key={user.email}>
+              <div className="card-body">
+                <h3 className="card-title text-center mb-3">Profile</h3>
+                <div className="d-flex justify-content-center mb-3">
+                  {user.avatar === null ? (
+                    <img className="rounded-circle" src="defaultuser.png" width="150" height="150" />
                   ) : (
-                    <label className="custom-file-label" htmlFor="file-upload">
-                      Choose profile image...
-                    </label>
+                    <img className="rounded-circle" src={user.avatar} width="150" height="150" />
                   )}
                 </div>
+                <div className="mb-3">
+                  <form onSubmit={handleSubmit}>
+                    <div className="custom-file mb-3">
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="image"
+                        name="image"
+                        onChange={handleFileChange}
+                      />
+                      {fileName ? (
+                        <label className="custom-file-label" htmlFor="file-upload">
+                          {fileName}
+                        </label>
+                      ) : (
+                        <label className="custom-file-label" htmlFor="file-upload">
+                          Choose profile image...
+                        </label>
+                      )}
+                    </div>
+                    <div>
+                      <button type="submit" className="btn btn-warning w-100">
+                        Upload
+                      </button>
+                    </div>
+                  </form>
+                </div>
                 <div>
-                  <button type="submit" className="btn btn-warning w-100">
-                    Upload
+                  <button className="btn btn-danger w-100 mb-3" onClick={() => setShowDeleteModal(true)}>
+                    Remove Profile Picture
                   </button>
                 </div>
-              </form>
-            </div>
-            <div>
-              <button className="btn btn-danger w-100" onClick={() => setShowDeleteModal(true)}>Remove Profile Picture</button>
-            </div>
-            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-              <Modal.Header>
-                <Modal.Title>Are you sure you want to delete your current profile picture?</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <button className="btn btn-secondary btn-md" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                  <button className="btn btn-danger btn-md float-right" onClick={(e) => removeProfilePicture(e)}>
-                    Yes
-                  </button>
-              </Modal.Body>
-            </Modal>
-            {error && (
-              <div className="alert alert-danger" role="alert">
-                {error}
+                <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                  <Modal.Header>
+                    <Modal.Title>Are you sure you want to delete your current profile picture?</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <button className="btn btn-secondary btn-md" onClick={() => setShowDeleteModal(false)}>
+                      Cancel
+                    </button>
+                    <button className="btn btn-danger btn-md float-right" onClick={(e) => removeProfilePicture(e)}>
+                      Yes
+                    </button>
+                  </Modal.Body>
+                </Modal>
+                {error && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
+                <div key={user.email}>
+                  <div className="mb-1">
+                    <strong>First name:</strong> {user.firstName}
+                  </div>
+                  <div className="mb-1">
+                    <strong>Last name:</strong> {user.lastName}
+                  </div>
+                  <div className="mb-1">
+                    <strong>Email:</strong> {user.email}
+                  </div>
+                  <div className="mb-3">
+                    <strong>Joined:</strong> {user.joined}
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <SignOut setError={setError} />
+                </div>
+                <div>
+                  <Link to="/update-profile">
+                    <button className="btn btn-info w-100">Update profile</button>
+                  </Link>
+                </div>
               </div>
-            )}
-            <div key={user.email}>
-              <div className="mb-3">
-                <strong>First name:</strong> {user.firstName}
-              </div>
-              <div className="mb-3">
-                <strong>Last name:</strong> {user.lastName}
-              </div>
-              <div className="mb-3">
-                <strong>Email:</strong> {user.email}
-              </div>
-              <div className="mb-3">
-                <strong>Joined:</strong> {user.joined}
-              </div>
             </div>
-            <div className="mb-3">
-              <SignOut setError={setError} />
-            </div>
-            <div>
-              <Link to="/update-profile">
-                <button className="btn btn-info w-100">Update profile</button>
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
