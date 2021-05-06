@@ -18,7 +18,7 @@ export default function Feed() {
 
   function getData() {
     return ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-      setPostArray(snapshot.docs.map((doc) => doc.data()));
+      if(!snapshot.metadata.hasPendingWrites)setPostArray(snapshot.docs.map((doc) => doc.data()));
       setIsLoading(false);
     });
   }
