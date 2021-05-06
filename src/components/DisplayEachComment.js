@@ -11,7 +11,6 @@ export default function DisplayEachComment(props){
 
     useEffect(() => {
         let isMounted = true;
-        setPostTimeStamp(props.timestamp?.toDate().toLocaleString());
         userDBRef.doc(props.email).get().then( (doc) => {
             if(isMounted) setCurrentUserData( doc.data() );
         }).catch((error) => {
@@ -30,7 +29,7 @@ export default function DisplayEachComment(props){
                             {props.lastName ? props.lastName+" " : currentUserData?.lastName+" " }
                 </b></small>
                 <small className="align-self-start comment-timestamp">
-                    {postTimeStamp}
+                    {props.timestampStr ? props.timestampStr : " "}
                 </small>
                 <small className="comment-delete">{currentUser.email === props.email && (
                     <RiDeleteBin7Line
