@@ -33,7 +33,7 @@ export default function DisplayOnlineUsers(props) {
         .map((user) => (
           <div key={user.uuid} className="card">
             {user.email !== props.currentUser.email && (
-              <div key={user.uuid} className="row align-items-center p-2">
+              <div key={user.uuid} className="row align-items-center  p-2">
                 <div className="col pr-2">
                   <img
                     className="p-1 rounded-circle"

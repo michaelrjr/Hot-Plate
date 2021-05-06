@@ -8,14 +8,19 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import MoreInfo from "./MoreInfo";
 import Feed from "./Feed";
-import NavBar from "./NavBar";
+import NewNavBar from "./NewNavBar";
 import Profile from "./Profile";
 import RecipeSearch from "./RecipeSearch";
-import Chat from "./Chat";
+import Chat from "./Chat/Chat";
 import CreateRecipe from "./CreateRecipe";
 import MyRecipes from "./MyRecipes";
 import MyRecipes2 from "./MyRecipes2";
-import NewNavBar from "./NewNavBar";
+import food from "../../src/css/food_pattern_repeating.jpg";
+
+//style={{ maxWidth: "450px" }} for main div container
+{
+  /* <div className="App" style={{ backgroundImage: `url(${food})` }}> */
+}
 
 function App() {
   return (

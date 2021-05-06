@@ -1,17 +1,55 @@
 import React, { useState } from "react";
-import { Collapse, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
+import { v4 as uuidv4 } from "uuid";
+import { firebase } from "@firebase/app";
+import app from "../firebase";
 
 export default function ShareRecipeModal(props) {
-  const { recipeID, handlePostClick } = useAuth();
+  const {currentUser} = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPostButton, setShowPostButton] = useState(true);
   const [postMessage, setPostMessage] = useState("");
-  const [fromSpoonacular, setFromSpoonacular] = useState(true);
+  const feedCollection = app.firestore().collection("feed");
 
   const handlePostMessageChange = (event) => {
     setPostMessage(event.target.value);
+  };
+
+  const handlePostClick = (post, recipeID, image, title) => {
+    recipeID = recipeID ? recipeID : null;
+    image = image ? image : null;
+    title = title ? title : null;
+    const thisPostID = uuidv4();
+    feedCollection
+      .doc(thisPostID)
+      .set({
+        email: currentUser.email,
+        post: post,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        recipeID: recipeID,
+        image: image,
+        recipeTitle: title,
+        postID: thisPostID,
+        childCommentSectionID: uuidv4(),
+      })
+      .then((docRef) => {
+        if(docRef) console.log("Document written with ID: ", docRef.id);
+        else{
+          const tempArr = [];
+          feedCollection.doc(thisPostID).get().then((doc) => {
+            tempArr.push(doc.data());
+            console.log("Document written, details:", tempArr);
+          }).catch((error) => {
+            console.error("Error retrieving added data from firestore:", error);
+          })
+        }
+        alert("Post successful.")
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
   };
 
   return (
@@ -71,7 +109,7 @@ export default function ShareRecipeModal(props) {
             {showPostButton && (
               <div className="mb-3">
                 <button className="btn btn-success w-100" onClick={() => setShowPostButton(false)}>
-                  Click me to add a message to your post
+                  Post Description
                 </button>
               </div>
             )}

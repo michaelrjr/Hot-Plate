@@ -18,7 +18,9 @@ export default function ComponentC(props) {
         <h3 className="recipeTitlePost d-inline-block">{props.recipeTitle}</h3>
       </div>
       <Link to="/moreinfo">
-        <button className="btn btn-more-info btn-sm w-100" onClick={() => setRecipeID(props.recipeID)}>
+        <button
+          className="btn btn-more-info btn-sm w-100"
+          onClick={() => setRecipeID(props.recipeID)}>
           More Info
         </button>
       </Link>
