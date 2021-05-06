@@ -15,8 +15,8 @@ export default function DisplayOnlineUsers(props) {
   };
 
   return (
-    <div className="card online-user-body">
-      <div className="card-header online-user-nav">
+    <div className="online-user-body">
+      <div className="online-user-nav">
         <h3>Users</h3>
         <input
           type="text"
@@ -31,15 +31,15 @@ export default function DisplayOnlineUsers(props) {
       {props.members
         .filter(membersFilterFunction(props.searchMember))
         .map((user) => (
-          <div key={user.uuid} className="card">
+          <div key={user.uuid} className="">
             {user.email !== props.currentUser.email && (
-              <div key={user.uuid} className="row align-items-center  p-2">
-                <div className="col pr-2">
+              <div key={user.uuid} className="">
+                <div className="">
                   <img
-                    className="p-1 rounded-circle"
+                    className="rounded-circle"
                     src={user.avatar != null ? user.avatar : "defaultuser.png"}
-                    height="80"
-                    width="80"
+                    height="60"
+                    width="60"
                   />
                   <div
                     className={
@@ -48,7 +48,7 @@ export default function DisplayOnlineUsers(props) {
                         : "online-icon online-icon-offline mb-4"
                     }></div>
                 </div>
-                <div className="col-8">
+                <div className="">
                   {user.firstName + " " + user.lastName}
                   <br />
                   <a
@@ -62,7 +62,7 @@ export default function DisplayOnlineUsers(props) {
                   </small>
                 </div>
 
-                <div className="col">
+                <div className="">
                   <button
                     type="button"
                     className="btn btn-secondary"

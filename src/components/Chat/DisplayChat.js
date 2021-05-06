@@ -4,12 +4,12 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 
 export default function DisplayChat(props) {
   return (
-    <div className="card">
+    <div className="">
       {props.otherUserDetails.map((user) => (
-        <div className="chat-nav card-header" key={user.uuid}>
-          <button className="back" onClick={props.handleCloseChatClick}>
+        <div className="chat-nav" key={user.uuid}>
+          {/* <button className="back" onClick={props.handleCloseChatClick}>
             <IoIosArrowBack />
-          </button>
+          </button> */}
           <img
             className="rounded-circle ml-3"
             src={user.avatar != null ? user.avatar : "defaultuser.png"}
