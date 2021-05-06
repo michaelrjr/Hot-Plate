@@ -15,13 +15,11 @@ export default function DisplayComments(props){
     const commentSectionRef = postRef.collection(props.commentSectionID);
     
     useEffect(() => {
-        const unsub =
-         getData();
+        const unsub = getData();
         return () => unsub();
     }, []);
 
     function getData() {
-
         return commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
             setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
             scrollToBottomElement();
