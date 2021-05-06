@@ -21,8 +21,10 @@ export default function DisplayComments(props){
 
     function getData() {
         return commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
-            setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
-            scrollToBottomElement();
+            if(!snapshot.metadata.hasPendingWrites){
+                setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
+                scrollToBottomElement();
+            }
         });
     }
 
