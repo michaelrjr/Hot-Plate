@@ -168,6 +168,16 @@ h3.recipeTitlePost{
   border-radius: 0 0.15em 0 0;
   margin:0;
 }
+.favouriteRecipeTitlePost{
+  font-size:225%;
+  position:absolute;
+  top:0;
+  right:0;
+  background:rgba(255, 0, 0, 0.7);
+  padding:0.25em 0.25em 0.25em 0.25em;
+  border-radius: 25px;
+  margin: 5px 5px;
+}
 .recipeShare{
   position:relative;
 }
@@ -177,13 +187,11 @@ h3.recipeTitlePost{
 .commentBox button{
   float:right;
 }
-
 .displayComments{
   font-size:80%;
   max-height:300px;
   overflow-y:auto;
 }
-
 .comment-delete {
   margin-left: 1em;
   cursor: pointer;
@@ -208,6 +216,9 @@ html {
   background-color: var(--thumbBG) ;
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
+}
+.modal-backdrop {
+  background-color: rgba(0,0,0,.1) !important;
 }
 
 /*Post/Comment Styles ends*/
