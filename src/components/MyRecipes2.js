@@ -43,18 +43,6 @@ export default function MyRecipes2() {
       });
   };
 
-  //   const getSavedAPIRecipes = () => {
-  //     userAPIRecipeRef
-  //     .get()
-  //     .then((queryAPISnapshot) =>{
-  //       queryAPISnapshot.forEach((doc) =>{
-  //         tempArr.push(doc.data());
-  //       }) ;
-  //       setRecipes(tempArr);
-  //       console.log(tempArr);
-  //     })
-  //   } 
-
   if (recipes.length === 0) {
     return (
       <div className="container">

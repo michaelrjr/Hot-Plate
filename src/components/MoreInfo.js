@@ -29,11 +29,11 @@ export default function MoreInfo() {
   const [userDetails, setUserDetails] = useState({});
   const userRef = app.firestore().collection("Users");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [customRecipeIsRemoved, setCustomRecipeIsRemoved] = useState(false);
 
   let mounted = true;
 
   useEffect(() => {
+    console.log(recipeID);
     getUserDetails();
     if (recipeID.toString().substring(0, 3) == "CR-") {
       setSpoonacularRecipe(false);
@@ -179,7 +179,6 @@ export default function MoreInfo() {
   const removeCustomRecipe = (id) =>{
     userCreatedRecipesRef.doc(id).delete();
     setShowDeleteModal(false);
-    setCustomRecipeIsRemoved(true);
   }
 
   const handleClose = () => setShow(false);
