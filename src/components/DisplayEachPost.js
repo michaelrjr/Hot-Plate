@@ -171,11 +171,12 @@ export default function DisplayEachPost(props) {
             </div>
             <div className="d-inline-block">
               <b>
-                {currentUserData?.firstName + " " + currentUserData?.lastName}
+                { props.authorFName && props.authorFName.length>0 ? props.authorFName+" " : currentUserData?.firstName + " "}
+                { props.authorSName && props.authorSName.length>0 ? props.authorSName+" " : currentUserData?.lastName+" "}
               </b>
               <br />
               <small>
-                {new Date(props.timestamp?.toDate()).toLocaleString()}
+                {props.timestamp?.toDate().toLocaleString()}
               </small>
             </div>
           </div>

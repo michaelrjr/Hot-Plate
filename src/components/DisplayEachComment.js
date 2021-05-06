@@ -33,7 +33,7 @@ export default function DisplayEachComment(props){
                     {postTimeStamp}
                 </small>
                 <small className="comment-delete">{currentUser.email === props.email && (
-                        <RiDeleteBin7Line
+                    <RiDeleteBin7Line
                       onClick={()=>
                       props.deleteComment(props.timestamp)
                       }

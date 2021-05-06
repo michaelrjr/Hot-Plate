@@ -15,6 +15,8 @@ export default function DisplayPost(props) {
           recipeID={post.recipeID}
           postID={post.postID}
           childCommentSectionID={post.childCommentSectionID}
+          authorFName={post.authorFName}
+          authorSName={post.authorSName}
         />
       ))}
     </div>
