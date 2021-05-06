@@ -15,8 +15,8 @@ export default function DisplayOnlineUsers(props) {
   };
 
   return (
-    <div className="online-user-body">
-      <div className="online-user-nav">
+    <div className="card online-user-body">
+      <div className="card-header online-user-nav">
         <h3>Users</h3>
         <input
           type="text"
@@ -31,15 +31,20 @@ export default function DisplayOnlineUsers(props) {
       {props.members
         .filter(membersFilterFunction(props.searchMember))
         .map((user) => (
-          <div key={user.uuid} className="">
+          <div
+            key={user.uuid}
+            className="card online-user"
+            onClick={() =>
+              props.handleStartChatClick(user.email, props.currentUser.email)
+            }>
             {user.email !== props.currentUser.email && (
-              <div key={user.uuid} className="">
-                <div className="">
+              <div key={user.uuid} className="row align-items-center">
+                <div className="col ml-4">
                   <img
-                    className="rounded-circle"
+                    className="p-1 rounded-circle"
                     src={user.avatar != null ? user.avatar : "defaultuser.png"}
-                    height="60"
-                    width="60"
+                    height="80"
+                    width="80"
                   />
                   <div
                     className={
@@ -48,7 +53,7 @@ export default function DisplayOnlineUsers(props) {
                         : "online-icon online-icon-offline mb-4"
                     }></div>
                 </div>
-                <div className="">
+                <div className="col-6">
                   {user.firstName + " " + user.lastName}
                   <br />
                   <a
@@ -62,7 +67,7 @@ export default function DisplayOnlineUsers(props) {
                   </small>
                 </div>
 
-                <div className="">
+                {/* <div className="col">
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -70,7 +75,7 @@ export default function DisplayOnlineUsers(props) {
                     Start Chat
                   </button>
 
-                </div>
+                </div> */}
               </div>
             )}
           </div>

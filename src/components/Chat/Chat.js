@@ -111,7 +111,6 @@ export default function Chat() {
       .collection("messages")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
-        console.log(snapshot.docs.map((doc) => doc.data()));
         setChatMessages(snapshot.docs.map((doc) => doc.data()));
       });
   };
@@ -124,7 +123,6 @@ export default function Chat() {
       .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           doc.ref.update({ read: true });
-          console.log(doc.data());
         });
       });
   };
@@ -166,7 +164,9 @@ export default function Chat() {
   }
 
   return (
-    <div className="chat-container">
+    <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
+    <div className="w-100" style={{ maxWidth: "450px" }}>
+      {showChat == false ? (
         <DisplayOnlineUsers
           members={members}
           chatMessages={chatMessages}
@@ -176,6 +176,8 @@ export default function Chat() {
           handleStartChatClick={handleStartChatClick}
           handleSearch={handleSearch}
         />
+      ) : null}
+      {showChat == true ? (
         <DisplayChat
           otherUserDetails={otherUserDetails}
           currentUser={currentUser}
@@ -188,6 +190,8 @@ export default function Chat() {
           handleInputBoxChange={handleInputBoxChange}
           handleDeleteMessageClick={handleDeleteMessageClick}
         />
+      ): null}
+    </div>
     </div>
   );
 }

@@ -30,15 +30,17 @@ export default function DisplayEachComment(props){
                             {props.lastName ? props.lastName+" " : currentUserData?.lastName+" " }
                 </b></small>
                 <small className="align-self-start comment-timestamp">
+                {console.log(postTimeStamp)}
                     {postTimeStamp}
                 </small>
-                <small className="comment-delete">{currentUser.email === props.email && (
+                {currentUser.email === props.email && (
                         <RiDeleteBin7Line
-                      onClick={()=>
-                      props.deleteComment(props.timestamp)
+                        className="comment-delete"
+                        onClick={()=>
+                        props.deleteComment(props.timestamp)
                       }
                     />
-                    )}</small>
+                    )}
                 <br />
                 <div className="commentMain d-block">
                     {props.comment}
