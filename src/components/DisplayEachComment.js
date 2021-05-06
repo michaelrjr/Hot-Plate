@@ -11,7 +11,7 @@ export default function DisplayEachComment(props){
 
     useEffect(() => {
         let isMounted = true;
-        setPostTimeStamp(new Date(props.timestamp?.toDate()).toLocaleString());
+        setPostTimeStamp(props.timestamp?.toDate().toLocaleString());
         userDBRef.doc(props.email).get().then( (doc) => {
             if(isMounted) setCurrentUserData( doc.data() );
         }).catch((error) => {
