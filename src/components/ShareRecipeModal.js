@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
@@ -12,6 +12,20 @@ export default function ShareRecipeModal(props) {
   const [showPostButton, setShowPostButton] = useState(true);
   const [postMessage, setPostMessage] = useState("");
   const feedCollection = app.firestore().collection("feed");
+  const [userData, setUserData] = useState(null);
+  var isMounted=false;
+  
+  useEffect(() => {
+    isMounted=true;
+    getUserData();
+    return () => isMounted=false;
+  }, []);
+  
+  function getUserData(){
+    app.firestore().collection("Users").doc(currentUser.email).get().then((doc) => {
+      if(isMounted) setUserData(doc.data());
+    });
+  }
 
   const handlePostMessageChange = (event) => {
     setPostMessage(event.target.value);
@@ -33,6 +47,8 @@ export default function ShareRecipeModal(props) {
         recipeTitle: title,
         postID: thisPostID,
         childCommentSectionID: uuidv4(),
+        authorFName: userData.firstName,
+        authorSName: userData.lastName
       })
       .then((docRef) => {
         if(docRef) console.log("Document written with ID: ", docRef.id);

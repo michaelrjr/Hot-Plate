@@ -12,14 +12,13 @@ export default function SignOut(props) {
 
   // sign out user
   const handleSignOut = async () => {
-    props.setError("");
     // update online to false if sign out is successful
     ref.doc(currentUser.email).update({ online: false });
     try {
       await signOut();
       history.push("/");
-    } catch {
-      props.setError("Failed to sign out");
+    } catch (error) {
+      throw error;
     }
   };
   return (

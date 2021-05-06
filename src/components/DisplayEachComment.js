@@ -7,6 +7,7 @@ export default function DisplayEachComment(props){
     const userDBRef = app.firestore().collection("Users");
     const [ currentUserData, setCurrentUserData ] = useState();
     const { currentUser } = useAuth();
+    const [postTimeStamp, setPostTimeStamp] = useState();
 
     useEffect(() => {
         let isMounted = true;
@@ -28,10 +29,10 @@ export default function DisplayEachComment(props){
                             {props.lastName ? props.lastName+" " : currentUserData?.lastName+" " }
                 </b></small>
                 <small className="align-self-start comment-timestamp">
-                    {new Date(props.timestamp?.toDate()).toLocaleString()}
+                    {props.timestampStr ? props.timestampStr : " "}
                 </small>
                 <small className="comment-delete">{currentUser.email === props.email && (
-                        <RiDeleteBin7Line
+                    <RiDeleteBin7Line
                       onClick={()=>
                       props.deleteComment(props.timestamp)
                       }
