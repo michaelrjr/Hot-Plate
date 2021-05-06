@@ -15,13 +15,14 @@ import Chat from "./Chat";
 import CreateRecipe from "./CreateRecipe";
 import MyRecipes from "./MyRecipes";
 import MyRecipes2 from "./MyRecipes2";
+import NewNavBar from "./NewNavBar";
 
 function App() {
   return (
     <AuthProvider>
       <div className="App">
         <Router>
-          <NavBar />
+          <NewNavBar />
           <br />
           <Switch>
             <PrivateRoute path="/createrecipe" component={CreateRecipe} />
@@ -29,18 +30,14 @@ function App() {
             <PrivateRoute path="/myrecipes2" component={MyRecipes2} />
             <PrivateRoute path="/chat" component={Chat} />
             <PrivateRoute path="/moreinfo" component={MoreInfo} />
-            <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
-              <div className="w-100" style={{ maxWidth: "450px" }}>
-                <Route path="/signUp" component={SignUp} />
-                <Route path="/signIn" component={SignIn} />
-                <PrivateRoute path="/update-profile" component={UpdateProfile} />
-                <PrivateRoute path="/profile" component={Profile} />
-                <Route path="/forgotPassword" component={ForgotPassword} />
-                <PrivateRoute path="/feed" component={Feed} />
-                <PrivateRoute path="/recipesearch" component={RecipeSearch} />
-                <Route exact path="/" component={SignIn} />
-              </div>
-            </div>
+            <PrivateRoute path="/profile" component={Profile} />
+            <Route path="/signUp" component={SignUp} />
+            <Route path="/signIn" component={SignIn} />
+            <PrivateRoute path="/update-profile" component={UpdateProfile} />
+            <Route path="/forgotPassword" component={ForgotPassword} />
+            <PrivateRoute path="/feed" component={Feed} />
+            <PrivateRoute path="/recipesearch" component={RecipeSearch} />
+            <Route exact path="/" component={SignIn} />
           </Switch>
         </Router>
       </div>

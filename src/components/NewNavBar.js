@@ -1,58 +1,89 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import NavBar2 from "./NavBar2";
+import { useAuth } from "../contexts/AuthContext";
+import { Navbar, Nav } from "react-bootstrap";
+import { AiOutlineHome } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
+import { BiFoodMenu } from "react-icons/bi";
+import { BsChatDots } from "react-icons/bs";
+import { GrRestaurant } from "react-icons/gr";
+import { RiRestaurantLine } from "react-icons/ri";
+import { useHistory } from "react-router-dom";
+import app from "../firebase";
+import SignOut from "./SignOut";
 
 export default function NewNavBar() {
-  return (
-    <div class="wrapper">
-      <nav id="sidebar">
-        <div class="sidebar-header">
-          <h3>Bootstrap Sidebar</h3>
-        </div>
+  const { currentUser, signOut } = useAuth();
+  const history = useHistory();
+  //database ref
+  const ref = app.firestore().collection("Users");
 
-        <ul class="list-unstyled components">
-          <p>Dummy Heading</p>
-          <li class="active">
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-              Home
-            </a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
-              <li>
-                <a href="#">Home 1</a>
-              </li>
-              <li>
-                <a href="#">Home 2</a>
-              </li>
-              <li>
-                <a href="#">Home 3</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">About</a>
-          </li>
-          <li>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-              Pages
-            </a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-              <li>
-                <a href="#">Page 1</a>
-              </li>
-              <li>
-                <a href="#">Page 2</a>
-              </li>
-              <li>
-                <a href="#">Page 3</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">Portfolio</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
-          </li>
-        </ul>
-      </nav>
+  const width = window.screen.width;
+
+  return (
+    <div>
+      {currentUser === null ? (
+        <NavBar2 />
+      ) : (
+        <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
+          <Navbar.Brand className="mr-5">
+            <Link to="/">
+              <img src="hotPlate_Logo_Full_gradient_fullcol_240x90.svg" width="150" alt="logo" />
+            </Link>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Link className="link mr-5" to="/feed">
+                <div>
+                  <AiOutlineHome size={20} />
+                </div>
+                <div>Feed</div>
+              </Link>
+              <Link className="link mr-5" to="/recipesearch">
+                <div>
+                  <BiFoodMenu size={20} />
+                </div>
+                <div>Food</div>
+              </Link>
+              <Link className="link mr-5" to="/chat">
+                <div>
+                  <BsChatDots size={20} />
+                </div>
+                <div>Chat</div>
+              </Link>
+              <Link className="link mr-5" to="/profile">
+                <div>
+                  <CgProfile size={20} />
+                </div>
+                <div>Profile</div>
+              </Link>
+              <Link className="link mr-5" to="/createrecipe">
+                <div>
+                  <GrRestaurant size={20} />
+                </div>
+                <div>Create Recipe</div>
+              </Link>
+              <Link className="link mr-5" to="/myrecipes">
+                <div>
+                  <RiRestaurantLine size={20} />
+                </div>
+                <div>My Favourites</div>
+              </Link>
+              <Link className="link mr-5" to="/myrecipes2">
+                <div>
+                  <RiRestaurantLine size={20} />
+                </div>
+                <div>My Recipes</div>
+              </Link>
+            </Nav>
+            <div>
+              <SignOut />
+            </div>
+          </Navbar.Collapse>
+        </Navbar>
+      )}
     </div>
   );
 }

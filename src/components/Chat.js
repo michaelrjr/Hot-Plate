@@ -15,6 +15,7 @@ export default function Chat() {
   const [otherUserDetails, setOtherUserDetails] = useState([]);
   const [members, setMembers] = useState([]);
   const [searchMember, setSearchMember] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   //database ref
   const db = app.firestore().collection("conversations");
@@ -33,6 +34,7 @@ export default function Chat() {
   const getOnlineUsers = () => {
     ref.where("online", "==", true).onSnapshot((querySnapshot) => {
       setOnlineUsers(querySnapshot.docs.map((doc) => doc.data()));
+      setIsLoading(false);
     });
   };
 
@@ -148,6 +150,19 @@ export default function Chat() {
         });
       });
   };
+
+  if (isLoading) {
+    return (
+      <div className="container-fluid">
+        <div className="d-flex">
+          <strong className="mr-3">
+            <h3>Loading..</h3>
+          </strong>
+          <div className="spinner-border" role="status" aria-hidden="true"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container chat-container p-2">
