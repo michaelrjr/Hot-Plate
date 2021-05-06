@@ -12,14 +12,12 @@ export default function Feed() {
   const ref = app.firestore().collection("feed");
 
   useEffect(() => {
-    // const unsub = getData();
-    // return () => unsub();
-
-    getData();
+    const unsub = getData();
+    return () => unsub();
   }, []);
 
   function getData() {
-    ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+    return ref.orderBy("timestamp", "desc").onSnapshot((snapshot) => {
       setPostArray(snapshot.docs.map((doc) => doc.data()));
       setIsLoading(false);
     });
