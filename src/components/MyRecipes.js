@@ -25,9 +25,10 @@ export default function MyRecipes() {
           let tempArr = [];
           tempArr.push(doc.data());
           setRecipes(tempArr);
-          setIsLoading(false);
+
           console.log(tempArr);
         });
+        setIsLoading(false);
       });
     };
     getSavedAPIRecipes();
