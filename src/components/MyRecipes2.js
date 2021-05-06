@@ -25,17 +25,17 @@ export default function MyRecipes2() {
 
   useEffect(() => {
     const getUserCreatedRecipes = () => {
+      let tempArr = [];
       userCreatedRecipesRef
         .where("authorUID", "==", currentUser.uid)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            let tempArr = [];
             tempArr.push(doc.data());
-            setRecipes(tempArr);
-            console.log(tempArr);
-            setIsLoading(false);
           });
+          setRecipes(tempArr);
+          console.log(tempArr);
+          setIsLoading(false);
         });
     };
     getUserCreatedRecipes();
