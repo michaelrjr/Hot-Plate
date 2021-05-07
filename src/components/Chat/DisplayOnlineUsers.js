@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function DisplayOnlineUsers(props) {
   // filter search results
@@ -63,13 +64,25 @@ export default function DisplayOnlineUsers(props) {
                 </div>
 
                 <div className="col">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => props.handleStartChatClick(user.email, props.currentUser.email)}>
-                    Start Chat
-                  </button>
-
+                  {props.shareDMModalOrigin ?
+                    <button 
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        props.handleSendDMClick(user.email)
+                        console.log("share via DM clicked (onClick)")
+                      }}
+                    >
+                      Send Recipe to {user.firstName}
+                    </button>
+                  :
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => props?.handleStartChatClick(user.email, props.currentUser.email)}>
+                      Start Chat
+                    </button>
+                  }
                 </div>
               </div>
             )}

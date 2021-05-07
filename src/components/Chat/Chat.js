@@ -4,6 +4,7 @@ import app from "../../firebase";
 import { firebase } from "@firebase/app";
 import DisplayOnlineUsers from "./DisplayOnlineUsers";
 import DisplayChat from "./DisplayChat";
+import { Link } from "react-router-dom";
 
 export default function Chat() {
   const { currentUser } = useAuth();
@@ -16,32 +17,50 @@ export default function Chat() {
   const [members, setMembers] = useState([]);
   const [searchMember, setSearchMember] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [unsub1, setUnsub1] = useState(undefined);
+  const [unsub2, setUnsub2] = useState(undefined);
+  const [unsub3, setUnsub3] = useState(undefined);
+  const [unsub4, setUnsub4] = useState(undefined);
+  const [unsub5, setUnsub5] = useState(undefined);
+  var isMounted=false;
 
   //database ref
   const db = app.firestore().collection("conversations");
   const ref = app.firestore().collection("Users");
 
   useEffect(() => {
-    getOnlineUsers();
-    getMembers();
+    isMounted=true;
+    console.log("isMounted: "+isMounted); 
+    setUnsub1(() => getOnlineUsers());
+    setUnsub2(() => getMembers());
     if (showChat == true) {
-      getChatMessages();
+      setUnsub3( () => getChatMessages());
     }
-    // return () => setShowChat(false);
+    return () => {
+      if(unsub1) {unsub1(); console.log("unsub1");}
+      if(unsub2) {unsub2(); console.log("unsub2");}
+      if(unsub3) {unsub3(); console.log("unsub3");}
+      if(unsub4) {unsub4(); console.log("unsub4");}
+      if(unsub5) {unsub5(); console.log("unsub5");}
+      isMounted=false;
+      console.log("isMounted: "+isMounted);
+    };
   }, []);
 
   // query users collection for documents where online == true, these are currently "online" users
   const getOnlineUsers = () => {
-    ref.where("online", "==", true).onSnapshot((querySnapshot) => {
-      setOnlineUsers(querySnapshot.docs.map((doc) => doc.data()));
-      setIsLoading(false);
+    return ref.where("online", "==", true).onSnapshot((querySnapshot) => {
+      if(isMounted){
+        setOnlineUsers(querySnapshot.docs.map((doc) => doc.data()));
+        setIsLoading(false);
+      }
     });
   };
 
   //get all signed up users
   const getMembers = () => {
-    ref.where("email", "!=", null).onSnapshot((querySnapshot) => {
-      setMembers(querySnapshot.docs.map((doc) => doc.data()));
+    return ref.where("email", "!=", null).onSnapshot((querySnapshot) => {
+      if(isMounted) setMembers(querySnapshot.docs.map((doc) => doc.data()));
     });
   };
 
@@ -69,15 +88,24 @@ export default function Chat() {
   // show chat and also get chat messages from firestore, second param allows for
   //update of message.read field from false to true for the current users received messages
   const handleStartChatClick = (otherEmail, currentEmail) => {
-    setOtherUserEmail(otherEmail);
-    setShowChat(true);
-    getChatMessages(otherEmail);
-    setMessageToRead(currentEmail);
-    getOtherUserDetails(otherEmail);
+      setOtherUserEmail(otherEmail);
+      setShowChat(true);
+      setUnsub3(() => getChatMessages(otherEmail));
+      setUnsub4(() => setMessageToRead(currentEmail));
+      getOtherUserDetails(otherEmail);
   };
 
   // close chat
   const handleCloseChatClick = () => {
+    // console.log(unsub4);
+    if(unsub3){
+      unsub3();
+      console.log("unsub3");
+    }
+    if(unsub4) {
+      unsub4();
+      console.log("unsub4");
+    }
     setShowChat(false);
   };
 
@@ -107,7 +135,11 @@ export default function Chat() {
 
   // get the chat messages (docs) from current users sub-collection
   const getChatMessages = (email) => {
-    db.doc(`${email}`)
+    console.log("chatMessages before:",chatMessages)
+    console.log("Passed email is: "+email);
+    console.log("Current user is: "+currentUser.email);
+    console.log(`Getting messages from: conversations > ${email} > messages`);
+    return db.doc(email)
       .collection("messages")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
@@ -118,13 +150,13 @@ export default function Chat() {
 
   //update read status to true when start chat button is clicked
   const setMessageToRead = (email) => {
-    db.doc(`${email}`)
+    return db.doc(`${email}`)
       .collection("messages")
       .where("to", "==", email)
       .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           doc.ref.update({ read: true });
-          console.log(doc.data());
+          // console.log(doc.data());
         });
       });
   };

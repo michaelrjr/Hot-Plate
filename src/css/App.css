@@ -211,3 +211,16 @@ html {
 }
 
 /*Post/Comment Styles ends*/
+
+
+.modal-90w{
+  min-width:90%;
+}
+
+.modal-90w .online-user-body{
+  width:100%;
+}
+
+.modal-90w .online-user-body .col-8{
+  max-width:50%;
+}
