@@ -32,7 +32,6 @@ export default function Chat() {
 
   useEffect(() => {
     isMounted=true;
-    console.log("isMounted: "+isMounted); 
     setUnsub1(() => getOnlineUsers());
     setUnsub2(() => getMembers());
     if (showChat == true) {
@@ -45,7 +44,6 @@ export default function Chat() {
       if(unsub4) {unsub4(); console.log("unsub4");}
       if(unsub5) {unsub5(); console.log("unsub5");}
       isMounted=false;
-      console.log("isMounted: "+isMounted);
     };
   }, []);
 
@@ -99,7 +97,6 @@ export default function Chat() {
 
   // close chat
   const handleCloseChatClick = () => {
-    // console.log(unsub4);
     if(unsub3){
       unsub3();
       console.log("unsub3");
@@ -137,10 +134,6 @@ export default function Chat() {
 
   // get the chat messages (docs) from current users sub-collection
   const getChatMessages = (email) => {
-    console.log("chatMessages before:",chatMessages)
-    console.log("Passed email is: "+email);
-    console.log("Current user is: "+currentUser.email);
-    console.log(`Getting messages from: conversations > ${email} > messages`);
     return db.doc(email)
       .collection("messages")
       .orderBy("timestamp", "asc")

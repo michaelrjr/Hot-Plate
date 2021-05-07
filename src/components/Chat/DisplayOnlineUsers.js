@@ -78,7 +78,6 @@ export default function DisplayOnlineUsers(props) {
                       className="btn btn-secondary"
                       onClick={() => {
                         props.handleSendDMClick(user.email)
-                        console.log("share via DM clicked (onClick)")
                       }}
                     >
                       Send Recipe to {user.firstName}

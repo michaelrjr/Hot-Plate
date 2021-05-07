@@ -21,8 +21,6 @@ export default function DisplayChat(props) {
     if(message.substring(0,29) !== "linkTo:moreInfo,withRecipeID:"){
       return false;
     } else if(message.length>30){
-      // console.log(message);
-      // console.log("RecipeID: " + message.substring(29));
       return message.substring(29);
     }
   }

@@ -61,7 +61,8 @@ export default function ShareRecipeModal(props) {
             console.error("Error retrieving added data from firestore:", error);
           })
         }
-        alert("Post successful.")
+
+        alert("Post successful.");
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
@@ -145,6 +146,7 @@ export default function ShareRecipeModal(props) {
                 className="btn btn-primary w-100"
                 onClick={() => {
                   handlePostClick(postMessage, recipe.id, recipe.image, recipe.title);
+                  props.handleSaveClick();
                   props.handleClose();
                 }}>
                 Post

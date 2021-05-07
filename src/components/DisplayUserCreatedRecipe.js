@@ -79,6 +79,7 @@ export default function DisplayUserCreatedRecipe(props) {
           show={show}
           userCreatedRecipe={props.userCreatedRecipe}
           handleClose={handleClose}
+          handleSaveClick={props.handleSaveClick}
         />
       </div>
     </div>
