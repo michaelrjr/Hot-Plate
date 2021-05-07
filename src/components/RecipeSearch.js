@@ -3,6 +3,7 @@ import RecipeFilters from "./RecipeFilters";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import app from "../firebase";
 
 export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);
@@ -17,10 +18,14 @@ export default function RecipeSearch() {
   const size = "636x393.jpg";
   const basePath = "https://spoonacular.com/recipeImages/";
   const { setRecipeID } = useAuth();
+  const ref = app.firestore().collection("userAPIRecipes");
+  const { currentUser } = useAuth();
+  const [userDetails, setUserDetails] = useState({});
 
   // call getRandomRecipes() when the page loads
   useEffect(() => {
     getRandomRecipes();
+    getUserDetails();
   }, []);
 
   // this functions requests random recipes from spoonacular
@@ -34,6 +39,18 @@ export default function RecipeSearch() {
       setIsFetched(false);
       setError(error);
     }
+  };
+  //get user details to know where to save the recipe on firestore
+  const getUserDetails = () => {
+    app.firestore().collection("Users")
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        setUserDetails(doc.data());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // this function requests filtered recipes from spoonacular
@@ -57,6 +74,37 @@ export default function RecipeSearch() {
       setError(error);
     }
     removeFilters(); // set filters back to empty string after every filtered search
+  };
+
+  const saveAPIRecipe = (id, title, image, ingred, instruct) => {
+    ref.doc(currentUser.uid).set({
+      uid: currentUser.uid,
+      firstName: userDetails.firstName,
+      lastName: userDetails.lastName,
+    });
+    if (currentUser != null) {
+      let apiref = ref.doc(currentUser.uid).collection("recipes");
+      apiref.doc(id.toString()).get().then((docSnapshot) => {
+        if (docSnapshot.exists){
+          alert("Recipe already saved!");
+          nextRecipe();
+        } 
+        else {
+          apiref.doc(id.toString()).set({
+            id: id,
+            title: title,
+            image: image,
+            ingredients: ingred,
+            instructions: instruct,
+            fromAPI: true,
+          });
+          alert("Saved to My Recipes");
+          nextRecipe();
+        }
+      });
+    } else {
+      alert("Please Sign-in to start saving recipes.");
+    }
   };
 
   // if we are at the end of the array set recipeNum to 0 otherwise increment recipeNum by 1
@@ -172,11 +220,25 @@ export default function RecipeSearch() {
                 <button type="button" className="btn btn-danger w-50 mb-3" onClick={nextRecipe}>
                   Next
                 </button>
-
+                <button
+                  type="button"
+                  className="btn btn-success w-50 mb-3"
+                  onClick={() =>
+                    saveAPIRecipe(
+                      apiData[recipeNum].id,
+                      apiData[recipeNum].title,
+                      apiData[recipeNum].image,
+                      apiData[recipeNum].extendedIngredients,
+                      apiData[recipeNum].analyzedInstructions
+                    )}>
+                  Save
+                </button>
+              </div>
+              <div>
                 <Link to="/moreinfo">
                   <button
                     type="button"
-                    className="btn btn-success w-50 mb-3"
+                    className="btn btn-warning w-100 mb-3"
                     onClick={() => setRecipeID(apiData[recipeNum].id)}>
                     More Info
                   </button>

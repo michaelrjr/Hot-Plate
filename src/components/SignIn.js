@@ -28,7 +28,7 @@ function SignIn() {
         setLoading(true);
         // sign a user in with email and password
         await signIn(values.email, values.password);
-        history.push("/profile");
+        history.push("/recipesearch");
       } catch {
         setError("incorrect email or password");
       }

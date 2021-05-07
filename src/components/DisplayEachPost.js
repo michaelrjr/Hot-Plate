@@ -50,7 +50,7 @@ export default function DisplayEachPost(props) {
     userPost.delete();
   };
 
-  //enables user to delete thier comment, deletes by timestamp (arg passed in), deletes entire doc
+  //enables user to delete their comment, deletes by timestamp (arg passed in), deletes entire doc
   //and updates comments
   const handleDeleteCommentClick = (time) => {
     commentSectionRef

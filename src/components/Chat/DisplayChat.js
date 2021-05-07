@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+
+
+
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef();
+  useEffect(() => elementRef.current.scrollIntoView());
+  return <div ref={elementRef} />;
+};
 
 
 
@@ -66,7 +74,7 @@ export default function DisplayChat(props) {
                         </div>
                     }
                     <RiDeleteBin7Line
-                      className="chat-delete"
+                      className="delete"
                       onClick={() =>
                         props.handleDeleteMessageClick(message.message)
                       }
@@ -79,6 +87,7 @@ export default function DisplayChat(props) {
               )}
             </div>
           ))}
+          <AlwaysScrollToBottom />
         </div>
       </div>
       <form

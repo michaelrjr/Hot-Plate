@@ -28,7 +28,6 @@ export default function MoreInfo() {
   const [userDetails, setUserDetails] = useState({});
   const userRef = app.firestore().collection("Users");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [customRecipeIsRemoved, setCustomRecipeIsRemoved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDMModal, setShowDMModal] = useState(false);
 
@@ -125,12 +124,9 @@ export default function MoreInfo() {
   //check if user has already added recipe to their saved recipes
   const checkRecipeAdded = () => {
     let apiref = ref.doc(currentUser.uid).collection("recipes");
-    apiref
-      .doc(recipeID.toString())
-      .get()
-      .then((docSnapshot) => {
-        if (docSnapshot.exists) setDelOrSave(true);
-      });
+    apiref.doc(recipeID.toString()).get().then((docSnapshot) => {
+      if (docSnapshot.exists) setDelOrSave(true);
+    });
   };
   //allow Signed-In users to save recipes to the database.
   //Duplicate handling already implemented in this method.
@@ -142,24 +138,21 @@ export default function MoreInfo() {
     });
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
-      apiref
-        .doc(id.toString())
-        .get()
-        .then((docSnapshot) => {
-          if (docSnapshot.exists) alert("Recipe already saved!");
-          else {
-            apiref.doc(id.toString()).set({
-              id: id,
-              title: title,
-              image: image,
-              ingredients: ingred,
-              instructions: instruct,
-              fromAPI: true,
-            });
-            setDelOrSave(true);
-            alert("Saved to My Recipes");
-          }
-        });
+      apiref.doc(id.toString()).get().then((docSnapshot) => {
+        if (docSnapshot.exists) alert("Recipe already saved!");
+        else {
+          apiref.doc(id.toString()).set({
+            id: id,
+            title: title,
+            image: image,
+            ingredients: ingred,
+            instructions: instruct,
+            fromAPI: true,
+          });
+          setDelOrSave(true);
+          alert("Saved to My Recipes");
+        }
+      });
     } else {
       alert("Please Sign-in to start saving recipes.");
     }
@@ -179,7 +172,6 @@ export default function MoreInfo() {
   const removeCustomRecipe = (id) => {
     userCreatedRecipesRef.doc(id).delete();
     setShowDeleteModal(false);
-    setCustomRecipeIsRemoved(true);
   };
 
   const handleClose = () => setShow(false);
