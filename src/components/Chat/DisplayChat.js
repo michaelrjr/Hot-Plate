@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
+
+
 
 const AlwaysScrollToBottom = () => {
   const elementRef = useRef();
@@ -11,6 +15,16 @@ const AlwaysScrollToBottom = () => {
 
 
 export default function DisplayChat(props) {
+  const { setRecipeID } = useAuth();
+
+  function MessageHasLink(message){
+    if(message.substring(0,29) !== "linkTo:moreInfo,withRecipeID:"){
+      return false;
+    } else if(message.length>30){
+      return message.substring(29);
+    }
+  }
+
   return (
     <div className="card">
       {props.otherUserDetails.map((user) => (
@@ -33,18 +47,30 @@ export default function DisplayChat(props) {
         <div className="mt-3">
           {props.chatMessages.map((message) => (
             <div key={message.timestamp}>
-              {message.from !== props.currentUser.email && (
+              {message.to === props.currentUser.email && message.from === props.otherUserEmail && (
                 <div className="d-flex flex-column mt-1">
-                  <div className="other-user-msg">{message.message}</div>
+                  <div className="other-user-msg">
+                    {message.message}
+                    </div>
                   <small className="align-self-start message-timestamp">
                     {new Date(message.timestamp?.toDate()).toLocaleString()}
                   </small>
                 </div>
               )}
-              {message.from === props.currentUser.email && (
+              {message.from === props.currentUser.email && message.to === props.otherUserEmail && (
                 <div className="d-flex flex-column">
                   <div className="current-user-msg">
-                    {message.message}
+                    {MessageHasLink(message.message)===false
+                      ?
+                        message.message
+                      :
+                        <div>
+                          I thought you might like this recipe:<br />
+                          <Link to="/moreinfo"><button className="" onClick={() => setRecipeID(message.message.substring(29))}>
+                            View Recipe
+                          </button></Link>
+                        </div>
+                    }
                     <RiDeleteBin7Line
                       className="delete"
                       onClick={() =>

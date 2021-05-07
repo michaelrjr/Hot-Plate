@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Collapse, Button } from "react-bootstrap";
 import ShareRecipeModal from "./ShareRecipeModal";
+import ShareDMModal from "./ShareDMModal";
 import app from "../firebase";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -28,6 +29,7 @@ export default function MoreInfo() {
   const userRef = app.firestore().collection("Users");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showDMModal, setShowDMModal] = useState(false);
 
   let mounted = true;
 
@@ -175,6 +177,8 @@ export default function MoreInfo() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const handleDMShowShare = () => setShowDMModal(!showDMModal);
+
   if (isLoading) {
     return (
       <div className="container-fluid">
@@ -216,6 +220,13 @@ export default function MoreInfo() {
                       spoonacularRecipe={spoonacularRecipe}
                     />
                   )}
+                  {recipe && 
+                    <ShareDMModal 
+                      showDMModal={showDMModal}
+                      recipeID={recipe.id}
+                      handleDMShowShare={handleDMShowShare}
+                    />
+                  }
                 </div>
                 <img className="card-img-top" src={recipe?.image ? recipe?.image : "noimage.jpg"} alt="recipe" />
                 <div className="card-body">
@@ -236,6 +247,7 @@ export default function MoreInfo() {
                       </Link>
                     </Modal.Body>
                   </Modal>
+
                   <h4>
                     <b>{recipe?.title ? recipe.title : "No Recipe Data Found! The recipe might have been deleted"} </b>
                   </h4>
@@ -249,6 +261,9 @@ export default function MoreInfo() {
                   )}
                   <button className="btn btn-primary" onClick={handleShow}>
                     Share
+                  </button>
+                  <button className="btn btn-secondary" onClick={handleDMShowShare}>
+                    Share via DM
                   </button>
                   {/*
                       NB: We can check to see if the currentUser is the author of this recipe, and if so, we should not show the save/delete button since this recipe is already present in saved recipes.

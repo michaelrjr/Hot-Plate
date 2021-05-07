@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function DisplayOnlineUsers(props) {
   // filter search results
@@ -35,7 +36,10 @@ export default function DisplayOnlineUsers(props) {
             key={user.uuid}
             className="card online-user"
             onClick={() =>
-              props.handleStartChatClick(user.email, props.currentUser.email)
+              {
+              if(props.shareDMModalOrigin) props.handleSendDMClick(user.email)
+              else props.handleStartChatClick(user.email, props.currentUser.email)
+              }
             }>
             {user.email !== props.currentUser.email && (
               <div key={user.uuid} className="row align-items-center">
@@ -65,6 +69,27 @@ export default function DisplayOnlineUsers(props) {
                   <small className="user-status">
                     Status: {user.online ? "Cooking" : "Eating"}
                   </small>
+                </div>
+
+                <div className="col">
+                  {props.shareDMModalOrigin ?
+                    <button 
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        props.handleSendDMClick(user.email)
+                      }}
+                    >
+                      Send Recipe to {user.firstName}
+                    </button>
+                  :
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => props?.handleStartChatClick(user.email, props.currentUser.email)}>
+                      Start Chat
+                    </button>
+                  }
                 </div>
               </div>
             )}
