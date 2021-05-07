@@ -30,7 +30,7 @@ export default function NavBar2() {
       setLoading(true);
       // sign a user in with email and password
       await signIn(email, password);
-      history.push("/profile");
+      history.push("/recipesearch");
     } catch {
       setError("Error, incorrect email or password. Please try again.");
     }

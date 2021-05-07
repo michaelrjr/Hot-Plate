@@ -59,13 +59,9 @@ export default function Profile() {
     setFileName("");
     const file = e.target.files[0];
     setFileName(e.target.files[0].name);
-    let i = file.name.indexOf(".");
-    console.log(i);
-    let s = file.name.substring(i + 1, file.name.length);
-    console.log(s);
-    if (s != "jpg" && s !== "png") {
-      return setErrorMsg("Only png and jpg files are supported.");
-    }
+    let i = file.name.indexOf("."); // get the "dot" from file
+    let s = file.name.substring(i + 1, file.name.length); // extract file type
+    if (s != "jpg" && s !== "png") return setErrorMsg("Only png and jpg files are supported."); // check file type
     setErrorMsg("");
     const storageRef = app.storage().ref(); //firebase storage ref
     const fileRef = storageRef.child(file.name);
