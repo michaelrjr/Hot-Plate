@@ -41,6 +41,7 @@ a:hover {
 
 .chat-body{
   height: 57vh;
+  flex-direction: column-reverse;
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
