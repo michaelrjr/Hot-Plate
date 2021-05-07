@@ -50,7 +50,7 @@ export default function DisplayEachPost(props) {
     userPost.delete();
   };
 
-  //enables user to delete thier comment, deletes by timestamp (arg passed in), deletes entire doc
+  //enables user to delete their comment, deletes by timestamp (arg passed in), deletes entire doc
   //and updates comments
   const handleDeleteCommentClick = (time) => {
     commentSectionRef
@@ -171,11 +171,12 @@ export default function DisplayEachPost(props) {
             </div>
             <div className="d-inline-block">
               <b>
-                {currentUserData?.firstName + " " + currentUserData?.lastName}
+                { props.authorFName && props.authorFName.length>0 ? props.authorFName+" " : currentUserData?.firstName + " "}
+                { props.authorSName && props.authorSName.length>0 ? props.authorSName+" " : currentUserData?.lastName+" "}
               </b>
               <br />
               <small>
-                {new Date(props.timestamp?.toDate()).toLocaleString()}
+                {props.timestamp?.toDate().toLocaleString()}
               </small>
             </div>
           </div>

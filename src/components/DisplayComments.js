@@ -13,6 +13,7 @@ export default function DisplayComments(props){
     const [showCommentBox, setShowCommentBox] = useState(false);
     const deleteComment = props.handleDeleteCommentClick;
     const commentSectionRef = postRef.collection(props.commentSectionID);
+    const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
         const unsub = getData();
@@ -21,8 +22,11 @@ export default function DisplayComments(props){
 
     function getData() {
         return commentSectionRef.orderBy("timestamp", "asc").onSnapshot((snapshot) => {
-            setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
-            scrollToBottomElement();
+            if(!snapshot.metadata.hasPendingWrites){
+                setCommentsArray(snapshot.docs.map(  (doc) => doc.data()  ));
+                setIsLoading(false);
+                scrollToBottomElement();
+            }
         });
     }
 
@@ -36,7 +40,38 @@ export default function DisplayComments(props){
       setShowCommentBox(!showCommentBox);
     };
 
-    return(
+    if(isLoading) return(
+        <div className="displayComments" ref={bottomElement}>
+            <div className="emptyCommentSection mt-2">
+                Loading comments...
+                <div className="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+            <div className="d-block mt-2 w-100">
+                {!showCommentBox &&
+                    <button
+                        className="btn btn-comment btn-sm w-100 d-inline"
+                        onClick={showCommentInputBox}
+                    >
+                        <div className="d-inline mr-1">
+                        <FaRegCommentDots />
+                        </div>
+                        <div className="d-inline">Leave a Comment</div>
+                    </button>
+                }
+            
+                {showCommentBox && (
+                    <CommentBox
+                    postID = {props.postID}
+                    commentSectionID = {props.commentSectionID}
+                    setShowCommentBox = {setShowCommentBox}
+                    scrollToBottomElement = {scrollToBottomElement}
+                    />
+                )}
+            </div>
+        </div>
+    )
+    
+    if(!isLoading) return(
             <div className="displayComments" ref={bottomElement}>
                 { commentsArray.map((comment) => {
                         return(
@@ -45,6 +80,7 @@ export default function DisplayComments(props){
                                     email = {comment.from}
                                     comment = {comment.comment}
                                     timestamp = {comment.timestamp}
+                                    timestampStr = {comment.timestamp.toDate().toLocaleString()}
                                     deleteComment = {deleteComment}
                                     firstName = {comment.firstName}
                                     lastName = {comment.lastName}

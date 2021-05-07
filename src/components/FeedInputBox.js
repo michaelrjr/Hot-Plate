@@ -7,11 +7,22 @@ import app from "../firebase";
 export default function FeedInputBox(props) {
   const [postDetails, setPostDetails] = useState(0);
   const feedCollection = app.firestore().collection("feed");
+  const [userData, setUserData] = useState(null);
   const {currentUser} = useAuth();
+  var isMounted=false;
 
   useEffect(() => {
+    isMounted=true;
     setPostDetails("");
+    getUserData();
+    return () => isMounted=false;
   }, []);
+  
+  function getUserData(){
+    app.firestore().collection("Users").doc(currentUser.email).get().then((doc) => {
+      if(isMounted) setUserData(doc.data());
+    });
+  }
 
   function handlePostContentChange(e){
     setPostDetails(e.target.value)
@@ -27,6 +38,8 @@ export default function FeedInputBox(props) {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         postID: thisPostID,
         childCommentSectionID: uuidv4(),
+        authorFName: userData.firstName,
+        authorSName: userData.lastName
       })
       .then((docRef) => {
         if(docRef) console.log("Document written with ID: ", docRef.id);

@@ -31,10 +31,15 @@ export default function DisplayOnlineUsers(props) {
       {props.members
         .filter(membersFilterFunction(props.searchMember))
         .map((user) => (
-          <div key={user.uuid} className="card">
+          <div
+            key={user.uuid}
+            className="card online-user"
+            onClick={() =>
+              props.handleStartChatClick(user.email, props.currentUser.email)
+            }>
             {user.email !== props.currentUser.email && (
-              <div key={user.uuid} className="row align-items-center  p-2">
-                <div className="col pr-2">
+              <div key={user.uuid} className="row align-items-center">
+                <div className="col ml-4">
                   <img
                     className="p-1 rounded-circle"
                     src={user.avatar != null ? user.avatar : "defaultuser.png"}
@@ -48,7 +53,7 @@ export default function DisplayOnlineUsers(props) {
                         : "online-icon online-icon-offline mb-4"
                     }></div>
                 </div>
-                <div className="col-8">
+                <div className="col-6">
                   {user.firstName + " " + user.lastName}
                   <br />
                   <a
@@ -62,7 +67,7 @@ export default function DisplayOnlineUsers(props) {
                   </small>
                 </div>
 
-                <div className="col">
+                {/* <div className="col">
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -70,7 +75,7 @@ export default function DisplayOnlineUsers(props) {
                     Start Chat
                   </button>
 
-                </div>
+                </div> */}
               </div>
             )}
           </div>
