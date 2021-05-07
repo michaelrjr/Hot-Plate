@@ -66,16 +66,6 @@ export default function DisplayOnlineUsers(props) {
                     Status: {user.online ? "Cooking" : "Eating"}
                   </small>
                 </div>
-
-                {/* <div className="col">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => props.handleStartChatClick(user.email, props.currentUser.email)}>
-                    Start Chat
-                  </button>
-
-                </div> */}
               </div>
             )}
           </div>
