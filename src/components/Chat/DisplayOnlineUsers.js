@@ -36,7 +36,10 @@ export default function DisplayOnlineUsers(props) {
             key={user.uuid}
             className="card online-user"
             onClick={() =>
-              props.handleStartChatClick(user.email, props.currentUser.email)
+              {
+              if(props.shareDMModalOrigin) props.handleSendDMClick(user.email)
+              else props.handleStartChatClick(user.email, props.currentUser.email)
+              }
             }>
             {user.email !== props.currentUser.email && (
               <div key={user.uuid} className="row align-items-center">
