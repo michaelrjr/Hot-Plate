@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiDeleteBin7Line } from "react-icons/ri";
+
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef();
+  useEffect(() => elementRef.current.scrollIntoView());
+  return <div ref={elementRef} />;
+};
+
+
 
 export default function DisplayChat(props) {
   return (
@@ -51,6 +59,7 @@ export default function DisplayChat(props) {
               )}
             </div>
           ))}
+          <AlwaysScrollToBottom />
         </div>
       </div>
       <form

@@ -17,7 +17,7 @@ export default function Chat() {
   const [members, setMembers] = useState([]);
   const [searchMember, setSearchMember] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  // const bottomElement = useRef();
+  const bottomElement = useRef();
 
   //database ref
   const db = app.firestore().collection("conversations");
