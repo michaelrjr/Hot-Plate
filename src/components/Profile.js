@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import app from "../firebase";
 import { Modal } from "react-bootstrap";
+import { BsTrash } from "react-icons/bs";
 
 export default function Profile() {
   const [error, setError] = useState("");
@@ -13,6 +14,7 @@ export default function Profile() {
   const [fileName, setFileName] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
   // db ref
   const ref = app.firestore().collection("Users");
 
@@ -22,12 +24,14 @@ export default function Profile() {
 
   // get the current users details from firestore
   const getUserDetails = () => {
+    setIsLoading(true);
     ref
       .doc(currentUser.email)
       .get()
       .then((doc) => {
         let tempArr = [];
         tempArr.push(doc.data());
+        console.log(tempArr);
         setUserDetails(tempArr);
         setIsLoading(false);
       })
@@ -37,41 +41,34 @@ export default function Profile() {
   };
 
   // when the user clicks "upload" update that users avatar image
-  const handleSubmit = (e) => {
-    if (fileURL !== null) {
-      ref.doc(currentUser.email).update({ avatar: fileURL });
-      getUserDetails();
-      e.preventDefault();
-    } else {
-      alert("Please choose a photo.");
-      e.preventDefault();
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(fileURL);
+    await ref.doc(currentUser.email).update({ avatar: fileURL });
+    getUserDetails();
   };
 
-  const removeProfilePicture = (e) => {
-    if (userDetails[0].avatar !== null) {
-      ref.doc(currentUser.email).update({ avatar: null });
-      getUserDetails();
-      setShowDeleteModal(false);
-      e.preventDefault();
-    } else {
-      alert("You currently do not have a profile picture.");
-      setShowDeleteModal(false);
-      e.preventDefault();
-    }
+  const removeProfilePicture = async () => {
+    await ref.doc(currentUser.email).update({ avatar: null });
+    getUserDetails();
+    setShowDeleteModal(false);
   };
 
   // handles the users uploaded image
   const handleFileChange = async (e) => {
+    setFileName("");
     const file = e.target.files[0];
-    const fileNameArray = file?.name.split(".");
-    var fileNameForDB = "";
-    for (var i = 0; i < fileNameArray.length - 1; i++) fileNameForDB += fileNameArray[i];
-    fileNameForDB += Date.now().toString() + "." + fileNameArray[fileNameArray.length - 1];
-
     setFileName(e.target.files[0].name);
+    let i = file.name.indexOf(".");
+    console.log(i);
+    let s = file.name.substring(i + 1, file.name.length);
+    console.log(s);
+    if (s != "jpg" && s !== "png") {
+      return setErrorMsg("Only png and jpg files are supported.");
+    }
+    setErrorMsg("");
     const storageRef = app.storage().ref(); //firebase storage ref
-    const fileRef = storageRef.child(fileNameForDB);
+    const fileRef = storageRef.child(file.name);
     await fileRef.put(file); // put file in storage
     setFileURL(await fileRef.getDownloadURL());
   };
@@ -94,14 +91,21 @@ export default function Profile() {
       <div className="w-100" style={{ maxWidth: "450px" }}>
         <div>
           {userDetails.map((user) => (
-            <div className="card" key={user.email}>
+            <div className="card mb-3" key={user.email}>
               <div className="card-body">
                 <h3 className="card-title text-center mb-3">Profile</h3>
                 <div className="d-flex justify-content-center mb-3">
                   {user.avatar === null ? (
                     <img className="rounded-circle" src="defaultuser.png" width="150" height="150" />
                   ) : (
-                    <img className="rounded-circle" src={user.avatar} width="150" height="150" />
+                    <div style={{ position: "relative" }}>
+                      <img className="rounded-circle" src={user.avatar} width="150" height="150" />
+                      <div
+                        style={{ position: "absolute", top: "0", right: "0", cursor: "pointer" }}
+                        onClick={() => setShowDeleteModal(true)}>
+                        <BsTrash />
+                      </div>
+                    </div>
                   )}
                 </div>
                 <div className="mb-3">
@@ -114,6 +118,7 @@ export default function Profile() {
                         name="image"
                         onChange={handleFileChange}
                       />
+
                       {fileName ? (
                         <label className="custom-file-label" htmlFor="file-upload">
                           {fileName}
@@ -124,6 +129,11 @@ export default function Profile() {
                         </label>
                       )}
                     </div>
+                    {errorMsg && (
+                      <div className="alert alert-danger" role="alert">
+                        {errorMsg}
+                      </div>
+                    )}
                     <div>
                       <button type="submit" className="btn btn-warning w-100">
                         Upload
@@ -131,20 +141,16 @@ export default function Profile() {
                     </div>
                   </form>
                 </div>
-                <div>
-                  <button className="btn btn-danger w-100 mb-3" onClick={() => setShowDeleteModal(true)}>
-                    Remove Profile Picture
-                  </button>
-                </div>
+
                 <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                   <Modal.Header>
-                    <Modal.Title>Are you sure you want to delete your current profile picture?</Modal.Title>
+                    <Modal.Title>Are you sure you want to delete your profile picture?</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <button className="btn btn-secondary btn-md" onClick={() => setShowDeleteModal(false)}>
                       Cancel
                     </button>
-                    <button className="btn btn-danger btn-md float-right" onClick={(e) => removeProfilePicture(e)}>
+                    <button className="btn btn-danger btn-md float-right" onClick={removeProfilePicture}>
                       Yes
                     </button>
                   </Modal.Body>
