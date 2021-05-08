@@ -147,7 +147,7 @@ export default function ShareRecipeModal(props) {
                 className="btn btn-primary w-100"
                 onClick={() => {
                   handlePostClick(postMessage, recipe.id, recipe.image, recipe.title);
-                  props.handleSaveClick();
+                  if(props.handleSaveClick) props.handleSaveClick();
                   props.handleClose();
                 }}>
                 Post
