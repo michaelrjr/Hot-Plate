@@ -9,6 +9,8 @@ export default function DisplayUserCreatedRecipe(props) {
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [show, setShow] = useState(false);
+  const [recipeSaved, setRecipeSaved] = useState(false);
+  const [recipeShared, setRecipeShared] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -57,16 +59,21 @@ export default function DisplayUserCreatedRecipe(props) {
                   <div className="d-inline mr-1">
                     <AiOutlineShareAlt size={20} />
                   </div>
-                  <div className="d-inline">Share</div>
+                  <div className="d-inline">
+                    {recipeShared ? "Shared" : "Share"}
+                    </div>
                 </button>
               </div>
               <div className="col">
-                <button className="btn btn-success w-100"  onClick={() => props.handleSaveClick()}>
+                <button className="btn btn-success w-100"  onClick={() => {
+                  props.handleSaveClick();
+                  setRecipeSaved(true);
+                  }}>
                   <div className="d-inline mr-1">
                     <BiSave size={20} />
                   </div>
                   <div className="d-inline">
-                    Save
+                    {recipeSaved ? "Saved" : "Save"}
                   </div>
                 </button>
               </div>
@@ -80,6 +87,8 @@ export default function DisplayUserCreatedRecipe(props) {
           userCreatedRecipe={props.userCreatedRecipe}
           handleClose={handleClose}
           handleSaveClick={props.handleSaveClick}
+          setRecipeSaved={setRecipeSaved}
+          setRecipeShared={setRecipeShared}
         />
       </div>
     </div>

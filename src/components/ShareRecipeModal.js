@@ -61,7 +61,8 @@ export default function ShareRecipeModal(props) {
             console.error("Error retrieving added data from firestore:", error);
           })
         }
-
+        if(props.setRecipeSaved!==undefined) props.setRecipeSaved(true);
+        if(props.setRecipeShared!==undefined) props.setRecipeShared(true);
         alert("Post successful.");
       })
       .catch((error) => {
