@@ -50,7 +50,17 @@ export default function DisplayChat(props) {
               {message.to === props.currentUser.email && message.from === props.otherUserEmail && (
                 <div className="d-flex flex-column mt-1">
                   <div className="other-user-msg">
-                    {message.message}
+                    {MessageHasLink(message.message)===false
+                        ?
+                          message.message
+                        :
+                          <div>
+                            I thought you might like this recipe:<br />
+                            <Link to="/moreinfo"><button className="" onClick={() => setRecipeID(message.message.substring(29))}>
+                              View Recipe
+                            </button></Link>
+                          </div>
+                      }
                     </div>
                   <small className="align-self-start message-timestamp">
                     {new Date(message.timestamp?.toDate()).toLocaleString()}
