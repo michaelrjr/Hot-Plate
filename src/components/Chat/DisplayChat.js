@@ -74,7 +74,7 @@ export default function DisplayChat(props) {
                     <RiDeleteBin7Line
                       className="delete"
                       onClick={() =>
-                        props.handleDeleteMessageClick(message.message)
+                        props.handleDeleteMessageClick(message.commentID)
                       }
                     />
                   </div>

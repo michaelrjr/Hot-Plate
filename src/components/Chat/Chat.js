@@ -4,6 +4,7 @@ import app from "../../firebase";
 import { firebase } from "@firebase/app";
 import DisplayOnlineUsers from "./DisplayOnlineUsers";
 import DisplayChat from "./DisplayChat";
+import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
 import { propTypes } from "react-bootstrap/esm/Image";
 
@@ -113,6 +114,8 @@ export default function Chat() {
   };
 
   const handleSendMessage = (event) => {
+
+    const commentID = uuidv4();
     event.preventDefault();
     db.doc(`${otherUserEmail}`).collection("messages").add({
       message: message,
@@ -120,6 +123,7 @@ export default function Chat() {
       to: otherUserEmail,
       read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      commentID: commentID,
     });
     db.doc(`${currentUser.email}`).collection("messages").add({
       message: message,
@@ -127,6 +131,7 @@ export default function Chat() {
       to: otherUserEmail,
       read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      commentID: commentID,
     });
 
     setMessage("");
@@ -161,11 +166,10 @@ export default function Chat() {
   };
 
   //handle delete
-  const handleDeleteMessageClick = (msg) => {
-    console.log(msg);
+  const handleDeleteMessageClick = (id) => {
     db.doc(`${currentUser.email}`)
       .collection("messages")
-      .where("message", "==", msg)
+      .where("commentID", "==", id)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -174,7 +178,7 @@ export default function Chat() {
       });
     db.doc(`${otherUserEmail}`)
       .collection("messages")
-      .where("message", "==", msg)
+      .where("commentID", "==", id)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
