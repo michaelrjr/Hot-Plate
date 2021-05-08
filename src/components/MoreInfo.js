@@ -7,6 +7,7 @@ import ShareDMModal from "./ShareDMModal";
 import app from "../firebase";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import LoadingFullScreen from "./LoadingFullScreen";
 
 export default function MoreInfo() {
   const userCreatedRecipesRef = app.firestore().collection("userCreatedRecipes");
@@ -181,14 +182,7 @@ export default function MoreInfo() {
 
   if (isLoading) {
     return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
+      <LoadingFullScreen />
     );
   }
 
