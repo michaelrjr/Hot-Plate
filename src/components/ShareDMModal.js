@@ -8,12 +8,6 @@ import app from "../firebase";
 
 export default function ShareRecipeModal(props) {
   const {currentUser} = useAuth();
-  const [showIngredients, setShowIngredients] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(false);
-  const [showPostButton, setShowPostButton] = useState(true);
-  const [postMessage, setPostMessage] = useState("");
-  const feedCollection = app.firestore().collection("feed");
-  const [userData, setUserData] = useState(null);
   var isMounted=false;
   const conversationsColl = app.firestore().collection("conversations");
   const usersColl = app.firestore().collection("Users");
@@ -25,7 +19,6 @@ export default function ShareRecipeModal(props) {
     isMounted=true;
     const theMessage = "linkTo:moreInfo,withRecipeID:"+props.recipeID;
     setMessage(theMessage);
-    getUserData();
     const unsub1 = getMembers();
     return () => {
         isMounted=false;
@@ -33,11 +26,6 @@ export default function ShareRecipeModal(props) {
     }
   }, []);
   
-  function getUserData(){
-    usersColl.doc(currentUser.email).get().then((doc) => {
-      if(isMounted) setUserData(doc.data());
-    });
-  }
   
   const getMembers = () => {
     return usersColl.where("email", "!=", null).onSnapshot((querySnapshot) => {
@@ -51,8 +39,6 @@ export default function ShareRecipeModal(props) {
   };
 
   const handleSendDMClick = (otherUserEmail) => {
-    console.log("handleSendDMClick: recipeID: "+props.recipeID);
-    console.log("handleSendDMClick: otheremail: "+otherUserEmail);
     conversationsColl.doc(otherUserEmail).collection("messages").add({
       message: message,
       from: currentUser.email,
@@ -62,7 +48,6 @@ export default function ShareRecipeModal(props) {
     }).then((docRef) =>{
         console.log("Document written with ID: ",docRef.id);
     });
-    console.log("handleSendDMClick: currentemail: "+currentUser.email);
     conversationsColl.doc(currentUser.email).collection("messages").add({
       message: message,
       from: currentUser.email,
@@ -75,8 +60,7 @@ export default function ShareRecipeModal(props) {
 }
 
   return (
-    <div> {
-        console.log("currentUser:",currentUser)}
+    <div>
         <Modal show={props.showDMModal} onHide={props.handleDMShowShare} dialogClassName="modal-90w">
         <Modal.Header closeButton>
             <Modal.Title>Select a User</Modal.Title>

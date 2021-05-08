@@ -124,7 +124,7 @@ a:hover {
   font-size: xx-small;
 } 
 
-.online-user :hover{
+.chatCont .online-user :hover{
   cursor: pointer;
   background-color: #ff5864;
   color: rgb(255, 255, 255);

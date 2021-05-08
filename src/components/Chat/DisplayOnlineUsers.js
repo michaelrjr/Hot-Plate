@@ -36,13 +36,10 @@ export default function DisplayOnlineUsers(props) {
             key={user.uuid}
             className="card online-user"
             onClick={() =>
-              {
-              if(props.shareDMModalOrigin) props.handleSendDMClick(user.email)
-              else props.handleStartChatClick(user.email, props.currentUser.email)
-              }
+              { if(props.shareDMModalOrigin!==true) props.handleStartChatClick(user.email, props.currentUser.email) }
             }>
             {user.email !== props.currentUser.email && (
-              <div key={user.uuid} className="row align-items-center">
+              <div key={"child"+user.uuid} className="row align-items-center">
                 <div className="col ml-4">
                   <img
                     className="p-1 rounded-circle"
@@ -80,7 +77,7 @@ export default function DisplayOnlineUsers(props) {
                         props.handleSendDMClick(user.email)
                       }}
                     >
-                      Send Recipe to {user.firstName}
+                      Send to {user.firstName}
                     </button>
                   :
                    null
