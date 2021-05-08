@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import NavBar2 from "./NavBar2";
 import { useAuth } from "../contexts/AuthContext";
@@ -18,6 +18,7 @@ export default function NewNavBar() {
   const history = useHistory();
   //database ref
   const ref = app.firestore().collection("Users");
+  const [expanded, setExpanded] = useState(false);
 
   const width = window.screen.width;
 
@@ -26,52 +27,52 @@ export default function NewNavBar() {
       {currentUser === null ? (
         <NavBar2 />
       ) : (
-        <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
+        <Navbar collapseOnSelect expand="lg" bg="light" fixed="top" expanded={expanded}>
           <Navbar.Brand className="mr-5">
             <Link to="/">
               <img src="hotPlate_Logo_Full_gradient_fullcol_240x90.svg" width="150" alt="logo" />
             </Link>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={() => setExpanded(expanded ? false : "expanded")} />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Link className="link mr-5" to="/feed">
+              <Link className="link mr-5" to="/feed" onClick={() => setExpanded(false)} >
                 <div>
                   <AiOutlineHome size={20} />
                 </div>
                 <div>Feed</div>
               </Link>
-              <Link className="link mr-5" to="/recipesearch">
+              <Link className="link mr-5" to="/recipesearch" onClick={() => setExpanded(false)}>
                 <div>
                   <BiFoodMenu size={20} />
                 </div>
                 <div>Food</div>
               </Link>
-              <Link className="link mr-5" to="/chat">
+              <Link className="link mr-5" to="/chat" onClick={() => setExpanded(false)}>
                 <div>
                   <BsChatDots size={20} />
                 </div>
                 <div>Chat</div>
               </Link>
-              <Link className="link mr-5" to="/profile">
+              <Link className="link mr-5" to="/profile" onClick={() => setExpanded(false)}>
                 <div>
                   <CgProfile size={20} />
                 </div>
                 <div>Profile</div>
               </Link>
-              <Link className="link mr-5" to="/createrecipe">
+              <Link className="link mr-5" to="/createrecipe" onClick={() => setExpanded(false)}>
                 <div>
                   <GrRestaurant size={20} />
                 </div>
                 <div>Create Recipe</div>
               </Link>
-              <Link className="link mr-5" to="/myrecipes">
+              <Link className="link mr-5" to="/myrecipes" onClick={() => setExpanded(false)}>
                 <div>
                   <RiRestaurantLine size={20} />
                 </div>
                 <div>My Favourites</div>
               </Link>
-              <Link className="link mr-5" to="/myrecipes2">
+              <Link className="link mr-5" to="/myrecipes2" onClick={() => setExpanded(false)}>
                 <div>
                   <RiRestaurantLine size={20} />
                 </div>
