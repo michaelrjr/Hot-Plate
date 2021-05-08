@@ -39,12 +39,14 @@ export default function ShareDMModal(props) {
   };
 
   const handleSendDMClick = (otherUserEmail) => {
+    const commentID = uuidv4();
     conversationsColl.doc(otherUserEmail).collection("messages").add({
       message: message,
       from: currentUser.email,
       to: otherUserEmail,
       read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      commentID: commentID,
     }).then((docRef) =>{
         console.log("Document written with ID: ",docRef.id);
     });
@@ -54,6 +56,7 @@ export default function ShareDMModal(props) {
       to: otherUserEmail,
       read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      commentID: commentID,
     }).then((docRef) =>{
         console.log("Document written with ID: ",docRef.id);
     });
