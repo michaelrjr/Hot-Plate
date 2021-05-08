@@ -62,6 +62,11 @@ export default function CommentBox(props) {
 
   return (
     <div className="commentBox">
+      <form onSubmit={() => {
+        handlePostComment(comment, postID, props.commentSectionID);
+        setComment("");
+        props.setShowCommentBox(false);
+      }}>
       <input
         type="text"
         placeholder="Enter comment"
@@ -70,7 +75,7 @@ export default function CommentBox(props) {
           handleCommentBoxChange
         }
       />
-      <button className="comment-btn btn-primary btn-sm" onClick={() => {
+      <button type="submit" className="comment-btn btn-primary btn-sm" onClick={() => {
         handlePostComment(comment, postID, props.commentSectionID);
         setComment("");
         props.setShowCommentBox(false);
@@ -83,6 +88,7 @@ export default function CommentBox(props) {
       }}>
         Cancel
       </button>
+      </form>
     </div>
   );
 }
