@@ -8,7 +8,7 @@ import { BsTrash } from "react-icons/bs";
 
 export default function Profile() {
   const [error, setError] = useState("");
-  const { currentUser } = useAuth();
+  const { currentUser} = useAuth();
   const [userDetails, setUserDetails] = useState([]);
   const [fileURL, setFileURL] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -171,7 +171,7 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <SignOut setError={setError} />
+                  <SignOut setError={setError}/>
                 </div>
                 <div>
                   <Link to="/update-profile">
