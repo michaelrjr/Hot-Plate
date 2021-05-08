@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { firebase } from "@firebase/app";
 import app from "../firebase";
 
-export default function ShareRecipeModal(props) {
+export default function ShareDMModal(props) {
   const {currentUser} = useAuth();
   var isMounted=false;
   const conversationsColl = app.firestore().collection("conversations");

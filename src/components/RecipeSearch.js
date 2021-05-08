@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import app from "../firebase";
+import LoadingFullScreen from "./LoadingFullScreen";
 
 export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);
@@ -144,14 +145,7 @@ export default function RecipeSearch() {
   // if the data is not yet fetched
   if (isFetched === false) {
     return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
+      <LoadingFullScreen />
     );
     // or if there is an error with the API request
   } else if (apiData.length < 1) {

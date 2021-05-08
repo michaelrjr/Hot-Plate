@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import app from "../firebase";
 import { firebase } from "@firebase/app";
 import DisplayPost from "./DisplayPost";
+import LoadingFullScreen from "./LoadingFullScreen";
 
 export default function Feed() {
   const [postArray, setPostArray] = useState([]);
@@ -25,14 +26,7 @@ export default function Feed() {
 
   if (isLoading) {
     return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
+      <LoadingFullScreen />
     );
   }
 
