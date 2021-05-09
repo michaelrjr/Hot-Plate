@@ -56,7 +56,6 @@ export function AuthProvider({ children }) {
 
   // so we can use handlePostClick anywhere in the app for sharing recipes
   const handlePostClick = (post, recipeID, image, title) => {
-    console.log("handlePostClick entered");
     recipeID = recipeID ? recipeID : null;
     image = image ? image : null;
     title = title ? title : null;

@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import app from "../../firebase";
-import RecipeSearch from "../Food/RecipeSearch";
+import RecipeSearch from "../food/RecipeSearch";
 
 function SignIn() {
   const [error, setError] = useState("");

@@ -60,6 +60,7 @@ export default function ShareDMModal(props) {
     }).then((docRef) =>{
         console.log("Document written with ID: ",docRef.id);
     });
+    alert("Recipe shared to "+otherUserEmail);
 }
 
   return (

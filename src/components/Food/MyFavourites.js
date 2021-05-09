@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import app from "../firebase";
+import app from "../../firebase";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { BsInfoSquare } from "react-icons/bs";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Modal } from "react-bootstrap";
-import LoadingFullScreen from "./LoadingFullScreen";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function MyFavourites() {
   const [recipes, setRecipes] = useState([]);
@@ -26,7 +26,6 @@ export default function MyFavourites() {
         tempArr.push(doc.data());
       });
       setRecipes(tempArr);
-      console.log(tempArr);
       setIsLoading(false);
     });
   };
