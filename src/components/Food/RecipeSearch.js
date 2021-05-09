@@ -22,6 +22,7 @@ export default function RecipeSearch() {
   const ref = app.firestore().collection("userAPIRecipes");
   const { currentUser } = useAuth();
   const [userDetails, setUserDetails] = useState({});
+  const [filtersCount, setFiltersCount] = useState(0);
 
   // call getRandomRecipes() when the page loads
   useEffect(() => {
@@ -34,14 +35,11 @@ export default function RecipeSearch() {
     let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=100&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
     try {
       const resp = await axios.get(API_URL);
-      // console.log(API_URL);
-      // console.log(await resp);
       setApiData(resp.data.recipes);
       setIsFetched(true);
     } catch (error) {
       setIsFetched(false);
       setErrorMsg(error);
-      // console.log(error);
     }
   };
   //get user details to know where to save the recipe on firestore
@@ -64,8 +62,6 @@ export default function RecipeSearch() {
     let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
     try {
       const resp = await axios.get(API_URL);
-      // console.log(API_URL);
-      // console.log(await resp);
       // if there are no results from filtered search
       if (resp.data.results.length < 1) {
         setErrorMsg("Sorry, no search results for those filters.."); // set the error message to be displayed
@@ -78,7 +74,6 @@ export default function RecipeSearch() {
     } catch (error) {
       setIsFetched(false);
       setErrorMsg(error);
-      console.log(error);
     }
     // removeFilters(); // set filters back to empty string after every filtered search
   };
@@ -126,6 +121,17 @@ export default function RecipeSearch() {
       setRecipeNum(recipeNum + 1);
     }
   };
+  
+  function countFilters(){
+    let count = 0;
+    count+= intolerance.length;
+    if(cuisine.length>0) {
+      count++;
+    }
+    if(mealType.length>0) count++;
+    if(diet.length>0) count++;
+    setFiltersCount(count);
+  }
 
   // some onChange handler functions for the the different form inputs
   const updateCuisine = (e) => setCuisine(e.target.value);
@@ -135,7 +141,6 @@ export default function RecipeSearch() {
     document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
   }
   const updateIntolerance = (added, value) => {
-    // console.log(intolerance);
     if (added) {
       setIntolerance((intolerance) => [...intolerance, value]);
     } else {
@@ -143,6 +148,7 @@ export default function RecipeSearch() {
       newAr.splice(intolerance.indexOf(value), 1);
       setIntolerance(newAr);
     }
+    // countFilters();
   };
   const updateMealType = (e) => setMealType(e.target.value);
 
@@ -153,6 +159,7 @@ export default function RecipeSearch() {
     setIntolerance([]);
     setMealType("");
     document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
+    countFilters();
   };
 
   // if the data is not yet fetched
@@ -189,6 +196,8 @@ export default function RecipeSearch() {
                   mealType={mealType}
                   intolerance={intolerance}
                   diet={diet}
+                  filtersCount={filtersCount}
+                  countFilters={countFilters}
                 />
               </div>
             </div>
@@ -263,6 +272,8 @@ export default function RecipeSearch() {
                   mealType={mealType}
                   intolerance={intolerance}
                   diet={diet}
+                  filtersCount={filtersCount}
+                  countFilters={countFilters}
                 />
               </div>
             </div>

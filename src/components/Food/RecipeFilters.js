@@ -33,8 +33,12 @@ export default function RecipeFilters(props) {
   return (
     <div>
       <button type="button" className="btn btn-info w-100" onClick={handleShowFilters}>
-         Recipe Filters
+         { (props.cuisine?.length>0 || props.diet?.length>0 || props.mealType?.length > 0 || props.intolerance.length>0) ?
+            "View/Edit Active Filters ("+props?.filtersCount+")"
+            : "Set Search Filters"
+         }
       </button>
+      {}
       <div>
         <Modal show={show} onHide={handleCloseFilters}>
           <Modal.Header closeButton>
@@ -183,20 +187,30 @@ export default function RecipeFilters(props) {
                     props.getFilteredRecipes();
                     setShowIntolerances(false);
                     setShow(false);
+                    props.countFilters();
                   }}>
                   Apply Filters
                 </button>
               </div>
               <div>
-                <button
-                  className="btn btn-warning w-100"
-                  disabled={!props.cuisine && !props.diet && !props.mealType && props.intolerance.length==0}
-                  onClick={() =>{
-                    props.removeFilters();
-                    // setShowIntolerances(false);
-                  }}>
-                  Remove Filters
-                </button>
+                { (props.cuisine?.length>0 || props.diet?.length>0 || props.mealType?.length > 0 || props.intolerance.length>0) ?
+                  <button
+                    className="btn btn-warning w-100"
+                    onClick={() =>{
+                      props.removeFilters();
+                    }}>
+                    Remove Filters
+                  </button>
+                :
+                  <button
+                    className="btn btn-secondary w-100"
+                    onClick={() =>{
+                      handleCloseFilters();
+                      setShowIntolerances(false);
+                    }}>
+                    Close
+                  </button>
+                }
               </div>
             </Modal.Footer>
         </Modal>
