@@ -40,7 +40,7 @@ export default function CommentBox(props) {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               })
               .then((docRef) => {
-                console.log("Document written with ID: ", docRef.id);
+                // console.log("Document written with ID: ", docRef.id);
               })
               .catch((error) => {
                 console.error("Error adding document: ", error);
@@ -61,7 +61,8 @@ export default function CommentBox(props) {
 
   return (
     <div className="commentBox">
-      <form onSubmit={() => {
+      <form onSubmit={(event) => {
+        event.preventDefault();
         handlePostComment(comment, postID, props.commentSectionID);
         setComment("");
         props.setShowCommentBox(false);
@@ -74,11 +75,7 @@ export default function CommentBox(props) {
           handleCommentBoxChange
         }
       />
-      <button type="submit" className="comment-btn btn-primary btn-sm" onClick={() => {
-        handlePostComment(comment, postID, props.commentSectionID);
-        setComment("");
-        props.setShowCommentBox(false);
-      }}>
+      <button type="submit" className="comment-btn btn-primary btn-sm" >
         Post
       </button>
       <button className="comment-btn btn-secondary btn-sm" onClick={() => {
