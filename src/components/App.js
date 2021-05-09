@@ -6,15 +6,15 @@ import UpdateProfile from "./auth/UpdateProfile";
 import { AuthProvider } from "../contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import MoreInfo from "./Food/MoreInfo";
+import MoreInfo from "./food/MoreInfo";
 import Feed from "./Feed/Feed";
 import NewNavBar from "./nav/NewNavBar";
 import Profile from "./profile/Profile";
-import RecipeSearch from "./Food/RecipeSearch";
+import RecipeSearch from "./food/RecipeSearch";
 import Chat from "./Chat/Chat";
 import CreateRecipe from "./create-recipe/CreateRecipe";
-import MyFavourites from "./MyFavourites";
-import MyRecipes from "./MyRecipes";
+import MyFavourites from "./food/MyFavourites";
+import MyRecipes from "./food/MyRecipes";
 //import food from "../../src/css/food_pattern_repeating.jpg";
 
 //style={{ maxWidth: "450px" }} for main div container
