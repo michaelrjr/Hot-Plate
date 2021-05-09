@@ -1,10 +1,10 @@
 import React, {useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import { firebase } from "@firebase/app";
-import app from "../firebase";
+import app from "../../firebase";
 
-export default function FeedInputBox(props) {
+export default function FeedPostInputBox(props) {
   const [postDetails, setPostDetails] = useState(0);
   const feedCollection = app.firestore().collection("feed");
   const [userData, setUserData] = useState(null);

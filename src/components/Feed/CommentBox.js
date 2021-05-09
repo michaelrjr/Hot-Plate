@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { firebase } from "@firebase/app";
-import app from "../firebase";
-import { useAuth } from "../contexts/AuthContext";
+import app from "../../firebase";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 export default function CommentBox(props) {
   const postID = props.postID;
-  // const {handlePostComment } = useAuth();
   const {currentUser} = useAuth();
   const [comment, setComment] = useState("");
   const [userData, setUserData] = useState(null);
