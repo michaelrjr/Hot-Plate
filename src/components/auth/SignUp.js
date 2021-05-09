@@ -51,7 +51,7 @@ function SignUp() {
 
       // create user document in user collection when sign up is clicked
       ref.doc(values.email).set({
-        uid: null,
+        uuid: uuidv4(),
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
