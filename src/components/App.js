@@ -15,6 +15,8 @@ import Chat from "./Chat/Chat";
 import CreateRecipe from "./create-recipe/CreateRecipe";
 import MyFavourites from "./food/MyFavourites";
 import MyRecipes from "./food/MyRecipes";
+import DashboardNotSignedIn from "./DashboardNotSignedIn";
+
 //import food from "../../src/css/food_pattern_repeating.jpg";
 
 //style={{ maxWidth: "450px" }} for main div container
@@ -42,7 +44,7 @@ function App() {
             <Route path="/forgot-password" component={ForgotPassword} />
             <PrivateRoute path="/feed" component={Feed} />
             <PrivateRoute path="/recipe-search" component={RecipeSearch} />
-            <Route exact path="/" component={SignIn} />
+            <Route exact path="/" component={DashboardNotSignedIn} />
           </Switch>
         </Router>
       </div>
