@@ -80,12 +80,7 @@ export default function DisplayOnlineUsers(props) {
                       Send to {user.firstName}
                     </button>
                   :
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={() => props?.handleStartChatClick(user.email, props.currentUser.email)}>
-                      Start Chat
-                    </button>
+                   null
                   }
                 </div>
               </div>

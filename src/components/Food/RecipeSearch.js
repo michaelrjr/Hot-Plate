@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import RecipeFilters from "./RecipeFilters";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import app from "../firebase";
-import LoadingFullScreen from "./LoadingFullScreen";
+import app from "../../firebase";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);

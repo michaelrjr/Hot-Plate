@@ -117,7 +117,7 @@ export default function Chat() {
 
     const commentID = uuidv4();
     event.preventDefault();
-    db.doc(`${otherUserEmail}`).collection("messages").add({
+    db.doc(otherUserEmail).collection("messages").add({
       message: message,
       from: currentUser.email,
       to: otherUserEmail,
@@ -125,7 +125,7 @@ export default function Chat() {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       commentID: commentID,
     });
-    db.doc(`${currentUser.email}`).collection("messages").add({
+    db.doc(currentUser.email).collection("messages").add({
       message: message,
       from: currentUser.email,
       to: otherUserEmail,
