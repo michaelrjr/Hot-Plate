@@ -34,11 +34,14 @@ export default function RecipeSearch() {
     let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=100&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
     try {
       const resp = await axios.get(API_URL);
+      // console.log(API_URL);
+      // console.log(await resp);
       setApiData(resp.data.recipes);
       setIsFetched(true);
     } catch (error) {
       setIsFetched(false);
-      setError(error);
+      setErrorMsg(error);
+      // console.log(error);
     }
   };
   //get user details to know where to save the recipe on firestore
@@ -61,6 +64,8 @@ export default function RecipeSearch() {
     let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
     try {
       const resp = await axios.get(API_URL);
+      // console.log(API_URL);
+      // console.log(await resp);
       // if there are no results from filtered search
       if (resp.data.results.length < 1) {
         setErrorMsg("Sorry, no search results for those filters.."); // set the error message to be displayed
@@ -72,9 +77,10 @@ export default function RecipeSearch() {
       setIsFetched(true);
     } catch (error) {
       setIsFetched(false);
-      setError(error);
+      setErrorMsg(error);
+      console.log(error);
     }
-    removeFilters(); // set filters back to empty string after every filtered search
+    // removeFilters(); // set filters back to empty string after every filtered search
   };
 
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
@@ -124,8 +130,12 @@ export default function RecipeSearch() {
   // some onChange handler functions for the the different form inputs
   const updateCuisine = (e) => setCuisine(e.target.value);
   const updateDiet = (e) => setDiet(e.target.value);
-  const resetIntolerance = () => setIntolerance([]);
+  const resetIntolerance = () => {
+    setIntolerance([]);
+    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
+  }
   const updateIntolerance = (added, value) => {
+    // console.log(intolerance);
     if (added) {
       setIntolerance((intolerance) => [...intolerance, value]);
     } else {
@@ -142,6 +152,7 @@ export default function RecipeSearch() {
     setDiet("");
     setIntolerance([]);
     setMealType("");
+    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
   };
 
   // if the data is not yet fetched

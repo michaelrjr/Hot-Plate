@@ -35,6 +35,7 @@ export default function MoreInfo() {
   let mounted = true;
 
   useEffect(() => {
+    console.log("Loaded moreInfo");
     getUserDetails();
     if (recipeID.toString().substring(0, 3) == "CR-") {
       setSpoonacularRecipe(false);
@@ -201,6 +202,7 @@ export default function MoreInfo() {
 
     return (
       <div className="container">
+        {console.log("recipeID: "+recipeID)}
         <div className="row">
           <div className="col-lg-6 col-sm-12">
             {recipeInfoArray.map((recipe) => (
