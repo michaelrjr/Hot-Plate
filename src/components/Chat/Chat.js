@@ -147,12 +147,6 @@ export default function Chat() {
       });
   };
 
-//   function scrollToBottomElement(){
-//     if(bottomElement.current){
-//         bottomElement.current.scrollTop = bottomElement.current.scrollHeight;
-//     }
-// }
-
   //update read status to true when start chat button is clicked
   const setMessageToRead = (email) => {
     return db.doc(`${email}`)
@@ -167,7 +161,7 @@ export default function Chat() {
 
   //handle delete
   const handleDeleteMessageClick = (id) => {
-    db.doc(`${currentUser.email}`)
+    db.doc(currentUser.email)
       .collection("messages")
       .where("commentID", "==", id)
       .get()
@@ -176,7 +170,7 @@ export default function Chat() {
           doc.ref.delete();
         });
       });
-    db.doc(`${otherUserEmail}`)
+    db.doc(otherUserEmail)
       .collection("messages")
       .where("commentID", "==", id)
       .get()
