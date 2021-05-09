@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import FeedInputBox from "./FeedInputBox";
-import { useAuth } from "../contexts/AuthContext";
-import app from "../firebase";
-import { firebase } from "@firebase/app";
-import DisplayPost from "./DisplayPost";
-import LoadingFullScreen from "./LoadingFullScreen";
+import FeedPostInputBox from "./FeedPostInputBox";
+import app from "../../firebase";
+import DisplayEachPost from "./DisplayEachPost";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function Feed() {
   const [postArray, setPostArray] = useState([]);
@@ -34,9 +32,23 @@ export default function Feed() {
     <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
       <div className="w-100" style={{ maxWidth: "450px" }}>
         <div>
-          <FeedInputBox />
+          <FeedPostInputBox />
           <br />
-          <DisplayPost postArray={postArray} />
+          {postArray.map((post) => (
+            <DisplayEachPost
+              key={post.postID}
+              post={post.post}
+              email={post.email}
+              timestamp={post.timestamp}
+              image={post.image}
+              recipeTitle={post.recipeTitle}
+              recipeID={post.recipeID}
+              postID={post.postID}
+              childCommentSectionID={post.childCommentSectionID}
+              authorFName={post.authorFName}
+              authorSName={post.authorSName}
+            />
+          ))}
         </div>
       </div>
     </div>

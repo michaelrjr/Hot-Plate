@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import RecipeFilters from "./RecipeFilters";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import app from "../firebase";
-import LoadingFullScreen from "./LoadingFullScreen";
+import app from "../../firebase";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function RecipeSearch() {
   const [apiData, setApiData] = useState([]);
@@ -43,7 +43,9 @@ export default function RecipeSearch() {
   };
   //get user details to know where to save the recipe on firestore
   const getUserDetails = () => {
-    app.firestore().collection("Users")
+    app
+      .firestore()
+      .collection("Users")
       .doc(currentUser.email)
       .get()
       .then((doc) => {
@@ -57,7 +59,6 @@ export default function RecipeSearch() {
   // this function requests filtered recipes from spoonacular
   const getFilteredRecipes = async () => {
     let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
-    // console.log(API_URL);
     try {
       const resp = await axios.get(API_URL);
       // if there are no results from filtered search
@@ -67,7 +68,6 @@ export default function RecipeSearch() {
         // otherwise
       } else {
         setApiData(resp.data.results);
-        console.log("filtered recipes", resp.data.results);
       }
       setIsFetched(true);
     } catch (error) {
@@ -85,24 +85,26 @@ export default function RecipeSearch() {
     });
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
-      apiref.doc(id.toString()).get().then((docSnapshot) => {
-        if (docSnapshot.exists){
-          alert("Recipe already saved!");
-          nextRecipe();
-        } 
-        else {
-          apiref.doc(id.toString()).set({
-            id: id,
-            title: title,
-            image: image,
-            ingredients: ingred,
-            instructions: instruct,
-            fromAPI: true,
-          });
-          alert("Saved to My Recipes");
-          nextRecipe();
-        }
-      });
+      apiref
+        .doc(id.toString())
+        .get()
+        .then((docSnapshot) => {
+          if (docSnapshot.exists) {
+            alert("Recipe already saved!");
+            nextRecipe();
+          } else {
+            apiref.doc(id.toString()).set({
+              id: id,
+              title: title,
+              image: image,
+              ingredients: ingred,
+              instructions: instruct,
+              fromAPI: true,
+            });
+            alert("Saved to My Recipes");
+            nextRecipe();
+          }
+        });
     } else {
       alert("Please Sign-in to start saving recipes.");
     }
@@ -144,9 +146,7 @@ export default function RecipeSearch() {
 
   // if the data is not yet fetched
   if (isFetched === false) {
-    return (
-      <LoadingFullScreen />
-    );
+    return <LoadingFullScreen />;
     // or if there is an error with the API request
   } else if (apiData.length < 1) {
     return (
@@ -224,12 +224,13 @@ export default function RecipeSearch() {
                       apiData[recipeNum].image,
                       apiData[recipeNum].extendedIngredients,
                       apiData[recipeNum].analyzedInstructions
-                    )}>
+                    )
+                  }>
                   Save
                 </button>
               </div>
               <div>
-                <Link to="/moreinfo">
+                <Link to="/more-info">
                   <button
                     type="button"
                     className="btn btn-warning w-100 mb-3"

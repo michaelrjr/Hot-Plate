@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+
 function ForgotPassword() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -68,11 +69,11 @@ function ForgotPassword() {
                 </button>
               </div>
               <div className="w-100 text-center">
-                <Link to="/signIn">Sign in</Link>
+                <Link to="/sign-in">Sign in</Link>
               </div>
               <div className="w-100 text-center">
                 <p>
-                  Don't have an account? <Link to="/signUp">Sign up</Link>.
+                  Don't have an account? <Link to="/sign-up">Sign up</Link>.
                 </p>
               </div>
             </form>

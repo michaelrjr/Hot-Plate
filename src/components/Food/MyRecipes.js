@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import app from "../firebase";
+import app from "../../firebase";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { BsInfoSquare } from "react-icons/bs";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Modal } from "react-bootstrap";
+import LoadingFullScreen from "../LoadingFullScreen";
 
-
-export default function MyRecipes2() {
+export default function MyRecipes() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
   const userCreatedRecipesRef = app.firestore().collection("userCreatedRecipes");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [recipeToDelete, setRecipeToDelete] = useState("");
-
 
   useEffect(() => {
     getUserCreatedRecipes();
@@ -30,33 +29,23 @@ export default function MyRecipes2() {
           tempArr.push(doc.data());
         });
         setRecipes(tempArr);
-        console.log(tempArr);
         setIsLoading(false);
       });
   };
 
   const removeCustomRecipe = (id) => {
-    userCreatedRecipesRef.doc(id).delete()
-    .then(() => {
-    getUserCreatedRecipes();
-    setShowDeleteModal(false);
-    })
+    userCreatedRecipesRef
+      .doc(id)
+      .delete()
+      .then(() => {
+        getUserCreatedRecipes();
+        setShowDeleteModal(false);
+      });
   };
 
   if (isLoading) {
-    return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
-    );
-  }
-
-  else if (!isLoading && recipes.length === 0) {
+    return <LoadingFullScreen />;
+  } else if (!isLoading && recipes.length === 0) {
     return (
       <div className="container">
         <div className="alert alert-warning" role="alert">
@@ -102,7 +91,7 @@ export default function MyRecipes2() {
                 </div>
                 <div className="row">
                   <div className="col">
-                    <Link to="/moreinfo">
+                    <Link to="/more-info">
                       <button className="btn btn-success w-100" onClick={() => setRecipeID(recipe.id)}>
                         <div className="d-inline mr-1">
                           <BsInfoSquare size={20} />

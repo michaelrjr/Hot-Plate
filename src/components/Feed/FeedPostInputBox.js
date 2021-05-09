@@ -1,10 +1,10 @@
 import React, {useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import { firebase } from "@firebase/app";
-import app from "../firebase";
+import app from "../../firebase";
 
-export default function FeedInputBox(props) {
+export default function FeedPostInputBox(props) {
   const [postDetails, setPostDetails] = useState(0);
   const feedCollection = app.firestore().collection("feed");
   const [userData, setUserData] = useState(null);
@@ -42,16 +42,16 @@ export default function FeedInputBox(props) {
         authorSName: userData.lastName
       })
       .then((docRef) => {
-        if(docRef) console.log("Document written with ID: ", docRef.id);
-        else{
-          const tempArr = [];
-          feedCollection.doc(thisPostID).get().then((doc) => {
-            tempArr.push(doc.data());
-            console.log("Document written, details:", tempArr);
-          }).catch((error) => {
-            console.error("Error retrieving added data from firestore:", error);
-          })
-        }
+        // if(docRef) console.log("Document written with ID: ", docRef.id);
+        // else{
+        //   const tempArr = [];
+        //   feedCollection.doc(thisPostID).get().then((doc) => {
+        //     tempArr.push(doc.data());
+        //     console.log("Document written, details:", tempArr);
+        //   }).catch((error) => {
+        //     console.error("Error retrieving added data from firestore:", error);
+        //   })
+        // }
         alert("Post successful.")
       })
       .catch((error) => {

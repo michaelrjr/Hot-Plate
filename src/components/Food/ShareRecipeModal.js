@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import { firebase } from "@firebase/app";
-import app from "../firebase";
+import app from "../../firebase";
 
 export default function ShareRecipeModal(props) {
   const {currentUser} = useAuth();

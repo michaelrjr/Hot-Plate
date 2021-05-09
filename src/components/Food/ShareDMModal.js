@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
-import DisplayOnlineUsers from "./Chat/DisplayOnlineUsers";
+import { useAuth } from "../../contexts/AuthContext";
+import DisplayOnlineUsers from "../Chat/DisplayOnlineUsers";
 import { v4 as uuidv4 } from "uuid";
 import { firebase } from "@firebase/app";
-import app from "../firebase";
+import app from "../../firebase";
 
 export default function ShareDMModal(props) {
   const {currentUser} = useAuth();
@@ -60,6 +60,7 @@ export default function ShareDMModal(props) {
     }).then((docRef) =>{
         console.log("Document written with ID: ",docRef.id);
     });
+    alert("Recipe shared to "+otherUserEmail);
 }
 
   return (

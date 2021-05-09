@@ -1,56 +1,57 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-function UpdateProfile() {
+import app from "../../firebase";
+import RecipeSearch from "../food/RecipeSearch";
+
+function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { currentUser, updateEmail, updatePassword } = useAuth();
+  const { signIn, currentUser } = useAuth();
   const history = useHistory();
+  // db ref
+  const ref = app.firestore().collection("Users");
 
   const formik = useFormik({
     initialValues: {
-      email: currentUser.email,
+      email: "",
       password: "",
-      confirmPassword: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string().min(8, "Password must be at least 8 characters"),
-      confirmPassword: Yup.string().when("password", {
-        is: (password) => (password && password.length > 0 ? true : false),
-        then: Yup.string().oneOf([Yup.ref("password")], "Passwords do not match"),
-      }),
+      password: Yup.string().min(8, "Password must be at least 8 characters").required("Required"),
     }),
     onSubmit: async (values) => {
-      const promises = [];
-      setError("");
-      setLoading(true);
-      if (values.email !== currentUser.email) {
-        promises.push(updateEmail(values.email));
+      try {
+        setError("");
+        // sign a user in with email and password
+        await signIn(values.email, values.password);
+        await ref.doc(values.email).update({ online: true });
+        history.push("/recipe-search");
+      } catch {
+        setError("incorrect email or password");
       }
-      if (values.password) {
-        promises.push(updatePassword(values.password));
-      }
-      Promise.all(promises)
-        .then(() => {
-          history.push("/profile");
-        })
-        .catch(() => {
-          setError("Erro, failed to update account. Please try again.");
-        })
-        .finally(() => {
-          setLoading(false);
-        });
     },
   });
+
+  /* 
+   <div>
+      {currentUser !== null ? (
+        <RecipeSearch />
+      ) : (
+
+         )}
+    </div>
+  */
+
   return (
     <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
       <div className="w-100" style={{ maxWidth: "450px" }}>
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title text-center mb-4">Update Profile</h3>
+            <h3 className="card-title text-center mb-3">Sign In</h3>
             <form onSubmit={formik.handleSubmit}>
               {error && (
                 <div className="alert alert-danger" role="alert">
@@ -75,54 +76,36 @@ function UpdateProfile() {
                 ) : null}
               </div>
               <div className="mb-3">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="loginPassword">Password</label>
                 <input
                   className={`${formik.touched.password && formik.errors.password && "form-control is-invalid"} ${
                     formik.touched.password && !formik.errors.password ? "form-control is-valid" : "form-control"
                   }`}
                   type="password"
-                  placeholder="Leave blank to keep the same password"
+                  placeholder="Enter password"
                   id="password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.password}
                 />
+                {/* {console.log(formik.values.password)} */}
                 {formik.touched.password && formik.errors.password ? (
                   <div className="invalid-feedback">{formik.errors.password}</div>
                 ) : null}
               </div>
               <div className="mb-3">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                  className={`${
-                    formik.touched.confirmPassword && formik.errors.confirmPassword && "form-control is-invalid"
-                  } ${
-                    formik.touched.confirmPassword && !formik.errors.confirmPassword
-                      ? "form-control is-valid"
-                      : "form-control"
-                  }`}
-                  type="password"
-                  placeholder="Leave blank to keep the same password"
-                  id="confirmPassword"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.confirmPassword}
-                />
-                {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                  <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
-                ) : null}
-              </div>
-              <div className="mb-3">
                 <button type="submit" className="btn btn-success w-100" disabled={loading}>
-                  Update
+                  Sign in
                 </button>
               </div>
-              <div>
-                <Link to="/profile">
-                  <button className="btn btn-danger w-100">Cancel</button>
-                </Link>
-              </div>
             </form>
+            <div className="w-100 text-center">
+              <Link to="/forgot-password">Forgot Password?</Link>
+            </div>
+            <div className="w-100 text-center">
+              <p>
+                Don't have an account? <Link to="/sign-up">Sign up</Link>.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -130,4 +113,4 @@ function UpdateProfile() {
   );
 }
 
-export default UpdateProfile;
+export default SignIn;

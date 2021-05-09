@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
-import { BsInfoSquare } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
-import ShareRecipeModal from "./ShareRecipeModal";
-import { Modal } from "react-bootstrap";
+import ShareRecipeModal from "../food/ShareRecipeModal";
 
 export default function DisplayUserCreatedRecipe(props) {
   const [showIngredients, setShowIngredients] = useState(false);
@@ -26,9 +24,7 @@ export default function DisplayUserCreatedRecipe(props) {
             </div>
             <div className="mb-3">{recipe.description}</div>
             <div className="mb-3">
-              <button
-                className="btn btn-warning w-100"
-                onClick={() => setShowIngredients(!showIngredients)}>
+              <button className="btn btn-warning w-100" onClick={() => setShowIngredients(!showIngredients)}>
                 Ingredients
               </button>
               {showIngredients && (
@@ -40,9 +36,7 @@ export default function DisplayUserCreatedRecipe(props) {
               )}
             </div>
             <div className="mb-3">
-              <button
-                className="btn btn-danger w-100"
-                onClick={() => setShowInstructions(!showInstructions)}>
+              <button className="btn btn-danger w-100" onClick={() => setShowInstructions(!showInstructions)}>
                 Instructions
               </button>
               {showInstructions && (
@@ -59,22 +53,20 @@ export default function DisplayUserCreatedRecipe(props) {
                   <div className="d-inline mr-1">
                     <AiOutlineShareAlt size={20} />
                   </div>
-                  <div className="d-inline">
-                    {recipeShared ? "Shared" : "Share"}
-                    </div>
+                  <div className="d-inline">{recipeShared ? "Shared" : "Share"}</div>
                 </button>
               </div>
               <div className="col">
-                <button className="btn btn-success w-100"  onClick={() => {
-                  props.handleSaveClick();
-                  setRecipeSaved(true);
+                <button
+                  className="btn btn-success w-100"
+                  onClick={() => {
+                    props.handleSaveClick();
+                    setRecipeSaved(true);
                   }}>
                   <div className="d-inline mr-1">
                     <BiSave size={20} />
                   </div>
-                  <div className="d-inline">
-                    {recipeSaved ? "Saved" : "Save"}
-                  </div>
+                  <div className="d-inline">{recipeSaved ? "Saved" : "Save"}</div>
                 </button>
               </div>
             </div>
