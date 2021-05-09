@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import app from "../firebase";
+import { useAuth } from "../../contexts/AuthContext";
+import app from "../../firebase";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { BsTrash } from "react-icons/bs";
