@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Navbar } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import app from "../firebase";
+import app from "../../firebase";
 
 export default function NavBar2() {
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, currentUser } = useAuth();
+  const { signIn } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -26,16 +25,15 @@ export default function NavBar2() {
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      setError("");
       setLoading(true);
       // sign a user in with email and password
       await signIn(email, password);
       history.push("/recipesearch");
-    } catch {
-      setError("Error, incorrect email or password. Please try again.");
+    } catch (error) {
+      throw error;
     }
+    setLoading(false);
     // update online to true if sign in is successful
-
     ref.doc(email).update({ online: true });
   };
   return (

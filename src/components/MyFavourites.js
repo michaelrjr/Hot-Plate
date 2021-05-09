@@ -5,62 +5,49 @@ import { useAuth } from "../contexts/AuthContext";
 import { BsInfoSquare } from "react-icons/bs";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Modal } from "react-bootstrap";
+import LoadingFullScreen from "./LoadingFullScreen";
 
-
-export default function MyRecipes2() {
+export default function MyRecipes() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
-  const userCreatedRecipesRef = app.firestore().collection("userCreatedRecipes");
+  const userAPIRecipeRef = app.firestore().collection("userAPIRecipes").doc(currentUser.uid).collection("recipes");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [recipeToDelete, setRecipeToDelete] = useState("");
 
-
   useEffect(() => {
-    getUserCreatedRecipes();
+    getSavedAPIRecipes();
   }, []);
 
-  const getUserCreatedRecipes = () => {
+  const getSavedAPIRecipes = () => {
     let tempArr = [];
-    userCreatedRecipesRef
-      .where("authorUID", "==", currentUser.uid)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          tempArr.push(doc.data());
-        });
-        setRecipes(tempArr);
-        console.log(tempArr);
-        setIsLoading(false);
+    userAPIRecipeRef.get().then((queryAPISnapshot) => {
+      queryAPISnapshot.forEach((doc) => {
+        tempArr.push(doc.data());
+      });
+      setRecipes(tempArr);
+      console.log(tempArr);
+      setIsLoading(false);
+    });
+  };
+
+  const removeAPIRecipe = (id) => {
+    userAPIRecipeRef
+      .doc(id.toString())
+      .delete()
+      .then(() => {
+        getSavedAPIRecipes();
+        setShowDeleteModal(false);
       });
   };
 
-  const removeCustomRecipe = (id) => {
-    userCreatedRecipesRef.doc(id).delete()
-    .then(() => {
-    getUserCreatedRecipes();
-    setShowDeleteModal(false);
-    })
-  };
-
   if (isLoading) {
-    return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
-    );
-  }
-
-  else if (!isLoading && recipes.length === 0) {
+    return <LoadingFullScreen />;
+  } else if (!isLoading && recipes.length === 0) {
     return (
       <div className="container">
         <div className="alert alert-warning" role="alert">
-          <h3>Your custom recipes created will appear here.</h3>
+          <h3>Your favourite recipes will appear here.</h3>
         </div>
       </div>
     );
@@ -72,15 +59,13 @@ export default function MyRecipes2() {
             <div className="card mb-3" key={index}>
               <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                 <Modal.Header>
-                  <Modal.Title>Are you sure you want to delete this custom recipe?</Modal.Title>
+                  <Modal.Title>Are you sure you want to delete this recipe?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <button className="btn btn-secondary btn-md" onClick={() => setShowDeleteModal(false)}>
                     Cancel
                   </button>
-                  <button
-                    className="btn btn-danger btn-md float-right"
-                    onClick={() => removeCustomRecipe(recipeToDelete)}>
+                  <button className="btn btn-danger btn-md float-right" onClick={() => removeAPIRecipe(recipeToDelete)}>
                     Yes
                   </button>
                 </Modal.Body>
@@ -102,7 +87,7 @@ export default function MyRecipes2() {
                 </div>
                 <div className="row">
                   <div className="col">
-                    <Link to="/moreinfo">
+                    <Link to="/more-info">
                       <button className="btn btn-success w-100" onClick={() => setRecipeID(recipe.id)}>
                         <div className="d-inline mr-1">
                           <BsInfoSquare size={20} />

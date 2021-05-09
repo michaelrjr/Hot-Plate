@@ -43,7 +43,9 @@ export default function RecipeSearch() {
   };
   //get user details to know where to save the recipe on firestore
   const getUserDetails = () => {
-    app.firestore().collection("Users")
+    app
+      .firestore()
+      .collection("Users")
       .doc(currentUser.email)
       .get()
       .then((doc) => {
@@ -85,24 +87,26 @@ export default function RecipeSearch() {
     });
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
-      apiref.doc(id.toString()).get().then((docSnapshot) => {
-        if (docSnapshot.exists){
-          alert("Recipe already saved!");
-          nextRecipe();
-        } 
-        else {
-          apiref.doc(id.toString()).set({
-            id: id,
-            title: title,
-            image: image,
-            ingredients: ingred,
-            instructions: instruct,
-            fromAPI: true,
-          });
-          alert("Saved to My Recipes");
-          nextRecipe();
-        }
-      });
+      apiref
+        .doc(id.toString())
+        .get()
+        .then((docSnapshot) => {
+          if (docSnapshot.exists) {
+            alert("Recipe already saved!");
+            nextRecipe();
+          } else {
+            apiref.doc(id.toString()).set({
+              id: id,
+              title: title,
+              image: image,
+              ingredients: ingred,
+              instructions: instruct,
+              fromAPI: true,
+            });
+            alert("Saved to My Recipes");
+            nextRecipe();
+          }
+        });
     } else {
       alert("Please Sign-in to start saving recipes.");
     }
@@ -144,9 +148,7 @@ export default function RecipeSearch() {
 
   // if the data is not yet fetched
   if (isFetched === false) {
-    return (
-      <LoadingFullScreen />
-    );
+    return <LoadingFullScreen />;
     // or if there is an error with the API request
   } else if (apiData.length < 1) {
     return (
@@ -224,12 +226,13 @@ export default function RecipeSearch() {
                       apiData[recipeNum].image,
                       apiData[recipeNum].extendedIngredients,
                       apiData[recipeNum].analyzedInstructions
-                    )}>
+                    )
+                  }>
                   Save
                 </button>
               </div>
               <div>
-                <Link to="/moreinfo">
+                <Link to="/more-info">
                   <button
                     type="button"
                     className="btn btn-warning w-100 mb-3"
