@@ -29,7 +29,6 @@ export default function MyRecipes() {
           tempArr.push(doc.data());
         });
         setRecipes(tempArr);
-        console.log(tempArr);
         setIsLoading(false);
       });
   };
