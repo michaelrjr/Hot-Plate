@@ -7,7 +7,7 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { Modal } from "react-bootstrap";
 import LoadingFullScreen from "./LoadingFullScreen";
 
-export default function MyRecipes2() {
+export default function MyRecipes() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
   const userCreatedRecipesRef = app.firestore().collection("userCreatedRecipes");

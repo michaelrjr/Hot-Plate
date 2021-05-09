@@ -26,16 +26,13 @@ function SignIn() {
     onSubmit: async (values) => {
       try {
         setError("");
-        setLoading(true);
         // sign a user in with email and password
         await signIn(values.email, values.password);
+        await ref.doc(values.email).update({ online: true });
         history.push("/recipe-search");
       } catch {
         setError("incorrect email or password");
       }
-      setLoading(false);
-      // update online to true if sign in is successful
-      ref.doc(values.email).update({ online: true });
     },
   });
 

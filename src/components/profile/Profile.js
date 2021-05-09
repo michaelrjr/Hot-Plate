@@ -162,7 +162,7 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <SignOut setError={setError} />
+                  <SignOut />
                 </div>
                 <div>
                   <Link to="/update-profile">

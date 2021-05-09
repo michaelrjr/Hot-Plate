@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import app from "../../firebase";
 
 export default function NavBar2() {
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const { signIn } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState();
@@ -25,16 +25,13 @@ export default function NavBar2() {
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      // sign a user in with email and password
+      setError("");
       await signIn(email, password);
-      history.push("/recipesearch");
+      await ref.doc(email).update({ online: true });
+      history.push("/recipe-search");
     } catch (error) {
-      throw error;
+      setError("incorrect email or password");
     }
-    setLoading(false);
-    // update online to true if sign in is successful
-    ref.doc(email).update({ online: true });
   };
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
@@ -45,7 +42,12 @@ export default function NavBar2() {
       <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
         <form onSubmit={handleSignInSubmit}>
           <div className="d-flex">
-            <div className="mr-2">
+            {error && (
+              <div className="alert alert-danger p-1 m-auto" role="alert">
+                {error}
+              </div>
+            )}
+            <div className="mr-2 ml-2">
               <input className="form-control mr-sm-2" placeholder="Enter email" onChange={handleEmailChange} />
             </div>
             <div className="mr-2">

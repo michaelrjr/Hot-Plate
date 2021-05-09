@@ -13,8 +13,7 @@ export default function SignOut() {
   // sign out user
   const handleSignOut = async () => {
     try {
-      // update online to false if sign out is successful
-      ref.doc(currentUser.email).update({ online: false });
+      await ref.doc(currentUser.email).update({ online: false });
       await signOut();
       history.push("/sign-in");
     } catch (error) {
