@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import app from "../firebase";
-import { useAuth } from "../contexts/AuthContext";
+import app from "../../firebase";
+import { useAuth } from "../../contexts/AuthContext";
 import { RiDeleteBin7Line } from "react-icons/ri";
 
 export default function DisplayEachComment(props) {
   const userDBRef = app.firestore().collection("Users");
   const [currentUserData, setCurrentUserData] = useState();
   const { currentUser } = useAuth();
-  const [postTimeStamp, setPostTimeStamp] = useState();
 
   useEffect(() => {
     let isMounted = true;

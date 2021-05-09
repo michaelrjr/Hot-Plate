@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useRef} from 'react';
-import app from "../firebase";
+import app from "../../firebase";
 import DisplayEachComment from './DisplayEachComment';
 import { v4 as uuidv4 } from "uuid";
 import CommentBox from "./CommentBox";
 import { FaRegCommentDots } from "react-icons/fa";
 
-export default function DisplayComments(props){
+export default function CommentsSection(props){
     const dbRef = app.firestore().collection("feed");
     const postRef = dbRef.doc(props.postID);
     const [commentsArray, setCommentsArray] = useState([]);
@@ -41,7 +41,7 @@ export default function DisplayComments(props){
     };
 
     if(isLoading) return(
-        <div className="displayComments" ref={bottomElement}>
+        <div className="commentsSection" ref={bottomElement}>
             <div className="emptyCommentSection mt-2">
                 Loading comments...
                 <div className="spinner-border" role="status" aria-hidden="true"></div>
@@ -72,7 +72,7 @@ export default function DisplayComments(props){
     )
     
     if(!isLoading) return(
-            <div className="displayComments" ref={bottomElement}>
+            <div className="commentsSection" ref={bottomElement}>
                 { commentsArray.map((comment) => {
                         return(
                             <div key = {uuidv4()}>

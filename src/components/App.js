@@ -7,7 +7,7 @@ import { AuthProvider } from "../contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import MoreInfo from "./Food/MoreInfo";
-import Feed from "./Feed";
+import Feed from "./Feed/Feed";
 import NewNavBar from "./NewNavBar";
 import Profile from "./Profile";
 import RecipeSearch from "./Food/RecipeSearch";

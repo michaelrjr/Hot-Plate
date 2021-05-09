@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FaRegCommentDots } from "react-icons/fa";
 import { AiOutlineLike } from "react-icons/ai";
 import { firebase } from "@firebase/app";
-import { useAuth } from "../contexts/AuthContext";
-import ComponentC from "./ComponentC";
-import DisplayComments from "./DisplayComments";
-import app from "../firebase";
+import { useAuth } from "../../contexts/AuthContext";
+import RecipeCard from "./RecipeCard";
+import CommentsSection from "./CommentsSection";
+import app from "../../firebase";
 import { Modal } from "react-bootstrap";
 
 export default function DisplayEachPost(props) {
@@ -183,7 +183,7 @@ export default function DisplayEachPost(props) {
 
           {props.post?.length > 0 && <p>{props.post}</p>}
           {props.image && (
-            <ComponentC
+            <RecipeCard
               recipeImage={props.image}
               recipeTitle={props.recipeTitle}
               recipeID={props.recipeID}
@@ -225,7 +225,7 @@ export default function DisplayEachPost(props) {
             )}
           </div>
           {showCommentSection && (
-            <DisplayComments
+            <CommentsSection
               postID={props.postID}
               commentSectionID={props.childCommentSectionID}
               handleDeleteCommentClick={handleDeleteCommentClick}
