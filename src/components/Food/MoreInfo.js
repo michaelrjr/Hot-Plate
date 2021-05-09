@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Collapse, Button } from "react-bootstrap";
 import ShareRecipeModal from "./ShareRecipeModal";
 import ShareDMModal from "./ShareDMModal";
-import app from "../firebase";
+import app from "../../firebase";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import LoadingFullScreen from "./LoadingFullScreen";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function MoreInfo() {
   const userCreatedRecipesRef = app.firestore().collection("userCreatedRecipes");
