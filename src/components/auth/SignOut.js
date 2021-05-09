@@ -1,9 +1,9 @@
 import React from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import app from "../firebase";
+import app from "../../firebase";
 
-export default function SignOut(props) {
+export default function SignOut() {
   const { currentUser, signOut } = useAuth();
   const history = useHistory();
 
@@ -12,11 +12,10 @@ export default function SignOut(props) {
 
   // sign out user
   const handleSignOut = async () => {
-    // update online to false if sign out is successful
-    ref.doc(currentUser.email).update({ online: false });
     try {
+      await ref.doc(currentUser.email).update({ online: false });
       await signOut();
-      history.push("/signIn");
+      history.push("/sign-in");
     } catch (error) {
       throw error;
     }

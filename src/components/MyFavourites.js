@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import app from "../../firebase";
+import app from "../firebase";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { BsInfoSquare } from "react-icons/bs";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Modal } from "react-bootstrap";
+import LoadingFullScreen from "./LoadingFullScreen";
 
-export default function MyRecipes() {
+export default function MyFavourites() {
   const [recipes, setRecipes] = useState([]);
   const { currentUser, setRecipeID } = useAuth();
   const userAPIRecipeRef = app.firestore().collection("userAPIRecipes").doc(currentUser.uid).collection("recipes");
@@ -23,35 +24,26 @@ export default function MyRecipes() {
     userAPIRecipeRef.get().then((queryAPISnapshot) => {
       queryAPISnapshot.forEach((doc) => {
         tempArr.push(doc.data());
-      })
+      });
       setRecipes(tempArr);
-      console.log(tempArr);;
+      console.log(tempArr);
       setIsLoading(false);
-    })
-  }
+    });
+  };
 
   const removeAPIRecipe = (id) => {
-    userAPIRecipeRef.doc(id.toString()).delete()
+    userAPIRecipeRef
+      .doc(id.toString())
+      .delete()
       .then(() => {
         getSavedAPIRecipes();
         setShowDeleteModal(false);
-      })
+      });
   };
 
   if (isLoading) {
-    return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
-    );
-  }
-
-  else if (!isLoading && recipes.length === 0) {
+    return <LoadingFullScreen />;
+  } else if (!isLoading && recipes.length === 0) {
     return (
       <div className="container">
         <div className="alert alert-warning" role="alert">
@@ -73,9 +65,7 @@ export default function MyRecipes() {
                   <button className="btn btn-secondary btn-md" onClick={() => setShowDeleteModal(false)}>
                     Cancel
                   </button>
-                  <button
-                    className="btn btn-danger btn-md float-right"
-                    onClick={() => removeAPIRecipe(recipeToDelete)}>
+                  <button className="btn btn-danger btn-md float-right" onClick={() => removeAPIRecipe(recipeToDelete)}>
                     Yes
                   </button>
                 </Modal.Body>
@@ -97,7 +87,7 @@ export default function MyRecipes() {
                 </div>
                 <div className="row">
                   <div className="col">
-                    <Link to="/moreinfo">
+                    <Link to="/more-info">
                       <button className="btn btn-success w-100" onClick={() => setRecipeID(recipe.id)}>
                         <div className="d-inline mr-1">
                           <BsInfoSquare size={20} />

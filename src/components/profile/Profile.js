@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import SignOut from "./SignOut";
-import { useAuth } from "../contexts/AuthContext";
+import SignOut from "../auth/SignOut";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import app from "../firebase";
+import app from "../../firebase";
 import { Modal } from "react-bootstrap";
 import { BsTrash } from "react-icons/bs";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function Profile() {
   const [error, setError] = useState("");
-  const { currentUser} = useAuth();
+  const { currentUser } = useAuth();
   const [userDetails, setUserDetails] = useState([]);
   const [fileURL, setFileURL] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -31,7 +32,6 @@ export default function Profile() {
       .then((doc) => {
         let tempArr = [];
         tempArr.push(doc.data());
-        console.log(tempArr);
         setUserDetails(tempArr);
         setIsLoading(false);
       })
@@ -43,9 +43,9 @@ export default function Profile() {
   // when the user clicks "upload" update that users avatar image
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(fileURL);
     await ref.doc(currentUser.email).update({ avatar: fileURL });
     getUserDetails();
+    setFileName("");
   };
 
   const removeProfilePicture = async () => {
@@ -70,16 +70,7 @@ export default function Profile() {
   };
 
   if (isLoading) {
-    return (
-      <div className="container-fluid">
-        <div className="d-flex">
-          <strong className="mr-3">
-            <h3>Loading..</h3>
-          </strong>
-          <div className="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
-      </div>
-    );
+    return <LoadingFullScreen />;
   }
 
   return (
@@ -131,7 +122,7 @@ export default function Profile() {
                       </div>
                     )}
                     <div>
-                      <button type="submit" className="btn btn-warning w-100">
+                      <button type="submit" className="btn btn-warning w-100" disabled={!fileName}>
                         Upload
                       </button>
                     </div>
@@ -171,7 +162,7 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <SignOut setError={setError}/>
+                  <SignOut />
                 </div>
                 <div>
                   <Link to="/update-profile">

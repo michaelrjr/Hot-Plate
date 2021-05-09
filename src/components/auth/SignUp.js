@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import app from "../firebase";
+import app from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 
 function SignUp() {
@@ -190,7 +190,7 @@ function SignUp() {
             </form>
             <div className="w-100 text-center">
               <p>
-                Already have an account? <Link to="/signIn">Sign in</Link>.
+                Already have an account? <Link to="/sign-in">Sign in</Link>.
               </p>
             </div>
           </div>

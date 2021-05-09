@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Navbar } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import app from "../firebase";
+import app from "../../firebase";
 
 export default function NavBar2() {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { signIn, currentUser } = useAuth();
+  const { signIn } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -27,16 +26,12 @@ export default function NavBar2() {
     e.preventDefault();
     try {
       setError("");
-      setLoading(true);
-      // sign a user in with email and password
       await signIn(email, password);
-      history.push("/recipesearch");
-    } catch {
-      setError("Error, incorrect email or password. Please try again.");
+      await ref.doc(email).update({ online: true });
+      history.push("/recipe-search");
+    } catch (error) {
+      setError("incorrect email or password");
     }
-    // update online to true if sign in is successful
-
-    ref.doc(email).update({ online: true });
   };
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
@@ -47,7 +42,12 @@ export default function NavBar2() {
       <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
         <form onSubmit={handleSignInSubmit}>
           <div className="d-flex">
-            <div className="mr-2">
+            {error && (
+              <div className="alert alert-danger p-1 m-auto" role="alert">
+                {error}
+              </div>
+            )}
+            <div className="mr-2 ml-2">
               <input className="form-control mr-sm-2" placeholder="Enter email" onChange={handleEmailChange} />
             </div>
             <div className="mr-2">
