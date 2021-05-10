@@ -62,24 +62,27 @@ export default function FeedPostInputBox(props) {
   return (
     <div className="card">
       <div className="card-body">
-        <div className="mb-3">
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Start a post"
-            value={postDetails}
-            onChange={handlePostContentChange}
-            name="customPost"
-          />
-        </div>
-        <div>
-          <button className="btn btn-primary w-100" onClick={() => {
+        <form onSubmit={(event) => {
+            event.preventDefault();
             handlePostClick(postDetails);
             setPostDetails("");
           }}>
-            Post
-          </button>
-        </div>
+          <div className="mb-3">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Start a post"
+              value={postDetails}
+              onChange={handlePostContentChange}
+              name="customPost"
+            />
+          </div>
+          <div>
+            <button className="btn btn-primary w-100" type="submit">
+              Post
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

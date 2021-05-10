@@ -17,7 +17,7 @@ export default function CreateRecipe() {
   const [ingredientsArray, setIngredientsArray] = useState("");
   const [userCreatedRecipe, setUserCreatedRecipe] = useState(null);
   const [userDetails, setUserDetails] = useState({});
-  const [error, setError] = useState(0);
+  const [errorMsg, setErrorMsg] = useState();
 
   const ref = app.firestore().collection("userCreatedRecipes");
   const userRef = app.firestore().collection("Users");
@@ -75,16 +75,19 @@ export default function CreateRecipe() {
 
   // uploads a file and adds it to firebase storage
   const handleFileChange = async (e) => {
+    setFileName("");
     const file = e.target.files[0];
     const fileNameArray = file?.name.split(".");
-    var fileNameForDB = "";
-    for (var i = 0; i < fileNameArray.length - 1; i++) fileNameForDB += fileNameArray[i];
-    fileNameForDB += Date.now().toString() + "." + fileNameArray[fileNameArray.length - 1];
+    if(fileNameArray.length==0 || !fileNameArray) return setErrorMsg("Bad file: please ensure it is a .jpg or .png file");
+    if (!["jpg", "jpeg", "png"].includes(fileNameArray[fileNameArray.length-1].toLowerCase())) return setErrorMsg("Only png and jpg files are supported."); // check file type
 
-    setFileName(e.target.files[0].name);
-    const storageRef = app.storage().ref();
-    const fileRef = storageRef.child(fileNameForDB);
-    await fileRef.put(file);
+    setFileName(file.name);
+    const uniqueFileName = uuidv4().toString()+"."+fileNameArray[fileNameArray.length-1];
+
+    setErrorMsg("");
+    const storageRef = app.storage().ref(); //firebase storage ref
+    const fileRef = storageRef.child(uniqueFileName);
+    await fileRef.put(file); // put file in storage
     setFileURL(await fileRef.getDownloadURL());
     formik.setFieldValue("image", await fileRef.getDownloadURL());
   };
@@ -167,6 +170,11 @@ export default function CreateRecipe() {
                       <label className="custom-file-label" htmlFor="image">
                         Choose recipe image...
                       </label>
+                    )}
+                    {errorMsg && (
+                      <div className="alert alert-danger" role="alert">
+                        {errorMsg}
+                      </div>
                     )}
                     {formik.touched.image && formik.errors.image ? (
                       <div className="invalid-feedback">{formik.errors.image}</div>

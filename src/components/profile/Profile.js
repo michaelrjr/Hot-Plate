@@ -6,6 +6,7 @@ import app from "../../firebase";
 import { Modal } from "react-bootstrap";
 import { BsTrash } from "react-icons/bs";
 import LoadingFullScreen from "../LoadingFullScreen";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Profile() {
   const [error, setError] = useState("");
@@ -65,13 +66,17 @@ export default function Profile() {
   const handleFileChange = async (e) => {
     setFileName("");
     const file = e.target.files[0];
-    setFileName(e.target.files[0].name);
-    let i = file.name.indexOf("."); // get the "dot" from file
-    let s = file.name.substring(i + 1, file.name.length); // extract file type
-    if (s != "jpg" && s !== "png") return setErrorMsg("Only png and jpg files are supported."); // check file type
+
+    const fileNameArray = file?.name.split('.');
+    if(fileNameArray.length==0 || !fileNameArray) return setErrorMsg("Bad file: please ensure it is a .jpg or .png file");
+    if (!["jpg", "jpeg", "png"].includes(fileNameArray[fileNameArray.length-1].toLowerCase())) return setErrorMsg("Only png and jpg files are supported."); // check file type
+
+    setFileName(file.name);
+    const uniqueFileName = uuidv4().toString()+"."+fileNameArray[fileNameArray.length-1];
+
     setErrorMsg("");
     const storageRef = app.storage().ref(); //firebase storage ref
-    const fileRef = storageRef.child(file.name);
+    const fileRef = storageRef.child(uniqueFileName);
     await fileRef.put(file); // put file in storage
     setFileURL(await fileRef.getDownloadURL());
   };
