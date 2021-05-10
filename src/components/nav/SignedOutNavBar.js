@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import app from "../../firebase";
 
-export default function NavBar2() {
+export default function SignedOutNavBar() {
   const [error, setError] = useState("");
   const { signIn } = useAuth();
   const history = useHistory();

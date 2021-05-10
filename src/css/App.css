@@ -29,18 +29,29 @@ a:hover {
   .link {
     text-align: center;
   }
+
 }
 
 /*********chat styling starts***********/
 
-.chat-container{
-  display: flex;
-  justify-content: center;
+.chat{
   font-family: 'Varela Round', sans-serif;
 }
 
+.chat-container{
+  display: flex;
+  justify-content: center;
+}
+
 .chat-body{
-  height: 57vh;
+  height: 56vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chat-b {
+  height: 60vh;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -56,7 +67,7 @@ a:hover {
 }
 
 .online-user-email{
-  font-size: xx-small;
+  font-size: x-small;
   color: #010b13;
 }
 
@@ -73,8 +84,13 @@ a:hover {
   background: linear-gradient(to top, #990033 0%, #ff0000 100%)
 }
 
+.username{
+  font-size: large;
+  font-weight:bold;
+}
+
 .user-status {
-  font-size: x-small;
+ font-size:small;
 }
 
 
@@ -87,7 +103,7 @@ a:hover {
   overflow-wrap: break-word;
   min-width: 5%;
   max-width: 50%;
-  padding: 10px 15px 5px 15px;
+  padding: 5px 15px 5px 15px;
 }
 
 .current-user-msg{
@@ -120,7 +136,6 @@ a:hover {
 }
 
 .message-timestamp {
-  color: #a9a9a9;
   font-size: xx-small;
 } 
 
@@ -128,8 +143,7 @@ a:hover {
   cursor: pointer;
   background-color: #ff5864;
   color: rgb(255, 255, 255);
-  border-radius: 15px;
-  opacity: 0.9;
+  opacity: 1;
 }
 
 /*********chat styling ends********/

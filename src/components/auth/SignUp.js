@@ -40,9 +40,10 @@ function SignUp() {
       //make post request here with user info
       try {
         setError("");
-        setLoading(true);
+
         // signup user with email and password
         await signUp(values.email, values.password);
+
         setMessage("Success, account created. Please sign in.");
         await sendEmailVerification();
       } catch {
@@ -50,7 +51,7 @@ function SignUp() {
       }
 
       // create user document in user collection when sign up is clicked
-      ref.doc(values.email).set({
+      await ref.doc(values.email).set({
         uuid: uuidv4(),
         firstName: values.firstName,
         lastName: values.lastName,
@@ -59,8 +60,6 @@ function SignUp() {
         avatar: null,
         joined: new Date().toDateString(),
       });
-
-      setLoading(false);
     },
   });
 
