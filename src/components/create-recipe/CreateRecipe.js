@@ -101,9 +101,11 @@ export default function CreateRecipe() {
   // appeneds new ingredient to the ingredientsArray when user clicks add button
   const handleAddIngredientClick = () => {
     const newItems = [...ingredientsArray, ingredient];
-    setIngredientsArray(newItems);
-    formik.setFieldValue("ingredients", newItems);
-    setIngredient("");
+    if (!/^\s*$/.test(newItems[newItems.length-1])) {
+      setIngredientsArray(newItems);
+      formik.setFieldValue("ingredients", newItems);
+      setIngredient("");
+    }
   };
 
   // sets instruction to the user input
@@ -114,9 +116,11 @@ export default function CreateRecipe() {
   // appeneds new instruction to the instructionsArray when user clicks add button
   const handleAddInstructionClick = () => {
     const newItems = [...instructionsArray, instruction];
-    setInstructionsArray(newItems);
-    formik.setFieldValue("instructions", newItems);
-    setInstruction("");
+    if (!/^\s*$/.test(newItems[newItems.length - 1])) {
+      setInstructionsArray(newItems);
+      formik.setFieldValue("instructions", newItems);
+      setInstruction("");
+    }
   };
 
   // deletes an ingredient from the ingredientsArray at a specified index
