@@ -20,7 +20,7 @@ import { useAuth } from "../contexts/AuthContext";
 import SignedOutNavBar from "./nav/SignedOutNavBar";
 
 function App() {
-  const { isSignedIn, currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <div className="App">

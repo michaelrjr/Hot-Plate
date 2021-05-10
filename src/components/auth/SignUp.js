@@ -40,15 +40,16 @@ function SignUp() {
     onSubmit: async (values) => {
       //make post request here with user info
       try {
-        setIsSignedUp(true);
         setError("");
         // signup user with email and password
         await signUp(values.email, values.password);
         await ref.doc(values.email).update({ online: true });
-        await sendEmailVerification();
+        //await sendEmailVerification();
+        setIsSignedUp(true);
         history.push("/");
         setIsSignedUp(false);
       } catch {
+        setIsSignedUp(false);
         setError("Error, failed to create account. Please try again.");
       }
 
