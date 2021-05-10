@@ -46,8 +46,6 @@ export default function DisplayOnlineUsers(props) {
                     height="80"
                     width="80"
                   />
-
-                  {/* <div className={user.online ? "online-icon mb-4" : "online-icon online-icon-offline mb-4"}></div>*/}
                 </div>
                 <div className="col-6">
                   <div className="mb-1">{user.firstName + " " + user.lastName}</div>
@@ -63,7 +61,6 @@ export default function DisplayOnlineUsers(props) {
                       </small>
                     )}
                   </div>
-                  {/*  <small className="user-status">Status: {user.online ? "Cooking" : "Eating"}</small>*/}
                 </div>
                 <div className="col">
                   {props.shareDMModalOrigin ? (
