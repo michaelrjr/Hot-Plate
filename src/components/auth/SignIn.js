@@ -32,6 +32,7 @@ function SignIn() {
         setIsLoading(false);
       } catch {
         setError("incorrect email or password");
+        setIsLoading(false);
       }
     },
   });

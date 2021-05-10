@@ -151,7 +151,7 @@ export default function MoreInfo() {
             fromAPI: true,
           });
           setDelOrSave(true);
-          alert("Saved to My Recipes");
+          alert("Saved to Favourites");
         }
       });
     } else {

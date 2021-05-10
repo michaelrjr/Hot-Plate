@@ -44,6 +44,7 @@ function SignUp() {
         setError("");
         // signup user with email and password
         await signUp(values.email, values.password);
+        await ref.doc(values.email).update({ online: true });
         await sendEmailVerification();
         history.push("/");
         setIsSignedUp(false);

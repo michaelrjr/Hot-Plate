@@ -103,7 +103,7 @@ export default function RecipeSearch() {
               instructions: instruct,
               fromAPI: true,
             });
-            alert("Saved to My Recipes");
+            alert("Saved to Favourites");
             nextRecipe();
           }
         });
