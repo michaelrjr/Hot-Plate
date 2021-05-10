@@ -22,6 +22,7 @@ export default function RecipeSearch() {
   const ref = app.firestore().collection("userAPIRecipes");
   const { currentUser } = useAuth();
   const [userDetails, setUserDetails] = useState({});
+  const [filtersCount, setFiltersCount] = useState(0);
 
   // call getRandomRecipes() when the page loads
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function RecipeSearch() {
       setIsFetched(true);
     } catch (error) {
       setIsFetched(false);
-      setError(error);
+      setErrorMsg(error);
     }
   };
   //get user details to know where to save the recipe on firestore
@@ -72,9 +73,9 @@ export default function RecipeSearch() {
       setIsFetched(true);
     } catch (error) {
       setIsFetched(false);
-      setError(error);
+      setErrorMsg(error);
     }
-    removeFilters(); // set filters back to empty string after every filtered search
+    // removeFilters(); // set filters back to empty string after every filtered search
   };
 
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
@@ -120,11 +121,25 @@ export default function RecipeSearch() {
       setRecipeNum(recipeNum + 1);
     }
   };
+  
+  function countFilters(){
+    let count = 0;
+    count+= intolerance.length;
+    if(cuisine.length>0) {
+      count++;
+    }
+    if(mealType.length>0) count++;
+    if(diet.length>0) count++;
+    setFiltersCount(count);
+  }
 
   // some onChange handler functions for the the different form inputs
   const updateCuisine = (e) => setCuisine(e.target.value);
   const updateDiet = (e) => setDiet(e.target.value);
-  const resetIntolerance = () => setIntolerance([]);
+  const resetIntolerance = () => {
+    setIntolerance([]);
+    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
+  }
   const updateIntolerance = (added, value) => {
     if (added) {
       setIntolerance((intolerance) => [...intolerance, value]);
@@ -133,6 +148,7 @@ export default function RecipeSearch() {
       newAr.splice(intolerance.indexOf(value), 1);
       setIntolerance(newAr);
     }
+    // countFilters();
   };
   const updateMealType = (e) => setMealType(e.target.value);
 
@@ -142,6 +158,8 @@ export default function RecipeSearch() {
     setDiet("");
     setIntolerance([]);
     setMealType("");
+    document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked=false);
+    countFilters();
   };
 
   // if the data is not yet fetched
@@ -178,6 +196,8 @@ export default function RecipeSearch() {
                   mealType={mealType}
                   intolerance={intolerance}
                   diet={diet}
+                  filtersCount={filtersCount}
+                  countFilters={countFilters}
                 />
               </div>
             </div>
@@ -252,6 +272,8 @@ export default function RecipeSearch() {
                   mealType={mealType}
                   intolerance={intolerance}
                   diet={diet}
+                  filtersCount={filtersCount}
+                  countFilters={countFilters}
                 />
               </div>
             </div>
