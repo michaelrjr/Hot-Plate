@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import NavBar2 from "./SignedOutNavBar";
-import { useAuth } from "../../contexts/AuthContext";
 import { Navbar, Nav } from "react-bootstrap";
 import { AiOutlineHome } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
@@ -12,7 +10,6 @@ import { RiRestaurantLine } from "react-icons/ri";
 import SignOut from "../auth/SignOut";
 
 export default function NavBar() {
-  const { currentUser } = useAuth();
   const [expanded, setExpanded] = useState(false);
 
   return (

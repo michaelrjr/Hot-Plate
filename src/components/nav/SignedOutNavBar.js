@@ -6,7 +6,7 @@ import app from "../../firebase";
 
 export default function SignedOutNavBar() {
   const [error, setError] = useState("");
-  const { signIn } = useAuth();
+  const { signIn, setIsSignedIn } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -28,6 +28,7 @@ export default function SignedOutNavBar() {
       setError("");
       await signIn(email, password);
       await ref.doc(email).update({ online: true });
+      setIsSignedIn(true);
       history.push("/recipe-search");
     } catch (error) {
       setError("incorrect email or password");
