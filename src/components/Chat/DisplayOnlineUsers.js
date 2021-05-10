@@ -16,7 +16,7 @@ export default function DisplayOnlineUsers(props) {
     <div>
       <div className="card">
         <div className="card-body">
-          <h3 className="card-title text-center">Whos online</h3>
+          <h3 className="card-title text-center">Who's online</h3>
           <input
             type="text"
             className="form-control shadow-none"
