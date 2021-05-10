@@ -4,7 +4,7 @@ A web/mobile app inspired by tinder and a love for cooking
 
 Hot-Plate is a feature packed app driven by social interaction
 
-Sign up to join, update your profile info with a profile pic and interact wiht other Hot-Platers
+Sign up to join, update your profile info with a profile pic and interact with other Hot-Platers
 
 Flick through different recipes and add the ones you like to your favourites, filter your recipe searches to cater to allergies and food preferences 
 
