@@ -95,7 +95,6 @@ export default function CreateRecipe() {
   // sets ingredient to the user input
   const handleIngredientsChange = (e) => {
     setIngredient(e.target.value);
-    console.log(e.target.value);
   };
 
   // appeneds new ingredient to the ingredientsArray when user clicks add button

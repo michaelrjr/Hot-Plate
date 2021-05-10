@@ -103,7 +103,7 @@ export default function DisplayEachPost(props) {
         if (isMounted) setCurrentUserData(doc.data());
       })
       .catch((error) => {
-        console.log("Error getting document:", error);
+        throw("Error getting document:", error);
       });
     const unsub1 = checkNumLikes();
     const unsub2 = checkNumComments();

@@ -65,7 +65,7 @@ export default function MoreInfo() {
         setUserDetails(doc.data());
       })
       .catch((error) => {
-        console.log(error);
+        throw(error);
       });
   };
 
@@ -84,7 +84,7 @@ export default function MoreInfo() {
       .catch((error) => {
         setIsFetched(false);
         setErrorMsg(error);
-        console.log("Error getting API recipe:", error);
+        throw("Error getting API recipe:", error);
       });
   }
 
@@ -191,7 +191,6 @@ export default function MoreInfo() {
     return (
       <div className="container">
         <div className="alert alert-danger" role="alert">
-          {console.log(errorMsg)}
           <h3>An error has occured. Recipe may no longer exist.</h3>
         </div>
       </div>

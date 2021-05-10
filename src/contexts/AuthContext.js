@@ -84,8 +84,6 @@ export function AuthProvider({ children }) {
     setIsSignedUp,
   };
 
-  console.log("is signed up ", isSignedUp);
-
   if (isLoading) return <LoadingFullScreen />;
   if (isSignedUp)
     return (

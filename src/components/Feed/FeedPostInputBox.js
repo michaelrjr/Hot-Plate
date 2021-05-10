@@ -41,19 +41,7 @@ export default function FeedPostInputBox(props) {
         authorFName: userData.firstName,
         authorSName: userData.lastName
       })
-      .then((docRef) => {
-        // if(docRef) console.log("Document written with ID: ", docRef.id);
-        // else{
-        //   const tempArr = [];
-        //   feedCollection.doc(thisPostID).get().then((doc) => {
-        //     tempArr.push(doc.data());
-        //     console.log("Document written, details:", tempArr);
-        //   }).catch((error) => {
-        //     console.error("Error retrieving added data from firestore:", error);
-        //   })
-        // }
-        alert("Post successful.")
-      })
+      .then(() => alert("Post successful."))
       .catch((error) => {
         console.error("Error adding document: ", error);
       });

@@ -33,7 +33,7 @@ function SignIn() {
       } catch (error) {
         setIsLoading(false);
         setError("Incorrect email or password");
-        console.log(error);
+        throw(error);
       }
     },
   });
@@ -79,7 +79,6 @@ function SignIn() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {/* {console.log(formik.values.password)} */}
                 {formik.touched.password && formik.errors.password ? (
                   <div className="invalid-feedback">{formik.errors.password}</div>
                 ) : null}
