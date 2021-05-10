@@ -26,11 +26,10 @@ export default function SignedOutNavBar() {
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
       setError("");
       await signIn(email, password);
       await ref.doc(email).update({ online: true });
-      setIsSignedIn(true);
+      setIsLoading(true);
       history.push("/profile");
       setIsLoading(false);
     } catch (error) {
