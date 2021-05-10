@@ -40,7 +40,7 @@ export default function DisplayOnlineUsers(props) {
             }>
             {user.email !== props.currentUser.email && (
               <div key={"child"+user.uuid} className="row align-items-center">
-                <div className="col ml-4">
+                <div className="col-4 ml-4">
                   <img
                     className="p-1 rounded-circle"
                     src={user.avatar != null ? user.avatar : "defaultuser.png"}
@@ -54,14 +54,8 @@ export default function DisplayOnlineUsers(props) {
                         : "online-icon online-icon-offline mb-4"
                     }></div>
                 </div>
-                <div className="col-6">
+                <div className="col-6 username">
                   {user.firstName + " " + user.lastName}
-                  <br />
-                  <a
-                    className="online-user-email"
-                    href={"mailto:" + user.email}>
-                    {user.email}
-                  </a>
                   <br />
                   <small className="user-status">
                     Status: {user.online ? "Cooking" : "Eating"}

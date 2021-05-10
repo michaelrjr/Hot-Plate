@@ -202,7 +202,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="container d-flex justify-content-center pb-3" style={{ minHeight: "100%" }}>
+    <div className="container d-flex justify-content-center chat pb-3" style={{ minHeight: "100%" }}>
       <div className="w-100 chatCont" style={{ maxWidth: "450px" }}>
         {showChat == false ? (
           <DisplayOnlineUsers

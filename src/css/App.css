@@ -33,19 +33,21 @@ a:hover {
 
 /*********chat styling starts***********/
 
-.chat-container{
-  display: flex;
-  justify-content: center;
+.chat{
   font-family: 'Varela Round', sans-serif;
 }
 
+.chat-container{
+  display: flex;
+  justify-content: center;
+}
+
 .chat-body{
-  height: 57vh;
+  height: 56vh;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
 
 .chat-body::-webkit-scrollbar{
   display:none;
@@ -53,11 +55,6 @@ a:hover {
 
 .online-user-nav{
   text-align: center;
-}
-
-.online-user-email{
-  font-size: xx-small;
-  color: #010b13;
 }
 
 .online-icon {
@@ -73,8 +70,13 @@ a:hover {
   background: linear-gradient(to top, #990033 0%, #ff0000 100%)
 }
 
+.username{
+  font-size: large;
+  font-weight:bold;
+}
+
 .user-status {
-  font-size: x-small;
+ font-size:small;
 }
 
 
