@@ -95,6 +95,7 @@ export default function Chat() {
         let tempArr = [];
         tempArr.push(doc.data());
         setOtherUserDetails(tempArr);
+        setShowChat(true);
       })
       .catch((error) => {
         console.log("Error getting document:", error);
@@ -105,7 +106,6 @@ export default function Chat() {
   //update of message.read field from false to true for the current users received messages
   const handleStartChatClick = (otherEmail, currentEmail) => {
     setOtherUserEmail(otherEmail);
-    setShowChat(true);
     setUnsub3(() => getChatMessages(otherEmail));
     setUnsub4(() => setMessageToRead(currentEmail));
     getOtherUserDetails(otherEmail);
@@ -113,6 +113,7 @@ export default function Chat() {
 
   // close chat
   const handleCloseChatClick = () => {
+    setOtherUserDetails([]);
     if (unsub3) {
       unsub3();
       console.log("unsub3");

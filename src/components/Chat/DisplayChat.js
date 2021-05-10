@@ -4,6 +4,10 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
+// useEffect(() => {
+//   isMounted = true;
+// }, []);
+
 const AlwaysScrollToBottom = () => {
   const elementRef = useRef();
   useEffect(() => elementRef.current.scrollIntoView());
