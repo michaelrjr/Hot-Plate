@@ -4,12 +4,11 @@ import * as Yup from "yup";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import app from "../../firebase";
-import RecipeSearch from "../food/RecipeSearch";
 
 function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, currentUser } = useAuth();
+  const { signIn, setIsSignedIn } = useAuth();
   const history = useHistory();
   // db ref
   const ref = app.firestore().collection("Users");
@@ -29,6 +28,7 @@ function SignIn() {
         // sign a user in with email and password
         await signIn(values.email, values.password);
         await ref.doc(values.email).update({ online: true });
+        setIsSignedIn(true);
         history.push("/recipe-search");
       } catch {
         setError("incorrect email or password");

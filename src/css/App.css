@@ -29,6 +29,7 @@ a:hover {
   .link {
     text-align: center;
   }
+
 }
 
 /*********chat styling starts***********/
@@ -46,6 +47,13 @@ a:hover {
   scrollbar-width: none;
 }
 
+.chat-b {
+  height: 60vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 
 .chat-body::-webkit-scrollbar{
   display:none;
@@ -56,7 +64,7 @@ a:hover {
 }
 
 .online-user-email{
-  font-size: xx-small;
+  font-size: x-small;
   color: #010b13;
 }
 
@@ -87,7 +95,7 @@ a:hover {
   overflow-wrap: break-word;
   min-width: 5%;
   max-width: 50%;
-  padding: 10px 15px 5px 15px;
+  padding: 5px 15px 5px 15px;
 }
 
 .current-user-msg{
@@ -120,7 +128,6 @@ a:hover {
 }
 
 .message-timestamp {
-  color: #a9a9a9;
   font-size: xx-small;
 } 
 
@@ -128,8 +135,7 @@ a:hover {
   cursor: pointer;
   background-color: #ff5864;
   color: rgb(255, 255, 255);
-  border-radius: 15px;
-  opacity: 0.9;
+  opacity: 1;
 }
 
 /*********chat styling ends********/

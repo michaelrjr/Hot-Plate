@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import MoreInfo from "./food/MoreInfo";
 import Feed from "./Feed/Feed";
-import NewNavBar from "./nav/NewNavBar";
+import NavBar from "./nav/NavBar";
 import Profile from "./profile/Profile";
 import RecipeSearch from "./food/RecipeSearch";
 import Chat from "./Chat/Chat";
@@ -16,6 +16,8 @@ import CreateRecipe from "./create-recipe/CreateRecipe";
 import MyFavourites from "./food/MyFavourites";
 import MyRecipes from "./food/MyRecipes";
 import DashboardNotSignedIn from "./DashboardNotSignedIn";
+import { useAuth } from "../contexts/AuthContext";
+import SignedOutNavBar from "./nav/SignedOutNavBar";
 
 //import food from "../../src/css/food_pattern_repeating.jpg";
 
@@ -25,30 +27,34 @@ import DashboardNotSignedIn from "./DashboardNotSignedIn";
 }
 
 function App() {
+  const { isSignedIn } = useAuth();
+
   return (
-    <AuthProvider>
-      <div className="App">
-        <Router>
-          <NewNavBar />
-          <br />
-          <Switch>
-            <PrivateRoute path="/create-recipe" component={CreateRecipe} />
-            <PrivateRoute path="/my-favourites" component={MyFavourites} />
-            <PrivateRoute path="/my-recipes" component={MyRecipes} />
-            <PrivateRoute path="/chat" component={Chat} />
-            <PrivateRoute path="/more-info" component={MoreInfo} />
-            <PrivateRoute path="/profile" component={Profile} />
-            <Route path="/sign-up" component={SignUp} />
-            <Route path="/sign-in" component={SignIn} />
-            <PrivateRoute path="/update-profile" component={UpdateProfile} />
-            <Route path="/forgot-password" component={ForgotPassword} />
-            <PrivateRoute path="/feed" component={Feed} />
-            <PrivateRoute path="/recipe-search" component={RecipeSearch} />
+    <div className="App">
+      <Router>
+        {isSignedIn ? <NavBar /> : <SignedOutNavBar />}
+        <br />
+        <Switch>
+          <PrivateRoute path="/create-recipe" component={CreateRecipe} />
+          <PrivateRoute path="/my-favourites" component={MyFavourites} />
+          <PrivateRoute path="/my-recipes" component={MyRecipes} />
+          <PrivateRoute path="/chat" component={Chat} />
+          <PrivateRoute path="/more-info" component={MoreInfo} />
+          <PrivateRoute path="/profile" component={Profile} />
+          <Route path="/sign-up" component={SignUp} />
+          <Route path="/sign-in" component={SignIn} />
+          <PrivateRoute path="/update-profile" component={UpdateProfile} />
+          <Route path="/forgot-password" component={ForgotPassword} />
+          <PrivateRoute path="/feed" component={Feed} />
+          <PrivateRoute path="/recipe-search" component={RecipeSearch} />
+          {isSignedIn ? (
+            <PrivateRoute exact path="/" component={RecipeSearch} />
+          ) : (
             <Route exact path="/" component={DashboardNotSignedIn} />
-          </Switch>
-        </Router>
-      </div>
-    </AuthProvider>
+          )}
+        </Switch>
+      </Router>
+    </div>
   );
 }
 

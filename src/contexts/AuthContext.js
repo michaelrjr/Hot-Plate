@@ -13,6 +13,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const [recipeID, setID] = useState(0);
   //database ref
   const ref = app.firestore().collection("feed");
@@ -22,10 +23,12 @@ export function AuthProvider({ children }) {
   }
 
   function signIn(email, password) {
+    // setIsSignedIn(true);
     return auth.signInWithEmailAndPassword(email, password);
   }
 
   function signOut() {
+    setIsSignedIn(false);
     return auth.signOut();
   }
 
@@ -73,17 +76,21 @@ export function AuthProvider({ children }) {
         childCommentSectionID: uuidv4(),
       })
       .then((docRef) => {
-        if(docRef) console.log("Document written with ID: ", docRef.id);
-        else{
+        if (docRef) console.log("Document written with ID: ", docRef.id);
+        else {
           const tempArr = [];
-          ref.doc(thisPostID).get().then((doc) => {
-            tempArr.push(doc.data());
-            console.log("Document written, details:", tempArr);
-          }).catch((error) => {
-            console.error("Error retrieving added data from firestore:", error);
-          })
+          ref
+            .doc(thisPostID)
+            .get()
+            .then((doc) => {
+              tempArr.push(doc.data());
+              console.log("Document written, details:", tempArr);
+            })
+            .catch((error) => {
+              console.error("Error retrieving added data from firestore:", error);
+            });
         }
-        alert("Post successful.")
+        alert("Post successful.");
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
@@ -175,6 +182,8 @@ export function AuthProvider({ children }) {
     handlePostClick,
     handlePostComment,
     CheckCommentsExist,
+    isSignedIn,
+    setIsSignedIn,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
