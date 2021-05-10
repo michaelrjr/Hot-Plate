@@ -33,7 +33,7 @@ export default function RecipeSearch() {
 
   // this functions requests random recipes from spoonacular
   const getRandomRecipes = async () => {
-    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=25&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
+    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=10&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
     try {
       const resp = await axios.get(API_URL);
       setApiData(resp.data.recipes);
@@ -60,7 +60,7 @@ export default function RecipeSearch() {
 
   // this function requests filtered recipes from spoonacular
   const getFilteredRecipes = async () => {
-    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=25&sort=random&information&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
+    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=10&sort=random&information&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
     try {
       const resp = await axios.get(API_URL);
       // if there are no results from filtered search
