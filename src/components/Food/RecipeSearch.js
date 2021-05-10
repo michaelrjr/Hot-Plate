@@ -32,7 +32,7 @@ export default function RecipeSearch() {
 
   // this functions requests random recipes from spoonacular
   const getRandomRecipes = async () => {
-    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=100&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
+    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=100&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
     try {
       const resp = await axios.get(API_URL);
       setApiData(resp.data.recipes);

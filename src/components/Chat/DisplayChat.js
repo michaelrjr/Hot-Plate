@@ -54,7 +54,7 @@ export default function DisplayChat(props) {
                           <div>
                             I thought you might like this recipe:
                             <br />
-                            <Link to="/moreinfo">
+                            <Link to="/more-info">
                               <button className="" onClick={() => setRecipeID(message.message.substring(29))}>
                                 View Recipe
                               </button>
@@ -78,7 +78,7 @@ export default function DisplayChat(props) {
                           <div>
                             I thought you might like this recipe:
                             <br />
-                            <Link to="/moreinfo">
+                            <Link to="/more-info">
                               <button className="" onClick={() => setRecipeID(message.message.substring(29))}>
                                 View Recipe
                               </button>
