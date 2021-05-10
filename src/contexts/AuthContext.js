@@ -58,106 +58,6 @@ export function AuthProvider({ children }) {
     setID(id);
   }
 
-  // so we can use handlePostClick anywhere in the app for sharing recipes
-  const handlePostClick = (post, recipeID, image, title) => {
-    recipeID = recipeID ? recipeID : null;
-    image = image ? image : null;
-    title = title ? title : null;
-    const thisPostID = uuidv4();
-    ref
-      .doc(thisPostID)
-      .set({
-        email: currentUser.email,
-        post: post,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        recipeID: recipeID,
-        image: image,
-        recipeTitle: title,
-        postID: thisPostID,
-        childCommentSectionID: uuidv4(),
-      })
-      .then((docRef) => {
-        if (docRef) console.log("Document written with ID: ", docRef.id);
-        else {
-          const tempArr = [];
-          ref
-            .doc(thisPostID)
-            .get()
-            .then((doc) => {
-              tempArr.push(doc.data());
-              console.log("Document written, details:", tempArr);
-            })
-            .catch((error) => {
-              console.error("Error retrieving added data from firestore:", error);
-            });
-        }
-        alert("Post successful.");
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-  };
-
-  const handlePostComment = (comment, postID, childCommentSectionID) => {
-    if (comment.length > 0 && postID) {
-      ref
-        .where("postID", "==", postID)
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            if (doc.exists) {
-              doc.ref
-                .collection(childCommentSectionID)
-                .add({
-                  comment: comment,
-                  commentSectionID: childCommentSectionID,
-                  from: currentUser.email,
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                })
-                .then((docRef) => {
-                  console.log("Document written with ID: ", docRef.id);
-                })
-                .catch((error) => {
-                  console.error("Error adding document: ", error);
-                });
-            }
-          });
-        });
-    }
-  };
-
-  const CheckCommentsExist = (postID, childCommentSectionID) => {
-    const [returnBool, setReturnBool] = useState(0);
-    useEffect(() => {
-      const getData = async () => {
-        if (postID) {
-          ref
-            .where("postID", "==", postID)
-            .get()
-            .then((snapshot) => {
-              snapshot.forEach((doc) => {
-                if (doc.exists) {
-                  doc.ref
-                    .collection(childCommentSectionID)
-                    .get()
-                    .then((sub) => {
-                      if (sub.docs.length > 0) {
-                        setReturnBool(true);
-                        return true;
-                      } else setReturnBool(false);
-                    });
-                }
-              });
-            })
-            .then(() => {
-              return returnBool;
-            });
-        } else setReturnBool(false);
-      };
-      getData();
-    }, []);
-    return returnBool;
-  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -180,9 +80,6 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     recipeID,
     setRecipeID,
-    handlePostClick,
-    handlePostComment,
-    CheckCommentsExist,
     setIsLoading,
     setIsSignedUp,
   };

@@ -45,6 +45,7 @@ function App() {
           ) : (
             <Route exact path="/" component={DashboardNotSignedIn} />
           )}
+          <Route component={Feed} />
         </Switch>
       </Router>
     </div>
