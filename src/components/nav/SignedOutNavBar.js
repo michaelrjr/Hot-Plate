@@ -31,9 +31,10 @@ export default function SignedOutNavBar() {
       await signIn(email, password);
       await ref.doc(email).update({ online: true });
       setIsSignedIn(true);
-      history.push("/recipe-search");
+      history.push("/profile");
       setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       setError("incorrect email or password");
     }
   };

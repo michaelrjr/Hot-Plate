@@ -15,7 +15,8 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
+
   const [recipeID, setID] = useState(0);
   //database ref
   const ref = app.firestore().collection("feed");
@@ -182,12 +183,29 @@ export function AuthProvider({ children }) {
     handlePostClick,
     handlePostComment,
     CheckCommentsExist,
-    isSignedIn,
-    setIsSignedIn,
     setIsLoading,
+    setIsSignedUp,
   };
 
+  console.log(isSignedUp);
+
   if (isLoading) return <LoadingFullScreen />;
+  if (isSignedUp)
+    return (
+      <div className="container">
+        <div className="alert alert-success text-center" role="alert">
+          Account created successfully. Signing in...
+        </div>
+        <div className="mfPlate">
+          <div>
+            <div className="spinnerHolder">
+              <div className="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+            <h3>Loading...</h3>
+          </div>
+        </div>
+      </div>
+    );
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }

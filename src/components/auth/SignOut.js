@@ -16,7 +16,6 @@ export default function SignOut() {
       setIsLoading(true);
       await ref.doc(currentUser.email).update({ online: false });
       await signOut();
-      setIsSignedIn(false);
       history.push("/");
       setIsLoading(false);
     } catch (error) {

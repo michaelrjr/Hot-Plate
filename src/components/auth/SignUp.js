@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import app from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 
@@ -11,7 +11,8 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const [message, setMessage] = useState("");
-  const { sendEmailVerification } = useAuth();
+  const { sendEmailVerification, currentUser, setIsLoading, setIsSignedUp } = useAuth();
+  const history = useHistory();
 
   //database ref
   const ref = app.firestore().collection("Users");
@@ -39,13 +40,13 @@ function SignUp() {
     onSubmit: async (values) => {
       //make post request here with user info
       try {
+        setIsSignedUp(true);
         setError("");
-
         // signup user with email and password
         await signUp(values.email, values.password);
-
-        setMessage("Success, account created. Please sign in.");
         await sendEmailVerification();
+        history.push("/");
+        setIsSignedUp(false);
       } catch {
         setError("Error, failed to create account. Please try again.");
       }

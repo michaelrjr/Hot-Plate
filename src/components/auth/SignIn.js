@@ -28,8 +28,7 @@ function SignIn() {
         // sign a user in with email and password
         await signIn(values.email, values.password);
         await ref.doc(values.email).update({ online: true });
-        setIsSignedIn(true);
-        history.push("/recipe-search");
+        history.push("/");
         setIsLoading(false);
       } catch {
         setError("incorrect email or password");

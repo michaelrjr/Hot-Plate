@@ -20,12 +20,12 @@ import { useAuth } from "../contexts/AuthContext";
 import SignedOutNavBar from "./nav/SignedOutNavBar";
 
 function App() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, currentUser } = useAuth();
 
   return (
     <div className="App">
       <Router>
-        {isSignedIn ? <NavBar /> : <SignedOutNavBar />}
+        {currentUser ? <NavBar /> : <SignedOutNavBar />}
         <br />
         <Switch>
           <PrivateRoute path="/create-recipe" component={CreateRecipe} />
@@ -40,7 +40,7 @@ function App() {
           <Route path="/forgot-password" component={ForgotPassword} />
           <PrivateRoute path="/feed" component={Feed} />
           <PrivateRoute path="/recipe-search" component={RecipeSearch} />
-          {isSignedIn ? (
+          {currentUser ? (
             <PrivateRoute exact path="/" component={RecipeSearch} />
           ) : (
             <Route exact path="/" component={DashboardNotSignedIn} />
