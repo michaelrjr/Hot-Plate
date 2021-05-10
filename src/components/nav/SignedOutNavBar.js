@@ -29,7 +29,7 @@ export default function SignedOutNavBar() {
       await signIn(email, password);
       await ref.doc(email).update({ online: true });
       setIsLoading(true);
-      history.push("/profile");
+      history.push("/");
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
