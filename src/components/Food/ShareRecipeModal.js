@@ -6,25 +6,30 @@ import { firebase } from "@firebase/app";
 import app from "../../firebase";
 
 export default function ShareRecipeModal(props) {
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
   const [showIngredients, setShowIngredients] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPostButton, setShowPostButton] = useState(true);
   const [postMessage, setPostMessage] = useState("");
   const feedCollection = app.firestore().collection("feed");
   const [userData, setUserData] = useState(null);
-  var isMounted=false;
-  
+  var isMounted = false;
+
   useEffect(() => {
-    isMounted=true;
+    isMounted = true;
     getUserData();
-    return () => isMounted=false;
+    return () => (isMounted = false);
   }, []);
-  
-  function getUserData(){
-    app.firestore().collection("Users").doc(currentUser.email).get().then((doc) => {
-      if(isMounted) setUserData(doc.data());
-    });
+
+  function getUserData() {
+    app
+      .firestore()
+      .collection("Users")
+      .doc(currentUser.email)
+      .get()
+      .then((doc) => {
+        if (isMounted) setUserData(doc.data());
+      });
   }
 
   const handlePostMessageChange = (event) => {
@@ -48,25 +53,28 @@ export default function ShareRecipeModal(props) {
         postID: thisPostID,
         childCommentSectionID: uuidv4(),
         authorFName: userData.firstName,
-        authorSName: userData.lastName
+        authorSName: userData.lastName,
       })
       .then((docRef) => {
-        if(docRef) console.log("Document written with ID: ", docRef.id);
-        else{
+        if (docRef) console.log("Document written with ID: ", docRef.id);
+        else {
           const tempArr = [];
-          feedCollection.doc(thisPostID).get().then((doc) => {
-            tempArr.push(doc.data());
-            console.log("Document written, details:", tempArr);
-          }).catch((error) => {
-            console.error("Error retrieving added data from firestore:", error);
-          })
+          feedCollection
+            .doc(thisPostID)
+            .get()
+            .then((doc) => {
+              tempArr.push(doc.data());
+            })
+            .catch((error) => {
+              throw error;
+            });
         }
-        if(props.setRecipeSaved!==undefined) props.setRecipeSaved(true);
-        if(props.setRecipeShared!==undefined) props.setRecipeShared(true);
+        if (props.setRecipeSaved !== undefined) props.setRecipeSaved(true);
+        if (props.setRecipeShared !== undefined) props.setRecipeShared(true);
         alert("Post successful.");
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
+        throw error;
       });
   };
 
@@ -93,10 +101,10 @@ export default function ShareRecipeModal(props) {
               )}
               {props.spoonacularRecipe && showIngredients && (
                 <div className="mt-3">
-                {recipe.extendedIngredients.map((ingredients, index) => (
-                  <li key={index}>{ingredients.original}</li>
-                ))}
-              </div>
+                  {recipe.extendedIngredients.map((ingredients, index) => (
+                    <li key={index}>{ingredients.original}</li>
+                  ))}
+                </div>
               )}
             </div>
             <div className="mb-3">
@@ -147,7 +155,7 @@ export default function ShareRecipeModal(props) {
                 className="btn btn-primary w-100"
                 onClick={() => {
                   handlePostClick(postMessage, recipe.id, recipe.image, recipe.title);
-                  if(props.handleSaveClick) props.handleSaveClick();
+                  if (props.handleSaveClick) props.handleSaveClick();
                   props.handleClose();
                 }}>
                 Post

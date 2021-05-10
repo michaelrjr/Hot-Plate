@@ -7,7 +7,7 @@ import app from "../../firebase";
 
 function SignIn() {
   const [error, setError] = useState("");
-  const { signIn, setIsSignedIn, setIsLoading } = useAuth();
+  const { signIn, setIsLoading } = useAuth();
   const history = useHistory();
   // db ref
   const ref = app.firestore().collection("Users");
@@ -33,7 +33,6 @@ function SignIn() {
       } catch (error) {
         setIsLoading(false);
         setError("Incorrect email or password");
-        console.log(error);
       }
     },
   });

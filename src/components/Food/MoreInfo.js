@@ -65,7 +65,7 @@ export default function MoreInfo() {
         setUserDetails(doc.data());
       })
       .catch((error) => {
-        console.log(error);
+        throw error;
       });
   };
 
@@ -84,7 +84,6 @@ export default function MoreInfo() {
       .catch((error) => {
         setIsFetched(false);
         setErrorMsg(error);
-        console.log("Error getting API recipe:", error);
       });
   }
 
@@ -125,9 +124,12 @@ export default function MoreInfo() {
   //check if user has already added recipe to their saved recipes
   const checkRecipeAdded = () => {
     let apiref = ref.doc(currentUser.uid).collection("recipes");
-    apiref.doc(recipeID.toString()).get().then((docSnapshot) => {
-      if (docSnapshot.exists) setDelOrSave(true);
-    });
+    apiref
+      .doc(recipeID.toString())
+      .get()
+      .then((docSnapshot) => {
+        if (docSnapshot.exists) setDelOrSave(true);
+      });
   };
   //allow Signed-In users to save recipes to the database.
   //Duplicate handling already implemented in this method.
@@ -139,21 +141,24 @@ export default function MoreInfo() {
     });
     if (currentUser != null) {
       let apiref = ref.doc(currentUser.uid).collection("recipes");
-      apiref.doc(id.toString()).get().then((docSnapshot) => {
-        if (docSnapshot.exists) alert("Recipe already saved!");
-        else {
-          apiref.doc(id.toString()).set({
-            id: id,
-            title: title,
-            image: image,
-            ingredients: ingred,
-            instructions: instruct,
-            fromAPI: true,
-          });
-          setDelOrSave(true);
-          alert("Saved to Favourites");
-        }
-      });
+      apiref
+        .doc(id.toString())
+        .get()
+        .then((docSnapshot) => {
+          if (docSnapshot.exists) alert("Recipe already saved!");
+          else {
+            apiref.doc(id.toString()).set({
+              id: id,
+              title: title,
+              image: image,
+              ingredients: ingred,
+              instructions: instruct,
+              fromAPI: true,
+            });
+            setDelOrSave(true);
+            alert("Saved to Favourites");
+          }
+        });
     } else {
       alert("Please Sign-in to start saving recipes.");
     }
@@ -181,9 +186,7 @@ export default function MoreInfo() {
   const handleDMShowShare = () => setShowDMModal(!showDMModal);
 
   if (isLoading) {
-    return (
-      <LoadingFullScreen />
-    );
+    return <LoadingFullScreen />;
   }
 
   // if there is an error
@@ -191,7 +194,6 @@ export default function MoreInfo() {
     return (
       <div className="container">
         <div className="alert alert-danger" role="alert">
-          {console.log(errorMsg)}
           <h3>An error has occured. Recipe may no longer exist.</h3>
         </div>
       </div>
@@ -214,13 +216,13 @@ export default function MoreInfo() {
                       spoonacularRecipe={spoonacularRecipe}
                     />
                   )}
-                  {recipe && 
-                    <ShareDMModal 
+                  {recipe && (
+                    <ShareDMModal
                       showDMModal={showDMModal}
                       recipeID={recipe.id}
                       handleDMShowShare={handleDMShowShare}
                     />
-                  }
+                  )}
                 </div>
                 <img className="card-img-top" src={recipe?.image ? recipe?.image : "noimage.jpg"} alt="recipe" />
                 <div className="card-body">

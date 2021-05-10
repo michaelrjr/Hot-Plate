@@ -45,10 +45,6 @@ export default function CreateRecipe() {
     },
   });
 
-  useEffect(() => {
-    getUserDetails();
-  }, []);
-
   const handleSaveClick = () => {
     ref
       .doc(formik.values.id)
@@ -61,29 +57,17 @@ export default function CreateRecipe() {
       });
   };
 
-  const getUserDetails = () => {
-    userRef
-      .doc(currentUser.email)
-      .get()
-      .then((doc) => {
-        setUserDetails(doc.data());
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
-
   // uploads a file and adds it to firebase storage
   const handleFileChange = async (e) => {
     setFileName("");
     const file = e.target.files[0];
     const fileNameArray = file?.name.split(".");
-    if(fileNameArray.length==0 || !fileNameArray) return setErrorMsg("Bad file: please ensure it is a .jpg or .png file");
-    if (!["jpg", "jpeg", "png"].includes(fileNameArray[fileNameArray.length-1].toLowerCase())) return setErrorMsg("Only png and jpg files are supported."); // check file type
-
+    if (fileNameArray.length == 0 || !fileNameArray)
+      return setErrorMsg("Bad file: please ensure it is a .jpg or .png file");
+    if (!["jpg", "jpeg", "png"].includes(fileNameArray[fileNameArray.length - 1].toLowerCase()))
+      return setErrorMsg("Only png and jpg files are supported."); // check file type
     setFileName(file.name);
-    const uniqueFileName = uuidv4().toString()+"."+fileNameArray[fileNameArray.length-1];
-
+    const uniqueFileName = uuidv4().toString() + "." + fileNameArray[fileNameArray.length - 1];
     setErrorMsg("");
     const storageRef = app.storage().ref(); //firebase storage ref
     const fileRef = storageRef.child(uniqueFileName);
@@ -95,13 +79,12 @@ export default function CreateRecipe() {
   // sets ingredient to the user input
   const handleIngredientsChange = (e) => {
     setIngredient(e.target.value);
-    console.log(e.target.value);
   };
 
   // appeneds new ingredient to the ingredientsArray when user clicks add button
   const handleAddIngredientClick = () => {
     const newItems = [...ingredientsArray, ingredient];
-    if (!/^\s*$/.test(newItems[newItems.length-1])) {
+    if (!/^\s*$/.test(newItems[newItems.length - 1])) {
       setIngredientsArray(newItems);
       formik.setFieldValue("ingredients", newItems);
       setIngredient("");
