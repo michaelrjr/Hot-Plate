@@ -41,23 +41,18 @@ export default function Chat() {
     return () => {
       if (unsub1) {
         unsub1();
-        console.log("unsub1");
       }
       if (unsub2) {
         unsub2();
-        console.log("unsub2");
       }
       if (unsub3) {
         unsub3();
-        console.log("unsub3");
       }
       if (unsub4) {
         unsub4();
-        console.log("unsub4");
       }
       if (unsub5) {
         unsub5();
-        console.log("unsub5");
       }
       isMounted = false;
     };
@@ -98,7 +93,7 @@ export default function Chat() {
         setShowChat(true);
       })
       .catch((error) => {
-        console.log("Error getting document:", error);
+        throw error;
       });
   };
 
@@ -116,11 +111,9 @@ export default function Chat() {
     setOtherUserDetails([]);
     if (unsub3) {
       unsub3();
-      console.log("unsub3");
     }
     if (unsub4) {
       unsub4();
-      console.log("unsub4");
     }
     setShowChat(false);
   };
@@ -132,23 +125,22 @@ export default function Chat() {
   const handleSendMessage = (event) => {
     const commentID = uuidv4();
     event.preventDefault();
-    db.doc(otherUserEmail).collection("messages").add({
-      message: message,
-      from: currentUser.email,
-      to: otherUserEmail,
-      read: false,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      commentID: commentID,
-    });
-    db.doc(currentUser.email).collection("messages").add({
-      message: message,
-      from: currentUser.email,
-      to: otherUserEmail,
-      read: false,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      commentID: commentID,
-    });
-
+      db.doc(otherUserEmail).collection("messages").add({
+        message: message,
+        from: currentUser.email,
+        to: otherUserEmail,
+        read: false,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        commentID: commentID,
+      });
+      db.doc(currentUser.email).collection("messages").add({
+        message: message,
+        from: currentUser.email,
+        to: otherUserEmail,
+        read: false,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        commentID: commentID,
+      });
     setMessage("");
   };
 
