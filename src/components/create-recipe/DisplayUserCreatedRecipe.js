@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { BiSave } from "react-icons/bi";
-import ShareRecipeModal from "../food/ShareRecipeModal";
+import ShareRecipeModal from "../Food/ShareRecipeModal";
 
 export default function DisplayUserCreatedRecipe(props) {
   const [showIngredients, setShowIngredients] = useState(false);
