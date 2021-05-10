@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import app from "../../firebase";
 import { firebase } from "@firebase/app";
 import DisplayOnlineUsers from "./DisplayOnlineUsers";
 import DisplayChat from "./DisplayChat";
 import { v4 as uuidv4 } from "uuid";
-import { Link } from "react-router-dom";
-import { propTypes } from "react-bootstrap/esm/Image";
 import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function Chat() {
