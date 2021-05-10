@@ -12,6 +12,7 @@ const app = firebase.initializeApp({
   storageBucket: "fb-test-proj-abde8.appspot.com",
   messagingSenderId: "328801899539",
   appId: "1:328801899539:web:241f5f6e3e71651c101be6",
+  measurementId: "G-QZ4Y34FTEJ"
 });
 
 export const auth = app.auth();

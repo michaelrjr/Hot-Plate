@@ -3,16 +3,18 @@ import { auth, googleAuth } from "../firebase";
 import { firebase } from "@firebase/app";
 import app from "../firebase";
 import { v4 as uuidv4 } from "uuid";
+import LoadingFullScreen from "../components/LoadingFullScreen";
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
 }
-//contexts allow for passing functions and variables around the app.
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [recipeID, setID] = useState(0);
   //database ref
@@ -23,12 +25,10 @@ export function AuthProvider({ children }) {
   }
 
   function signIn(email, password) {
-    // setIsSignedIn(true);
     return auth.signInWithEmailAndPassword(email, password);
   }
 
   function signOut() {
-    setIsSignedIn(false);
     return auth.signOut();
   }
 
@@ -184,7 +184,10 @@ export function AuthProvider({ children }) {
     CheckCommentsExist,
     isSignedIn,
     setIsSignedIn,
+    setIsLoading,
   };
+
+  if (isLoading) return <LoadingFullScreen />;
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }

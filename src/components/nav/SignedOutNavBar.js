@@ -3,10 +3,11 @@ import { Navbar } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import app from "../../firebase";
+import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function SignedOutNavBar() {
   const [error, setError] = useState("");
-  const { signIn } = useAuth();
+  const { signIn, setIsSignedIn, setIsLoading } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -25,14 +26,18 @@ export default function SignedOutNavBar() {
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       setError("");
       await signIn(email, password);
       await ref.doc(email).update({ online: true });
+      setIsSignedIn(true);
       history.push("/recipe-search");
+      setIsLoading(false);
     } catch (error) {
       setError("incorrect email or password");
     }
   };
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
       <Navbar.Brand>
