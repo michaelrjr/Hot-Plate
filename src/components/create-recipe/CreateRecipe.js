@@ -133,7 +133,7 @@ export default function CreateRecipe() {
             <div className="card-body">
               <h3 className="card-title text-center mb-4">Create Your Own Recipe</h3>
               <form onSubmit={formik.handleSubmit}>
-                {/* ================ RECIPE IMAGE ================== */}
+                {/* ================ RECIPE IMAGE HERE ================== */}
 
                 <div className="mb-3">
                   <div className="custom-file">
