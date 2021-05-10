@@ -258,10 +258,6 @@ export default function MoreInfo() {
                   <button className="btn btn-secondary" onClick={handleDMShowShare}>
                     Share via DM
                   </button>
-                  {/*
-                      NB: We can check to see if the currentUser is the author of this recipe, and if so, we should not show the save/delete button since this recipe is already present in saved recipes.
-                      It would be a good idea though to actually separate saved recipes and custom created recipes. They are not the same thing and we will run into problems storing them in the same collection.
-                  */}
                   {delOrSave && !currentUserIsAuthor && (
                     <button className="btn btn-danger float-right" onClick={() => removeAPIRecipe(recipe.id)}>
                       Remove Recipe
@@ -292,11 +288,6 @@ export default function MoreInfo() {
                   <button className="btn btn-warning w-100" onClick={() => setShowIngredients(!showIngredients)}>
                     Ingredients
                   </button>
-                  {/*
-                    Alt to "extendedIngredients" could use recipeInfo[0].ingredients
-                    That is the equivalent array to use.
-                    Each item is a string. Would just need to map through and add each one as a list item.
-                   */}
                   {spoonacularRecipe ? (
                     <Collapse in={showIngredients}>
                       <div className="mt-3">
@@ -320,11 +311,6 @@ export default function MoreInfo() {
                   <button className="btn btn-success w-100" onClick={() => setShowInstructions(!showInstructions)}>
                     Instructions
                   </button>
-                  {/*
-                    Alt to "analysedInstructions" could use recipeInfo[0].instructions
-                    That is the equivalent array to use.
-                    Each item is a string. Would just need to map through and add each one as a list item.
-                   */}
                   {spoonacularRecipe ? (
                     <Collapse in={showInstructions}>
                       <div className="mt-3">

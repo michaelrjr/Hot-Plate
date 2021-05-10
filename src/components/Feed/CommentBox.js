@@ -39,9 +39,6 @@ export default function CommentBox(props) {
                 lastName: userData.lastName,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               })
-              // .then((docRef) => {
-              //   // console.log("Document written with ID: ", docRef.id);
-              // })
               .catch((error) => {
                 throw error;
               });

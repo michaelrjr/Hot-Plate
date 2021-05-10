@@ -75,7 +75,6 @@ export default function RecipeSearch() {
       setIsFetched(false);
       setErrorMsg(error);
     }
-    // removeFilters(); // set filters back to empty string after every filtered search
   };
 
   const saveAPIRecipe = (id, title, image, ingred, instruct) => {
