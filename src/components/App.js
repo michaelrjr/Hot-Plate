@@ -20,7 +20,7 @@ import { useAuth } from "../contexts/AuthContext";
 import SignedOutNavBar from "./nav/SignedOutNavBar";
 
 function App() {
-  const { isSignedIn, currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <div className="App">
@@ -45,6 +45,7 @@ function App() {
           ) : (
             <Route exact path="/" component={DashboardNotSignedIn} />
           )}
+          <Route component={Feed} />
         </Switch>
       </Router>
     </div>

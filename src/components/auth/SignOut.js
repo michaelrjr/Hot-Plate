@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import app from "../../firebase";
 
 export default function SignOut() {
-  const { currentUser, signOut, setIsSignedIn, setIsLoading } = useAuth();
+  const { currentUser, signOut, setIsLoading } = useAuth();
   const history = useHistory();
 
   //database ref

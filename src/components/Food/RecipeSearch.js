@@ -26,7 +26,6 @@ export default function RecipeSearch() {
 
   // call getRandomRecipes() when the page loads
   useEffect(() => {
-    console.log("In recipe search");
     getRandomRecipes();
     getUserDetails();
   }, []);

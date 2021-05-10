@@ -23,16 +23,17 @@ function SignIn() {
     }),
     onSubmit: async (values) => {
       try {
-        setIsLoading(true);
         setError("");
         // sign a user in with email and password
         await signIn(values.email, values.password);
         await ref.doc(values.email).update({ online: true });
+        setIsLoading(true);
         history.push("/");
         setIsLoading(false);
-      } catch {
-        setError("incorrect email or password");
+      } catch (error) {
         setIsLoading(false);
+        setError("Incorrect email or password");
+        console.log(error);
       }
     },
   });
