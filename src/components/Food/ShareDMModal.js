@@ -47,8 +47,6 @@ export default function ShareDMModal(props) {
       read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       commentID: commentID,
-    }).then((docRef) =>{
-        console.log("Document written with ID: ",docRef.id);
     });
     conversationsColl.doc(currentUser.email).collection("messages").add({
       message: message,
@@ -57,8 +55,6 @@ export default function ShareDMModal(props) {
       read: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       commentID: commentID,
-    }).then((docRef) =>{
-        console.log("Document written with ID: ",docRef.id);
     });
     alert("Recipe shared to "+otherUserEmail);
 }

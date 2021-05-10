@@ -9,14 +9,12 @@ export default function RecipeFilters(props) {
   const handleCloseFilters = () => {
     setShow(false);
     setShowIntolerances(false);
-    // props.resetIntolerance();
   }
   const handleShowFilters = () => setShow(true);
 
     //to Hide the intolerance checkboxes and reset the intolerance array
   const closedIntolerance = () =>{
     setShowIntolerances(!showIntolerances);
-    // props.resetIntolerance();
   }
 
   const handleIntoleranceBox = (event) =>{
