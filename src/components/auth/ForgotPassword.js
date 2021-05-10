@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 function ForgotPassword() {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const { resetPassword } = useAuth();
   const [message, setMessage] = useState("");
   const formik = useFormik({
@@ -17,16 +16,13 @@ function ForgotPassword() {
       email: Yup.string().email("Invalid email address").required("Required"),
     }),
     onSubmit: async (values) => {
-      console.log("form data", values);
       try {
         setError("");
-        setLoading(true);
         await resetPassword(values.email);
         setMessage(`An email has been sent to ${values.email} to reset your password. Please check your inbox.`);
       } catch {
         setError("Error, incorrect email. Please try again.");
       }
-      setLoading(false);
     },
   });
   return (
@@ -64,7 +60,7 @@ function ForgotPassword() {
                 ) : null}
               </div>
               <div className="mb-3">
-                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                <button type="submit" className="btn btn-primary w-100">
                   Reset Password
                 </button>
               </div>

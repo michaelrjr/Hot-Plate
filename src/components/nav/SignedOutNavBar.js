@@ -3,11 +3,10 @@ import { Navbar } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import app from "../../firebase";
-import LoadingFullScreen from "../LoadingFullScreen";
 
 export default function SignedOutNavBar() {
   const [error, setError] = useState("");
-  const { signIn, setIsSignedIn, setIsLoading } = useAuth();
+  const { signIn, setIsLoading } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
