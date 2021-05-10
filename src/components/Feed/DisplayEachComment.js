@@ -17,7 +17,7 @@ export default function DisplayEachComment(props) {
         if (isMounted) setCurrentUserData(doc.data());
       })
       .catch((error) => {
-        throw("Error getting document:", error);
+        throw error;
       });
     return () => (isMounted = false);
   }, []);

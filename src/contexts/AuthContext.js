@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth, googleAuth } from "../firebase";
-import { firebase } from "@firebase/app";
 import app from "../firebase";
-import { v4 as uuidv4 } from "uuid";
 import LoadingFullScreen from "../components/LoadingFullScreen";
 
 const AuthContext = React.createContext();
@@ -18,8 +16,6 @@ export function AuthProvider({ children }) {
   const [isSignedUp, setIsSignedUp] = useState(false);
 
   const [recipeID, setID] = useState(0);
-  //database ref
-  const ref = app.firestore().collection("feed");
 
   function signUp(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -58,7 +54,6 @@ export function AuthProvider({ children }) {
     setID(id);
   }
 
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -85,6 +80,7 @@ export function AuthProvider({ children }) {
   };
 
   if (isLoading) return <LoadingFullScreen />;
+
   if (isSignedUp)
     return (
       <div className="container">

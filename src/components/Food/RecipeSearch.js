@@ -53,7 +53,7 @@ export default function RecipeSearch() {
         setUserDetails(doc.data());
       })
       .catch((error) => {
-        throw(error);
+        throw error;
       });
   };
 

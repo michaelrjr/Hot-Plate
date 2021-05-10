@@ -3,7 +3,6 @@ import SignUp from "./auth/SignUp";
 import SignIn from "./auth/SignIn";
 import ForgotPassword from "./auth/ForgotPassword";
 import UpdateProfile from "./auth/UpdateProfile";
-import { AuthProvider } from "../contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import MoreInfo from "./food/MoreInfo";

@@ -66,14 +66,13 @@ export default function Profile() {
   const handleFileChange = async (e) => {
     setFileName("");
     const file = e.target.files[0];
-
-    const fileNameArray = file?.name.split('.');
-    if(fileNameArray.length==0 || !fileNameArray) return setErrorMsg("Bad file: please ensure it is a .jpg or .png file");
-    if (!["jpg", "jpeg", "png"].includes(fileNameArray[fileNameArray.length-1].toLowerCase())) return setErrorMsg("Only png and jpg files are supported."); // check file type
-
+    const fileNameArray = file?.name.split(".");
+    if (fileNameArray.length == 0 || !fileNameArray)
+      return setErrorMsg("Bad file: please ensure it is a .jpg or .png file");
+    if (!["jpg", "jpeg", "png"].includes(fileNameArray[fileNameArray.length - 1].toLowerCase()))
+      return setErrorMsg("Only png and jpg files are supported."); // check file type
     setFileName(file.name);
-    const uniqueFileName = uuidv4().toString()+"."+fileNameArray[fileNameArray.length-1];
-
+    const uniqueFileName = uuidv4().toString() + "." + fileNameArray[fileNameArray.length - 1];
     setErrorMsg("");
     const storageRef = app.storage().ref(); //firebase storage ref
     const fileRef = storageRef.child(uniqueFileName);

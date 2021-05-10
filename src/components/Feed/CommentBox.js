@@ -40,7 +40,7 @@ export default function CommentBox(props) {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               })
               .catch((error) => {
-                throw("Error adding document: ", error);
+                throw error;
               });
           }
         });
