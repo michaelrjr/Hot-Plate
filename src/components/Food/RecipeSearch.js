@@ -116,7 +116,10 @@ export default function RecipeSearch() {
   const nextRecipe = () => {
     setErrorMsg("");
     if (recipeNum === apiData.length - 1) {
+      setIsFetched(false);
       setRecipeNum(0);
+      if(filtersCount === 0) getRandomRecipes();
+      else getFilteredRecipes(); 
       // will need to handle what happens when we reach the end of the array with both random recipes and filtered recipes...
     } else {
       setRecipeNum(recipeNum + 1);
