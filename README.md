@@ -17,7 +17,10 @@ Comment on other users posts
 Create your own recipe and share it with the Hot-Plate community
 
 
-In the project directory, you can run:
+
+TO RUN THIS APPLICATION:
+
+### `npm install`
 
 ### `npm start`
 
