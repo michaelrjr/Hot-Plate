@@ -26,13 +26,14 @@ export default function RecipeSearch() {
 
   // call getRandomRecipes() when the page loads
   useEffect(() => {
+    console.log("In recipe search");
     getRandomRecipes();
     getUserDetails();
   }, []);
 
   // this functions requests random recipes from spoonacular
   const getRandomRecipes = async () => {
-    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=100&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
+    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=10&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
     try {
       const resp = await axios.get(API_URL);
       setApiData(resp.data.recipes);
@@ -59,7 +60,7 @@ export default function RecipeSearch() {
 
   // this function requests filtered recipes from spoonacular
   const getFilteredRecipes = async () => {
-    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=100&sort=random&information&rapidapi-key=8c2ba2eb1cmsh1e86967079ea9fap1ceb6ejsne0ac3740b914`;
+    let API_URL = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch?diet=${diet}&intolerances=${intolerance}&type=${mealType}&cuisine=${cuisine}&maxReadyTime=1000&number=10&sort=random&information&rapidapi-key=${process.env.REACT_APP_API_KEY}`;
     try {
       const resp = await axios.get(API_URL);
       // if there are no results from filtered search
