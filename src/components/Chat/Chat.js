@@ -26,7 +26,6 @@ export default function Chat() {
   const [unsub4, setUnsub4] = useState(undefined);
   const [unsub5, setUnsub5] = useState(undefined);
   var isMounted = false;
-  const bottomElement = useRef();
 
   //database ref
   const db = app.firestore().collection("conversations");
@@ -163,12 +162,6 @@ export default function Chat() {
       });
   };
 
-  //   function scrollToBottomElement(){
-  //     if(bottomElement.current){
-  //         bottomElement.current.scrollTop = bottomElement.current.scrollHeight;
-  //     }
-  // }
-
   //update read status to true when start chat button is clicked
   const setMessageToRead = (email) => {
     return db
@@ -184,7 +177,7 @@ export default function Chat() {
 
   //handle delete
   const handleDeleteMessageClick = (id) => {
-    db.doc(`${currentUser.email}`)
+    db.doc(currentUser.email)
       .collection("messages")
       .where("commentID", "==", id)
       .get()
@@ -193,7 +186,7 @@ export default function Chat() {
           doc.ref.delete();
         });
       });
-    db.doc(`${otherUserEmail}`)
+    db.doc(otherUserEmail)
       .collection("messages")
       .where("commentID", "==", id)
       .get()
@@ -209,7 +202,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="container d-flex justify-content-center pb-3" style={{ minHeight: "100%" }}>
+    <div className="container d-flex justify-content-center chat pb-3" style={{ minHeight: "100%" }}>
       <div className="w-100 chatCont" style={{ maxWidth: "450px" }}>
         {showChat == false ? (
           <DisplayOnlineUsers
@@ -224,7 +217,6 @@ export default function Chat() {
         ) : null}
         {showChat == true ? (
           <DisplayChat
-            // ref={bottomElement}
             otherUserDetails={otherUserDetails}
             currentUser={currentUser}
             chatMessages={chatMessages}

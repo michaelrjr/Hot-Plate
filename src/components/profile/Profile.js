@@ -40,7 +40,6 @@ export default function Profile() {
       });
   };
 
-  // when the user clicks "upload" update that users avatar image
   const handleSubmit = async (e) => {
     e.preventDefault();
     await ref.doc(currentUser.email).update({ avatar: fileURL });
@@ -55,6 +54,14 @@ export default function Profile() {
   };
 
   // handles the users uploaded image
+  // when the user clicks "upload" update that users avatar image
+  // We have a problem here with unique filenames. This is as per docs but is not working.
+  // An imperfect fix was implemented, and removed.
+  // A seemingly better fix, from firebase docs, was implemented, and it does not seem to be working.
+  // See: https://firebase.google.com/docs/storage/web/upload-files
+  // FILES NEED UNIQUE REF
+  // OTHERWISE WE END UP WITH LOADS OF 403 ERRORS ON OUR PROFILE IMAGES
+  // This is now happening again, despite the below fix with duplicate images / images with the same name (noticed when I set multiple profiles to have the same profile photo)
   const handleFileChange = async (e) => {
     setFileName("");
     const file = e.target.files[0];

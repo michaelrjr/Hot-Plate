@@ -19,13 +19,6 @@ import DashboardNotSignedIn from "./DashboardNotSignedIn";
 import { useAuth } from "../contexts/AuthContext";
 import SignedOutNavBar from "./nav/SignedOutNavBar";
 
-//import food from "../../src/css/food_pattern_repeating.jpg";
-
-//style={{ maxWidth: "450px" }} for main div container
-{
-  /* <div className="App" style={{ backgroundImage: `url(${food})` }}> */
-}
-
 function App() {
   const { isSignedIn } = useAuth();
 
