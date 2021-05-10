@@ -43,8 +43,18 @@ function SignUp() {
         setError("");
         // signup user with email and password
         await signUp(values.email, values.password);
-        await ref.doc(values.email).update({ online: true });
         //await sendEmailVerification();
+        // create user document in user collection when sign up is clicked
+        await ref.doc(values.email).set({
+          uuid: uuidv4(),
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          online: false,
+          avatar: null,
+          joined: new Date().toDateString(),
+        });
+        await ref.doc(values.email).update({ online: true });
         setIsSignedUp(true);
         history.push("/");
         setIsSignedUp(false);
@@ -52,17 +62,6 @@ function SignUp() {
         setIsSignedUp(false);
         setError("Error, failed to create account. Please try again.");
       }
-
-      // create user document in user collection when sign up is clicked
-      await ref.doc(values.email).set({
-        uuid: uuidv4(),
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        online: false,
-        avatar: null,
-        joined: new Date().toDateString(),
-      });
     },
   });
 
