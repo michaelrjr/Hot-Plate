@@ -7,8 +7,7 @@ import app from "../../firebase";
 
 function SignIn() {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { signIn, setIsSignedIn } = useAuth();
+  const { signIn, setIsSignedIn, setIsLoading } = useAuth();
   const history = useHistory();
   // db ref
   const ref = app.firestore().collection("Users");
@@ -24,27 +23,19 @@ function SignIn() {
     }),
     onSubmit: async (values) => {
       try {
+        setIsLoading(true);
         setError("");
         // sign a user in with email and password
         await signIn(values.email, values.password);
         await ref.doc(values.email).update({ online: true });
         setIsSignedIn(true);
         history.push("/recipe-search");
+        setIsLoading(false);
       } catch {
         setError("incorrect email or password");
       }
     },
   });
-
-  /* 
-   <div>
-      {currentUser !== null ? (
-        <RecipeSearch />
-      ) : (
-
-         )}
-    </div>
-  */
 
   return (
     <div className="container d-flex justify-content-center" style={{ minHeight: "100%" }}>
@@ -93,7 +84,7 @@ function SignIn() {
                 ) : null}
               </div>
               <div className="mb-3">
-                <button type="submit" className="btn btn-success w-100" disabled={loading}>
+                <button type="submit" className="btn btn-success w-100">
                   Sign in
                 </button>
               </div>

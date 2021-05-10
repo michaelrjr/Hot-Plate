@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import app from "../../firebase";
 
 export default function SignOut() {
-  const { currentUser, signOut } = useAuth();
+  const { currentUser, signOut, setIsSignedIn, setIsLoading } = useAuth();
   const history = useHistory();
 
   //database ref
@@ -13,13 +13,17 @@ export default function SignOut() {
   // sign out user
   const handleSignOut = async () => {
     try {
+      setIsLoading(true);
       await ref.doc(currentUser.email).update({ online: false });
       await signOut();
+      setIsSignedIn(false);
       history.push("/");
+      setIsLoading(false);
     } catch (error) {
       throw error;
     }
   };
+
   return (
     <div>
       <button className="btn btn-danger w-100" onClick={handleSignOut}>
